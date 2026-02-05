@@ -2,24 +2,23 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BallGenius Mini App</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>BallGenius</title>
 
-<!-- Telegram WebApp -->
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<!-- Telegram Mini App -->
+<script src="https://i.postimg.cc/tgWpJR3L/640x360-px.png/telegram-web-app.js"></script>
 
 <style>
 :root{
   --bg:#0b0b0b;
-  --card:#161616;
-  --red:#ff2d2d;
+  --card:#151515;
+  --red:#ff1e1e;
   --red-dark:#b30000;
   --text:#ffffff;
-  --muted:#aaaaaa;
+  --muted:#9a9a9a;
 }
 
-*{box-sizing:border-box;font-family:sans-serif}
-
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 body{
   margin:0;
   background:var(--bg);
@@ -28,72 +27,80 @@ body{
 
 /* HEADER */
 .header{
-  padding:14px;
   text-align:center;
+  padding:14px;
   font-weight:700;
   font-size:18px;
-  border-bottom:1px solid #222;
-}
-.header img{
-  height:24px;
-  vertical-align:middle;
-  margin-right:6px;
+  background:linear-gradient(180deg,#220000,#000);
+  border-bottom:1px solid #300;
 }
 
 /* CONTENT */
-.page{display:none;padding:14px}
+.page{
+  display:none;
+  padding:14px;
+  padding-bottom:90px;
+}
 .page.active{display:block}
 
-/* CARD */
-.card{
-  background:var(--card);
-  border-radius:18px;
-  padding:14px;
-  margin-bottom:16px;
+/* LEAGUE BAR */
+.leagues{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  margin-bottom:12px;
 }
-.tag{
-  display:inline-block;
-  background:var(--red);
-  padding:4px 10px;
+.league{
+  min-width:70px;
+  padding:10px;
+  background:#1a1a1a;
   border-radius:12px;
+  text-align:center;
   font-size:12px;
-  font-weight:700;
+  border:1px solid #222;
 }
-.time{
-  float:right;
-  font-size:12px;
-  color:var(--muted);
+.league.active{
+  background:var(--red);
+  color:#fff;
 }
 
-/* MATCH */
+/* MATCH CARD */
+.card{
+  background:linear-gradient(180deg,#1a1a1a,#0e0e0e);
+  border-radius:18px;
+  padding:16px;
+  border:1px solid #2a2a2a;
+}
+.hot{
+  display:inline-block;
+  background:var(--red-dark);
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:12px;
+  margin-bottom:10px;
+}
 .match{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin:16px 0;
+  margin:14px 0;
 }
 .team{
-  width:30%;
+  width:40%;
   text-align:center;
 }
-.team img{
-  width:48px;
-  height:48px;
-  object-fit:contain;
-}
 .score{
-  font-size:22px;
+  font-size:28px;
   font-weight:700;
+  color:var(--red);
 }
-
-/* BUTTON */
-.btn{
+.btn-live{
   width:100%;
-  padding:14px;
-  border:none;
-  border-radius:14px;
-  background:linear-gradient(90deg,var(--red),var(--red-dark));
+  background:var(--red);
   color:#fff;
+  border:none;
+  padding:14px;
+  border-radius:14px;
   font-size:16px;
   font-weight:700;
 }
@@ -105,71 +112,87 @@ body{
   left:0;
   right:0;
   background:#111;
-  display:flex;
   border-top:1px solid #222;
+  display:flex;
 }
 .nav button{
   flex:1;
   background:none;
   border:none;
-  padding:10px 0;
-  color:#aaa;
+  padding:12px;
+  color:var(--muted);
   font-size:12px;
 }
-.nav button.active{color:var(--red)}
+.nav button.active{
+  color:var(--red);
+  font-weight:700;
+}
+.footer{
+  text-align:center;
+  font-size:11px;
+  color:#777;
+  margin-top:20px;
+}
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <img src="https://slotqath-dev.github.io/ballgenius/logo.png">
-  BallGenius
-</div>
+<div class="header">⚽ BallGenius</div>
 
-<!-- PAGE : HOT -->
-<div id="hot" class="page active">
+<!-- PAGE : HOME -->
+<div id="home" class="page active">
+
+  <div class="leagues">
+    <div class="league active">ทั้งหมด</div>
+    <div class="league">พรีเมียร์ลีก</div>
+    <div class="league">ลาลีกา</div>
+    <div class="league">บุนเดสลีกา</div>
+    <div class="league">เซเรียอา</div>
+  </div>
+
   <div class="card">
-    <span class="tag">🔥 HOT</span>
-    <span class="time">วันนี้ 18:00</span>
+    <div class="hot">🔥 HOT MATCH</div>
 
     <div class="match">
-      <div class="team">
-        <img src="https://slotqath-dev.github.io/ballgenius/team1.png">
-        <div>นครปฐม</div>
-      </div>
-
+      <div class="team">นครปฐม</div>
       <div class="score">0 : 0</div>
-
-      <div class="team">
-        <img src="https://slotqath-dev.github.io/ballgenius/team2.png">
-        <div>จันทบุรี</div>
-      </div>
+      <div class="team">จันทบุรี</div>
     </div>
 
-    <button class="btn" onclick="watch()">ดูบอลสด</button>
+    <button class="btn-live" onclick="openLive()">ดูบอลสด</button>
   </div>
+
 </div>
 
 <!-- PAGE : LIVE -->
 <div id="live" class="page">
-  <div class="card">⚽ ไม่มีการแข่งขันสด</div>
+  <div class="card">
+    <h3>🔴 ถ่ายทอดสด</h3>
+    <p style="color:var(--muted)">ฟีเจอร์ Live จะเชื่อม API จริงในขั้นถัดไป</p>
+  </div>
 </div>
 
 <!-- PAGE : PROGRAM -->
 <div id="program" class="page">
-  <div class="card">📅 โปรแกรมการแข่งขัน</div>
+  <div class="card">
+    <h3>📅 โปรแกรมบอล</h3>
+    <p style="color:var(--muted)">แสดงตารางแข่งขันรายวัน</p>
+  </div>
 </div>
 
 <!-- PAGE : MORE -->
 <div id="more" class="page">
-  <div class="card">⚙️ ตั้งค่า / ติดต่อแอดมิน</div>
+  <div class="card">
+    <h3>⚙️ เพิ่มเติม</h3>
+    <p style="color:var(--muted)">ตั้งค่า / ติดต่อแอดมิน</p>
+  </div>
+  <div class="footer">@BallGeniusBot</div>
 </div>
 
-<!-- BOTTOM NAV -->
+<!-- NAV -->
 <div class="nav">
-  <button class="active" onclick="go('hot',this)">ฮอต</button>
+  <button class="active" onclick="go('home',this)">ร้อน</button>
   <button onclick="go('live',this)">สด</button>
   <button onclick="go('program',this)">โปรแกรม</button>
   <button onclick="go('more',this)">เพิ่มเติม</button>
@@ -177,17 +200,18 @@ body{
 
 <script>
 const tg = window.Telegram.WebApp;
+tg.ready();
 tg.expand();
 
-function go(id,el){
+function go(page,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  document.getElementById(page).classList.add('active');
   document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
 }
 
-function watch(){
-  tg.openLink("https://example.com/live");
+function openLive(){
+  tg.showAlert("ตัวอย่าง Mini App\nพร้อมต่อ Live API จริง");
 }
 </script>
 
