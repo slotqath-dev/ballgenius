@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BallGenius</title>
 
 <!-- Telegram Mini App -->
@@ -12,15 +12,15 @@
 :root{
   --bg:#0b0b0b;
   --card:#151515;
-  --red:#e10600;
-  --red2:#ff2a2a;
+  --red:#e50914;
+  --red-dark:#9c0008;
   --text:#ffffff;
-  --muted:#9b9b9b;
+  --muted:#9a9a9a;
 }
 
 *{
   box-sizing:border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
 body{
@@ -31,14 +31,12 @@ body{
 
 /* ===== HEADER ===== */
 .header{
-  position:sticky;
-  top:0;
-  background:linear-gradient(90deg,#120000,#000);
-  padding:14px;
   text-align:center;
+  padding:14px;
   font-weight:700;
   font-size:18px;
-  border-bottom:1px solid #220000;
+  background:linear-gradient(180deg,#1a0000,#000);
+  border-bottom:1px solid #300;
 }
 
 /* ===== CONTENT ===== */
@@ -47,28 +45,31 @@ body{
   padding-bottom:90px;
 }
 
+/* ===== CARD ===== */
 .card{
-  background:var(--card);
+  background:linear-gradient(180deg,#1a0000,#0c0000);
   border-radius:18px;
   padding:16px;
-  margin-bottom:14px;
-  box-shadow:0 0 0 1px #220000 inset;
+  margin-bottom:16px;
+  box-shadow:0 0 25px rgba(229,9,20,.25);
 }
 
+/* ===== HOT MATCH ===== */
 .hot{
   display:inline-block;
   background:var(--red);
-  padding:4px 10px;
-  border-radius:20px;
+  color:#fff;
   font-size:12px;
+  padding:4px 10px;
+  border-radius:999px;
   margin-bottom:10px;
 }
 
 .match{
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  margin-top:10px;
+  justify-content:space-between;
+  margin:14px 0;
 }
 
 .team{
@@ -77,33 +78,35 @@ body{
 }
 
 .score{
-  font-size:20px;
-  font-weight:bold;
-  color:var(--red2);
+  font-size:26px;
+  font-weight:800;
+  color:var(--red);
 }
 
-/* ===== BUTTON ===== */
 .btn{
   width:100%;
-  margin-top:14px;
   padding:14px;
-  background:linear-gradient(90deg,var(--red),var(--red2));
   border:none;
-  border-radius:16px;
+  border-radius:14px;
+  background:linear-gradient(90deg,var(--red),#ff3b3b);
   color:#fff;
   font-size:16px;
   font-weight:700;
 }
 
-/* ===== BOTTOM NAV ===== */
+/* ===== PAGES ===== */
+.page{display:none}
+.page.active{display:block}
+
+/* ===== NAV ===== */
 .nav{
   position:fixed;
   bottom:0;
   left:0;
   right:0;
-  background:#0f0f0f;
+  background:#000;
+  border-top:1px solid #200;
   display:flex;
-  border-top:1px solid #220000;
 }
 
 .nav button{
@@ -117,6 +120,7 @@ body{
 
 .nav button.active{
   color:var(--red);
+  font-weight:700;
 }
 </style>
 </head>
@@ -126,31 +130,80 @@ body{
 <div class="header">⚽ BallGenius</div>
 
 <div class="content">
-  <div class="card">
-    <div class="hot">🔥 HOT MATCH</div>
-    <div class="match">
-      <div class="team">นครปฐม</div>
-      <div class="score">0 : 0</div>
-      <div class="team">จันทบุรี</div>
+
+  <!-- ===== PAGE : HOT ===== -->
+  <div id="page-hot" class="page active">
+    <div class="card">
+      <div class="hot">🔥 HOT MATCH</div>
+
+      <div class="match">
+        <div class="team">นครปฐม</div>
+        <div class="score">0 : 0</div>
+        <div class="team">จันทบุรี</div>
+      </div>
+
+      <button class="btn" onclick="watchLive()">ดูบอลสด</button>
     </div>
-    <button class="btn" onclick="watch()">ดูบอลสด</button>
   </div>
+
+  <!-- ===== PAGE : LIVE ===== -->
+  <div id="page-live" class="page">
+    <div class="card">
+      <h3>📺 บอลสด</h3>
+      <p style="color:var(--muted)">เลือกคู่ที่กำลังแข่ง</p>
+      <button class="btn" onclick="openLink()">เปิดลิงก์ดูบอลสด</button>
+    </div>
+  </div>
+
+  <!-- ===== PAGE : PROGRAM ===== -->
+  <div id="page-program" class="page">
+    <div class="card">
+      <h3>📅 โปรแกรมวันนี้</h3>
+      <p>18:00 นครปฐม vs จันทบุรี</p>
+      <p>20:00 ทีม A vs ทีม B</p>
+    </div>
+  </div>
+
+  <!-- ===== PAGE : MORE ===== -->
+  <div id="page-more" class="page">
+    <div class="card">
+      <h3>⭐ เพิ่มเติม</h3>
+      <p>• วิเคราะห์บอลวันนี้</p>
+      <p>• สถิติทีม</p>
+      <p>• VIP</p>
+    </div>
+  </div>
+
 </div>
 
+<!-- ===== NAV ===== -->
 <div class="nav">
-  <button class="active">ฮอต</button>
-  <button>สด</button>
-  <button>โปรแกรม</button>
-  <button>เพิ่มเติม</button>
+  <button class="active" onclick="go('hot',this)">รอสด</button>
+  <button onclick="go('live',this)">สด</button>
+  <button onclick="go('program',this)">โปรแกรม</button>
+  <button onclick="go('more',this)">เพิ่มเติม</button>
 </div>
 
 <script>
 const tg = window.Telegram.WebApp;
 tg.ready();
-tg.expand(); // เปิดเต็มจอ
+tg.expand();
 
-function watch(){
-  tg.showAlert("เปิดดูบอลสด (ตัวอย่าง Mini App)");
+function go(page,el){
+  document.querySelectorAll('.page'). guarantee ?? no
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function watchLive(){
+  tg.showAlert("⚽ เปิดดูบอลสด (ตัวอย่าง Mini App)");
+}
+
+function openLink(){
+  tg.openLink("https://google.com");
 }
 </script>
 
