@@ -191,7 +191,7 @@ body{
 <script>
 Telegram.WebApp.ready();
 
-/* CHANGE TAB */
+/* เปลี่ยนหน้า */
 function show(id,el){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -199,45 +199,51 @@ function show(id,el){
   el.classList.add('active');
 }
 
-/* LOAD MATCHES (API ฟรี) */
+/* โหลดบอลวันนี้ (แก้ CORS แล้ว) */
 async function loadMatches(){
   const box = document.getElementById("today");
-  box.innerHTML = "กำลังโหลด...";
+  box.innerHTML = "<div style='color:#888'>กำลังโหลดข้อมูล...</div>";
 
   try{
-    const res = await fetch("https://www.scorebat.com/video-api/v3/");
+    const url = "https://api.allorigins.win/raw?url=https://www.scorebat.com/video-api/v3/";
+    const res = await fetch(url);
     const data = await res.json();
 
     box.innerHTML = "";
-    data.response.slice(0,6).forEach(m=>{
+
+    data.response.slice(0,8).forEach(m=>{
       box.innerHTML += `
       <div class="match">
         <div class="league">${m.competition}</div>
+
         <div class="teams">
           <div class="team">
-            <img src="https://logo.clearbit.com/${m.side1.name.replace(/ /g,'')}.com"
-            onerror="this.src='https://via.placeholder.com/48'">
+            <img src="${m.side1.logo || 'https://via.placeholder.com/48'}">
             <div class="team-name">${m.side1.name}</div>
           </div>
+
           <div class="score">VS</div>
+
           <div class="team">
-            <img src="https://logo.clearbit.com/${m.side2.name.replace(/ /g,'')}.com"
-            onerror="this.src='https://via.placeholder.com/48'">
+            <img src="${m.side2.logo || 'https://via.placeholder.com/48'}">
             <div class="team-name">${m.side2.name}</div>
           </div>
         </div>
-        <button class="btn-live">ดูรายละเอียด</button>
+
+        <div class="time">🕒 ${new Date(m.date).toLocaleString()}</div>
+
+        <button class="btn-live"
+          onclick="Telegram.WebApp.showAlert('ฟีเจอร์ Live จะเปิดเร็วๆนี้')">
+          ดูรายละเอียด
+        </button>
       </div>
       `;
     });
 
   }catch(e){
-    box.innerHTML = "โหลดข้อมูลไม่ได้";
+    box.innerHTML = "<div style='color:red'>โหลดข้อมูลไม่ได้ (API)</div>";
   }
 }
 
 loadMatches();
 </script>
-
-</body>
-</html>
