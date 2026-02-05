@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BallGenius</title>
+<title>BallGenius Live</title>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
@@ -12,17 +12,12 @@
   --bg:#050505;
   --card:#0f0f0f;
   --red:#ff1e1e;
-  --red2:#ff4d4d;
-  --dark:#000;
+  --gold:#ffd36a;
   --text:#fff;
-  --muted:#9a9a9a;
-  --line:#1f1f1f;
+  --muted:#aaa;
 }
 
-*{
-  box-sizing:border-box;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 
 body{
   margin:0;
@@ -30,74 +25,36 @@ body{
   color:var(--text);
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 .header{
-  padding:18px 14px 16px;
+  padding:18px;
   text-align:center;
-  background:linear-gradient(180deg,#160000,#000);
-  border-bottom:1px solid #220000;
-  box-shadow:0 6px 18px rgba(255,0,0,.25);
+  background:linear-gradient(180deg,#180000,#000);
+  border-bottom:2px solid var(--red);
+  box-shadow:0 6px 20px rgba(255,0,0,.3);
 }
-.header span{
-  font-size:20px;
-  font-weight:800;
-  letter-spacing:.5px;
-}
+.header b{font-size:20px}
 
-/* ===== CONTENT ===== */
+/* CONTENT */
 .content{
-  padding:16px;
-  padding-bottom:110px;
+  padding:14px;
+  padding-bottom:90px;
 }
 
-.page{display:none}
-.page.active{display:block}
-
-/* ===== FILTER ===== */
-.filter{
-  display:flex;
-  gap:10px;
-  margin-bottom:14px;
-}
-.filter div{
-  flex:1;
-  text-align:center;
-  padding:10px 0;
-  border-radius:14px;
-  background:#111;
-  border:1px solid var(--line);
-  font-size:13px;
-}
-.filter .active{
-  background:linear-gradient(180deg,var(--red),#b00000);
-  box-shadow:0 0 12px rgba(255,30,30,.6);
-}
-
-/* ===== MATCH CARD ===== */
-.card{
-  background:linear-gradient(180deg,#0f0f0f,#090909);
+/* MATCH LIST */
+.match-card{
+  background:linear-gradient(180deg,#111,#080808);
   border-radius:22px;
-  padding:16px;
-  border:1px solid #1e0000;
-  box-shadow:0 10px 30px rgba(255,0,0,.2);
+  padding:14px;
+  margin-bottom:14px;
+  border:1px solid #240000;
+  box-shadow:0 8px 24px rgba(255,0,0,.25);
 }
 
-.card-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:14px;
-}
-.hot{
-  background:var(--red);
-  padding:4px 12px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:700;
-}
-.time{
-  color:var(--muted);
-  font-size:12px;
+.league{
+  font-size:13px;
+  color:var(--gold);
+  margin-bottom:10px;
 }
 
 .match{
@@ -105,56 +62,57 @@ body{
   grid-template-columns:1fr auto 1fr;
   align-items:center;
   text-align:center;
-  margin-bottom:16px;
 }
+
 .team{
-  font-size:15px;
-}
-.score{
-  font-size:30px;
-  font-weight:900;
-  color:var(--red2);
-}
-
-.watch{
-  width:100%;
-  border:none;
-  padding:15px;
-  border-radius:18px;
-  font-size:16px;
-  font-weight:800;
-  color:#fff;
-  background:linear-gradient(180deg,#ff2b2b,#b80000);
-  box-shadow:0 0 18px rgba(255,40,40,.7);
-}
-
-/* ===== BOTTOM NAV ===== */
-.nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  padding:8px;
-  background:linear-gradient(180deg,#0c0c0c,#050505);
-  border-top:2px solid var(--red);
   display:flex;
-  gap:8px;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  font-size:14px;
 }
 
-.nav button{
-  flex:1;
-  background:#111;
-  border:1px solid #222;
-  padding:10px 0;
-  border-radius:16px;
+.team img{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+}
+
+.score{
+  font-size:24px;
+  font-weight:900;
+  color:var(--red);
+}
+
+.time{
+  text-align:center;
+  margin-top:8px;
   font-size:12px;
   color:var(--muted);
 }
 
+/* NAV */
+.nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  display:flex;
+  gap:8px;
+  padding:8px;
+  background:#070707;
+  border-top:2px solid var(--red);
+}
+.nav button{
+  flex:1;
+  padding:10px;
+  border-radius:14px;
+  border:none;
+  background:#111;
+  color:#aaa;
+}
 .nav button.active{
-  background:linear-gradient(180deg,var(--red),#b00000);
+  background:linear-gradient(180deg,#ff2b2b,#b00000);
   color:#fff;
-  box-shadow:0 0 14px rgba(255,30,30,.6);
+  box-shadow:0 0 14px rgba(255,40,40,.6);
 }
 </style>
 </head>
@@ -162,82 +120,58 @@ body{
 <body>
 
 <div class="header">
-  <span>⚽ BallGenius</span>
+  <b>⚽ BallGenius | โปรแกรมบอลวันนี้</b>
 </div>
 
-<div class="content">
-
-  <!-- PAGE HOT -->
-  <div id="page-hot" class="page active">
-
-    <div class="filter">
-      <div class="active">ทั้งหมด</div>
-      <div>พรีเมียร์ลีก</div>
-      <div>ลาลีกา</div>
-    </div>
-
-    <div class="card">
-      <div class="card-head">
-        <div class="hot">🔥 HOT</div>
-        <div class="time">วันนี้ 18:00</div>
-      </div>
-
-      <div class="match">
-        <div class="team">นครปฐม</div>
-        <div class="score">0 : 0</div>
-        <div class="team">จันทบุรี</div>
-      </div>
-
-      <button class="watch">คลิกเพื่อรับชมถ่ายทอดสด</button>
-    </div>
-
-  </div>
-
-  <!-- PAGE LIVE -->
-  <div id="page-live" class="page">
-    <div class="card">
-      <h3>📡 บอลสด</h3>
-      <p style="color:var(--muted)">กำลังพัฒนา Live Score</p>
-    </div>
-  </div>
-
-  <!-- PAGE PROGRAM -->
-  <div id="page-program" class="page">
-    <div class="card">
-      <h3>📅 โปรแกรมบอล</h3>
-      <p style="color:var(--muted)">รอเชื่อม API</p>
-    </div>
-  </div>
-
-  <!-- PAGE MORE -->
-  <div id="page-more" class="page">
-    <div class="card">
-      <h3>⚙ เพิ่มเติม</h3>
-      <p style="color:var(--muted)">@BallGeniusBot</p>
-    </div>
-  </div>
-
+<div class="content" id="matchList">
+  กำลังโหลดข้อมูล...
 </div>
 
 <div class="nav">
-  <button class="active" onclick="openPage('hot',this)">ฮอต</button>
-  <button onclick="openPage('live',this)">สด</button>
-  <button onclick="openPage('program',this)">โปรแกรม</button>
-  <button onclick="openPage('more',this)">เพิ่มเติม</button>
+  <button class="active">วันนี้</button>
+  <button>สด</button>
+  <button>ลีก</button>
+  <button>เพิ่มเติม</button>
 </div>
 
 <script>
 const tg = window.Telegram.WebApp;
-tg.ready();
-tg.expand();
+tg.ready(); tg.expand();
 
-function openPage(page,el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
+const API =
+"https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=" +
+new Date().toISOString().split('T')[0] +
+"&s=Soccer";
 
-  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-}
+fetch(API)
+.then(res=>res.json())
+.then(data=>{
+  const list=document.getElementById("matchList");
+  list.innerHTML="";
+  if(!data.events){
+    list.innerHTML="❌ ไม่พบข้อมูลวันนี้";
+    return;
+  }
+
+  data.events.forEach(m=>{
+    list.innerHTML+=`
+    <div class="match-card">
+      <div class="league">${m.strLeague}</div>
+      <div class="match">
+        <div class="team">
+          <img src="${m.strHomeTeamBadge || ''}">
+          <div>${m.strHomeTeam}</div>
+        </div>
+        <div class="score">${m.intHomeScore ?? '-'} : ${m.intAwayScore ?? '-'}</div>
+        <div class="team">
+          <img src="${m.strAwayTeamBadge || ''}">
+          <div>${m.strAwayTeam}</div>
+        </div>
+      </div>
+      <div class="time">⏰ ${m.strTime || 'ยังไม่เริ่ม'}</div>
+    </div>`;
+  });
+});
 </script>
 
 </body>
