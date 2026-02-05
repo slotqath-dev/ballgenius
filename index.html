@@ -4,246 +4,160 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BallGenius</title>
-
-<!-- Telegram WebApp -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 :root{
-  --bg:#0b0b0b;
-  --card:#151515;
-  --red:#ff1e1e;
-  --red-dark:#b30000;
-  --text:#ffffff;
-  --muted:#9a9a9a;
+  --bg:#0b0000;
+  --card:#140000;
+  --red:#ff1f1f;
+  --text:#fff;
+  --muted:#aaa;
 }
-
 *{box-sizing:border-box;font-family:sans-serif}
 body{
   margin:0;
-  background:linear-gradient(180deg,#000,#120000,#000);
+  background:radial-gradient(circle at top,#200,#000);
   color:var(--text);
 }
-
-/* HEADER */
-.header{
+header{
   padding:14px;
   text-align:center;
   font-weight:700;
-  font-size:18px;
-  border-bottom:2px solid var(--red-dark);
-  background:linear-gradient(180deg,#140000,#000);
+  border-bottom:1px solid #300;
 }
-
-/* CONTENT */
 .content{
   padding:12px;
   padding-bottom:90px;
 }
-
-/* MATCH CARD */
 .match{
-  background:linear-gradient(180deg,#1a0000,#0e0e0e);
+  background:linear-gradient(180deg,#180000,#000);
   border-radius:16px;
   padding:14px;
   margin-bottom:14px;
-  border:1px solid #2a0000;
+  border:1px solid #300;
 }
-
 .league{
+  color:#ffcc00;
   font-size:13px;
-  color:#ffd36a;
   margin-bottom:8px;
 }
-
-.teams{
+.row{
   display:flex;
   align-items:center;
   justify-content:space-between;
 }
-
 .team{
   width:40%;
   text-align:center;
 }
-
 .team img{
-  width:48px;
-  height:48px;
-  object-fit:contain;
-  margin-bottom:6px;
+  width:42px;
+  height:42px;
 }
-
-.team-name{
-  font-size:13px;
-}
-
 .score{
   font-size:22px;
-  font-weight:700;
   color:var(--red);
+  font-weight:700;
 }
-
 .time{
   text-align:center;
-  font-size:12px;
-  color:var(--muted);
   margin-top:6px;
+  color:var(--muted);
+  font-size:12px;
 }
-
-.btn-live{
-  margin-top:10px;
-  background:linear-gradient(180deg,#ff2b2b,#c10000);
-  border:none;
-  color:#fff;
-  width:100%;
-  padding:12px;
-  border-radius:12px;
-  font-size:15px;
-  font-weight:700;
-}
-
-/* BOTTOM NAV */
 .nav{
   position:fixed;
   bottom:0;
   left:0;
   right:0;
-  background:#0c0c0c;
-  border-top:1px solid #250000;
+  background:#0a0a0a;
+  border-top:1px solid #300;
   display:flex;
 }
-
 .nav button{
   flex:1;
   padding:10px 0;
   background:none;
   border:none;
-  color:#aaa;
-  font-size:12px;
+  color:#999;
 }
-
 .nav button.active{
   color:#fff;
+  background:linear-gradient(180deg,#ff1f1f,#a00000);
 }
-
-.nav .icon{
-  display:block;
-  font-size:18px;
-  margin-bottom:2px;
-}
-
-/* HIDE SECTIONS */
-.section{display:none}
-.section.active{display:block}
 </style>
 </head>
 
 <body>
+<header>⚽ BallGenius | โปรแกรมบอลวันนี้</header>
 
-<div class="header">⚽ BallGenius | โปรแกรมบอลวันนี้</div>
+<div class="content" id="list"></div>
 
-<div class="content">
-
-  <!-- TODAY -->
-  <div id="today" class="section active"></div>
-
-  <!-- LIVE -->
-  <div id="live" class="section">
-    <div style="text-align:center;color:#888;margin-top:40px">
-      ถ่ายทอดสดเร็วๆนี้
-    </div>
-  </div>
-
-  <!-- LEAGUE -->
-  <div id="league" class="section">
-    <div style="text-align:center;color:#888;margin-top:40px">
-      เลือกลีกได้เร็วๆนี้
-    </div>
-  </div>
-
-  <!-- MORE -->
-  <div id="more" class="section">
-    <div style="text-align:center;color:#888;margin-top:40px">
-      เมนูเพิ่มเติม
-      <br>@BallGeniusBot
-    </div>
-  </div>
-
-</div>
-
-<!-- BOTTOM NAV -->
 <div class="nav">
-  <button class="active" onclick="show('today',this)">
-    <span class="icon">🔥</span>วันนี้
-  </button>
-  <button onclick="show('live',this)">
-    <span class="icon">📺</span>สด
-  </button>
-  <button onclick="show('league',this)">
-    <span class="icon">🏆</span>ลีก
-  </button>
-  <button onclick="show('more',this)">
-    <span class="icon">⚙️</span>เพิ่ม
-  </button>
+  <button class="active" onclick="setTab('today')">วันนี้</button>
+  <button onclick="setTab('live')">สด</button>
+  <button onclick="setTab('league')">ลีก</button>
+  <button onclick="setTab('more')">เพิ่ม</button>
 </div>
 
 <script>
-Telegram.WebApp.ready();
+const tg = window.Telegram.WebApp;
+tg.expand();
 
-/* เปลี่ยนหน้า */
-function show(id,el){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-}
+/* ===== MOCK DATA (แทน API จริง) ===== */
+const matches = [
+  {
+    league:"Australian A-League",
+    home:"Melbourne Victory",
+    away:"Western Sydney",
+    hs:4, as:1,
+    time:"จบเกม",
+    hLogo:"https://media.api-sports.io/football/teams/940.png",
+    aLogo:"https://media.api-sports.io/football/teams/955.png"
+  },
+  {
+    league:"Premier League",
+    home:"Arsenal",
+    away:"Liverpool",
+    hs:2, as:2,
+    time:"สด 75'",
+    hLogo:"https://media.api-sports.io/football/teams/42.png",
+    aLogo:"https://media.api-sports.io/football/teams/40.png"
+  }
+];
 
-/* โหลดบอลวันนี้ (แก้ CORS แล้ว) */
-async function loadMatches(){
-  const box = document.getElementById("today");
-  box.innerHTML = "<div style='color:#888'>กำลังโหลดข้อมูล...</div>";
-
-  try{
-    const url = "https://api.allorigins.win/raw?url=https://www.scorebat.com/video-api/v3/";
-    const res = await fetch(url);
-    const data = await res.json();
-
-    box.innerHTML = "";
-
-    data.response.slice(0,8).forEach(m=>{
-      box.innerHTML += `
+function render(){
+  const box = document.getElementById("list");
+  box.innerHTML="";
+  matches.forEach(m=>{
+    box.innerHTML += `
       <div class="match">
-        <div class="league">${m.competition}</div>
-
-        <div class="teams">
+        <div class="league">${m.league}</div>
+        <div class="row">
           <div class="team">
-            <img src="${m.side1.logo || 'https://via.placeholder.com/48'}">
-            <div class="team-name">${m.side1.name}</div>
+            <img src="${m.hLogo}">
+            <div>${m.home}</div>
           </div>
-
-          <div class="score">VS</div>
-
+          <div class="score">${m.hs} : ${m.as}</div>
           <div class="team">
-            <img src="${m.side2.logo || 'https://via.placeholder.com/48'}">
-            <div class="team-name">${m.side2.name}</div>
+            <img src="${m.aLogo}">
+            <div>${m.away}</div>
           </div>
         </div>
-
-        <div class="time">🕒 ${new Date(m.date).toLocaleString()}</div>
-
-        <button class="btn-live"
-          onclick="Telegram.WebApp.showAlert('ฟีเจอร์ Live จะเปิดเร็วๆนี้')">
-          ดูรายละเอียด
-        </button>
+        <div class="time">${m.time}</div>
       </div>
-      `;
-    });
-
-  }catch(e){
-    box.innerHTML = "<div style='color:red'>โหลดข้อมูลไม่ได้ (API)</div>";
-  }
+    `;
+  });
 }
 
-loadMatches();
+function setTab(tab){
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  tg.HapticFeedback.selectionChanged();
+}
+
+render();
 </script>
+</body>
+</html>
