@@ -5,172 +5,238 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BallGenius</title>
 
+<!-- Telegram WebApp -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+:root{
+  --bg:#0b0b0b;
+  --card:#151515;
+  --red:#ff1e1e;
+  --red-dark:#b30000;
+  --text:#ffffff;
+  --muted:#9a9a9a;
+}
 
+*{box-sizing:border-box;font-family:sans-serif}
 body{
   margin:0;
-  background:#050505;
-  color:#fff;
-  overflow-x:hidden;
+  background:linear-gradient(180deg,#000,#120000,#000);
+  color:var(--text);
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 .header{
-  position:relative;
-  z-index:5;
-  padding:16px;
+  padding:14px;
   text-align:center;
   font-weight:700;
+  font-size:18px;
+  border-bottom:2px solid var(--red-dark);
   background:linear-gradient(180deg,#140000,#000);
-  border-bottom:2px solid #ff1e1e;
 }
 
-/* ===== CONTENT ===== */
+/* CONTENT */
 .content{
-  position:relative;
-  z-index:1;
-  padding:14px;
-  padding-bottom:110px;
+  padding:12px;
+  padding-bottom:90px;
 }
 
-/* ===== MATCH CARD ===== */
-.card{
-  background:linear-gradient(180deg,#111,#070707);
-  border-radius:22px;
-  padding:16px;
+/* MATCH CARD */
+.match{
+  background:linear-gradient(180deg,#1a0000,#0e0e0e);
+  border-radius:16px;
+  padding:14px;
   margin-bottom:14px;
-  border:1px solid #300;
-  box-shadow:0 10px 30px rgba(255,0,0,.35);
+  border:1px solid #2a0000;
 }
 
 .league{
   font-size:13px;
   color:#ffd36a;
-  margin-bottom:10px;
+  margin-bottom:8px;
 }
 
-.match{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
+.teams{
+  display:flex;
   align-items:center;
-  text-align:center;
+  justify-content:space-between;
 }
 
 .team{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-  font-size:14px;
-}
-
-.team img{
-  width:42px;
-  height:42px;
-  object-fit:contain;
-}
-
-.score{
-  font-size:26px;
-  font-weight:900;
-  color:#ff1e1e;
-}
-
-.time{
-  margin-top:8px;
-  font-size:12px;
-  color:#aaa;
+  width:40%;
   text-align:center;
 }
 
-/* ===== NAV BAR ===== */
+.team img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  margin-bottom:6px;
+}
+
+.team-name{
+  font-size:13px;
+}
+
+.score{
+  font-size:22px;
+  font-weight:700;
+  color:var(--red);
+}
+
+.time{
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+.btn-live{
+  margin-top:10px;
+  background:linear-gradient(180deg,#ff2b2b,#c10000);
+  border:none;
+  color:#fff;
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:700;
+}
+
+/* BOTTOM NAV */
 .nav{
   position:fixed;
   bottom:0;
   left:0;
   right:0;
-  z-index:10;
+  background:#0c0c0c;
+  border-top:1px solid #250000;
   display:flex;
-  gap:8px;
-  padding:10px;
-  background:#070707;
-  border-top:2px solid #ff1e1e;
-  pointer-events:auto;
 }
 
 .nav button{
   flex:1;
-  padding:12px;
+  padding:10px 0;
+  background:none;
   border:none;
-  border-radius:16px;
-  background:#111;
   color:#aaa;
-  font-size:13px;
+  font-size:12px;
 }
 
 .nav button.active{
-  background:linear-gradient(180deg,#ff2b2b,#b00000);
   color:#fff;
-  box-shadow:0 0 14px rgba(255,40,40,.6);
 }
+
+.nav .icon{
+  display:block;
+  font-size:18px;
+  margin-bottom:2px;
+}
+
+/* HIDE SECTIONS */
+.section{display:none}
+.section.active{display:block}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  ⚽ BallGenius | โปรแกรมบอลวันนี้
+<div class="header">⚽ BallGenius | โปรแกรมบอลวันนี้</div>
+
+<div class="content">
+
+  <!-- TODAY -->
+  <div id="today" class="section active"></div>
+
+  <!-- LIVE -->
+  <div id="live" class="section">
+    <div style="text-align:center;color:#888;margin-top:40px">
+      ถ่ายทอดสดเร็วๆนี้
+    </div>
+  </div>
+
+  <!-- LEAGUE -->
+  <div id="league" class="section">
+    <div style="text-align:center;color:#888;margin-top:40px">
+      เลือกลีกได้เร็วๆนี้
+    </div>
+  </div>
+
+  <!-- MORE -->
+  <div id="more" class="section">
+    <div style="text-align:center;color:#888;margin-top:40px">
+      เมนูเพิ่มเติม
+      <br>@BallGeniusBot
+    </div>
+  </div>
+
 </div>
 
-<div class="content" id="list">
-  กำลังโหลดข้อมูล...
-</div>
-
+<!-- BOTTOM NAV -->
 <div class="nav">
-  <button class="active" onclick="alert('วันนี้')">วันนี้</button>
-  <button onclick="alert('สด')">สด</button>
-  <button onclick="alert('ลีก')">ลีก</button>
-  <button onclick="alert('เพิ่มเติม')">เพิ่มเติม</button>
+  <button class="active" onclick="show('today',this)">
+    <span class="icon">🔥</span>วันนี้
+  </button>
+  <button onclick="show('live',this)">
+    <span class="icon">📺</span>สด
+  </button>
+  <button onclick="show('league',this)">
+    <span class="icon">🏆</span>ลีก
+  </button>
+  <button onclick="show('more',this)">
+    <span class="icon">⚙️</span>เพิ่ม
+  </button>
 </div>
 
 <script>
-const tg = window.Telegram.WebApp;
-tg.ready(); tg.expand();
+Telegram.WebApp.ready();
 
-const API =
-"https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=" +
-new Date().toISOString().split('T')[0] +
-"&s=Soccer";
+/* CHANGE TAB */
+function show(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
 
-fetch(API)
-.then(r=>r.json())
-.then(d=>{
-  const box=document.getElementById("list");
-  box.innerHTML="";
-  if(!d.events){box.innerHTML="ไม่พบโปรแกรมวันนี้";return;}
+/* LOAD MATCHES (API ฟรี) */
+async function loadMatches(){
+  const box = document.getElementById("today");
+  box.innerHTML = "กำลังโหลด...";
 
-  d.events.forEach(m=>{
-    box.innerHTML+=`
-    <div class="card">
-      <div class="league">${m.strLeague}</div>
+  try{
+    const res = await fetch("https://www.scorebat.com/video-api/v3/");
+    const data = await res.json();
+
+    box.innerHTML = "";
+    data.response.slice(0,6).forEach(m=>{
+      box.innerHTML += `
       <div class="match">
-        <div class="team">
-          <img src="${m.strHomeTeamBadge||''}">
-          <div>${m.strHomeTeam}</div>
+        <div class="league">${m.competition}</div>
+        <div class="teams">
+          <div class="team">
+            <img src="https://logo.clearbit.com/${m.side1.name.replace(/ /g,'')}.com"
+            onerror="this.src='https://via.placeholder.com/48'">
+            <div class="team-name">${m.side1.name}</div>
+          </div>
+          <div class="score">VS</div>
+          <div class="team">
+            <img src="https://logo.clearbit.com/${m.side2.name.replace(/ /g,'')}.com"
+            onerror="this.src='https://via.placeholder.com/48'">
+            <div class="team-name">${m.side2.name}</div>
+          </div>
         </div>
-        <div class="score">${m.intHomeScore ?? '-'} : ${m.intAwayScore ?? '-'}</div>
-        <div class="team">
-          <img src="${m.strAwayTeamBadge||''}">
-          <div>${m.strAwayTeam}</div>
-        </div>
+        <button class="btn-live">ดูรายละเอียด</button>
       </div>
-      <div class="time">⏰ ${m.strTime || 'ยังไม่เริ่ม'}</div>
-    </div>`;
-  });
-});
+      `;
+    });
+
+  }catch(e){
+    box.innerHTML = "โหลดข้อมูลไม่ได้";
+  }
+}
+
+loadMatches();
 </script>
 
 </body>
