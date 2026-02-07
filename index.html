@@ -15,44 +15,26 @@
   --muted:#aaaaaa;
   --accent:#ffd200;
 
-  /* DARK MODE */
+  /* DARK MODE : นักฟุตบอล (โทนโรนัลโด้) */
   --bg-color:#000;
-  --overlay:rgba(0,0,0,.88);
+  --bg-img:url("https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1800&q=80");
+  --overlay:rgba(0,0,0,.75);
 }
+
+/* LIGHT MODE */
 .light{
   --card:#ffffff;
   --white:#000000;
   --muted:#555;
+
   --bg-color:#f4f4f4;
-  --overlay:rgba(255,255,255,.9);
-
-  background-image:
-    linear-gradient(var(--overlay),var(--overlay)),
-    url("https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&w=900&q=80");
+  --bg-img:url("https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&w=1800&q=80");
+  --overlay:rgba(255,255,255,.8);
 }
 
-*{box-sizing:border-box;font-family:sans-serif}
-
-/* ===== SAFE BACKGROUND FOOTBALL PLAYER ===== */
-body{
-  margin:0;
-  color:var(--white);
-  background:var(--bg-color);
-  overflow-x:hidden;
-}
-
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:
-    radial-gradient(circle at 50% 35%, rgba(255,255,255,.12), transparent 60%),
-    url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=900&q=80")
-      center 38% no-repeat;
-  background-size:420px auto;
-  opacity:.26;
-  pointer-events:none;
-  z-index:-2;
+*{
+  box-sizing:border-box;
+  font-family:sans-serif;
 }
 
 body{
@@ -63,7 +45,7 @@ body{
     var(--bg-img);
   background-color:var(--bg-color);
 
-  /* สำคัญ: เต็มจอ ไม่แตก ไม่พัง */
+  /* สำคัญมาก : เต็มจอ ไม่พัง */
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
@@ -81,19 +63,19 @@ header{
 }
 .logo{
   font-weight:900;
-  font-size:26px;
+  font-size:24px;
 }
 .logo span:first-child{color:var(--red)}
 .logo span:last-child{color:#fff}
 
 .theme-btns button{
-  width:20px;
-  height:20px;
+  width:22px;
+  height:22px;
   border-radius:50%;
   border:1px solid var(--muted);
   background:transparent;
   color:var(--white);
-  font-size:11px;
+  font-size:12px;
   cursor:pointer;
   margin-left:6px;
 }
@@ -137,12 +119,12 @@ header{
 .match{
   background:var(--card);
   border-radius:18px;
-  padding:16px;
+  padding:14px;
 }
 .match .league-name{
   color:var(--accent);
-  font-size:14px;
-  margin-bottom:10px;
+  font-size:13px;
+  margin-bottom:8px;
 }
 .teams{
   display:flex;
@@ -154,15 +136,15 @@ header{
   text-align:center;
 }
 .team img{
-  width:50px;
-  height:50px;
+  width:48px;
+  height:48px;
   object-fit:contain;
   background:#fff;
   padding:4px;
   border-radius:10px;
 }
 .score{
-  font-size:24px;
+  font-size:22px;
   font-weight:900;
   color:var(--red);
 }
@@ -201,6 +183,7 @@ header{
   </div>
 </header>
 
+<!-- LEAGUES -->
 <div class="leagues">
   <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
@@ -247,8 +230,12 @@ document.querySelectorAll('.league').forEach(l=>{
   }
 });
 
-function setDark(){document.body.classList.remove('light')}
-function setLight(){document.body.classList.add('light')}
+function setDark(){
+  document.body.classList.remove('light');
+}
+function setLight(){
+  document.body.classList.add('light');
+}
 </script>
 
 </body>
