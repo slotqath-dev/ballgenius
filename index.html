@@ -5,227 +5,150 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
 <style>
 :root{
-  --card:#161616;
-  --red:#e60000;
-  --white:#ffffff;
-  --muted:#aaaaaa;
-  --accent:#ffd200;
-
-  /* DARK MODE */
-  --bg-color:#000;
-  --bg-img:url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1600&q=80");
-  --overlay:rgba(0,0,0,.88);
+  --bg:#000;
+  --fg:#fff;
+  --card:#0c0c0c;
+  --overlay:rgba(0,0,0,.68);
 }
-.light{
-  --card:#ffffff;
-  --white:#000000;
-  --muted:#555;
-
-  /* LIGHT MODE */
-  --bg-color:#f4f4f4;
-  --bg-img:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1600&q=80");
-  --overlay:rgba(255,255,255,.85);
+body.light{
+  --bg:#fff;
+  --fg:#111;
+  --card:#f2f2f2;
+  --overlay:rgba(255,255,255,.65);
 }
 
-*{box-sizing:border-box;font-family:sans-serif}
+*{box-sizing:border-box;font-family:system-ui,sans-serif}
 body{
   margin:0;
-  color:var(--white);
+  background:var(--bg);
+  color:var(--fg);
+  overflow-x:hidden;
+}
+
+/* BACKGROUND */
+.bg{
+  position:fixed;
+  inset:0;
   background:
     linear-gradient(var(--overlay),var(--overlay)),
-    var(--bg-img);
-  background-color:var(--bg-color);
-  background-size:900px auto;
-  background-repeat:repeat;
+    url('https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d');
+  background-size:cover;
+  background-position:center;
+  filter:grayscale(100%);
+  z-index:-1;
+}
+body.light .bg{
+  background:
+    linear-gradient(var(--overlay),var(--overlay)),
+    url('https://images.unsplash.com/photo-1521412644187-c49fa049e84d');
 }
 
 /* HEADER */
-header{
-  padding:14px;
+.header{
+  padding:26px 20px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:linear-gradient(180deg,#300,#000);
-  border-bottom:2px solid var(--red);
 }
 .logo{
+  font-size:34px;
   font-weight:900;
-  font-size:24px;
+  letter-spacing:1px;
 }
-.logo span:first-child{color:var(--red)}
-.logo span:last-child{color:#fff}
-
-.theme-btns button{
-  width:22px;
-  height:22px;
-  border-radius:50%;
-  border:1px solid var(--muted);
-  background:transparent;
-  color:var(--white);
-  font-size:12px;
+.toggle{
   cursor:pointer;
-  margin-left:6px;
+  font-size:26px;
 }
 
-/* LEAGUES */
-.leagues{
+/* LEAGUE SLIDER */
+.slider{
+  overflow:hidden;
+  padding:30px 0;
+}
+.track{
   display:flex;
-  gap:12px;
-  padding:12px;
-  overflow-x:auto;
+  gap:22px;
+  animation:scroll 28s linear infinite;
 }
 .league{
-  width:64px;
-  height:64px;
-  flex:0 0 auto;
+  min-width:140px;
+  height:140px;
   background:var(--card);
-  border-radius:16px;
-  border:2px solid transparent;
+  border-radius:18px;
   display:flex;
   align-items:center;
   justify-content:center;
-  cursor:pointer;
+  font-weight:800;
+  font-size:18px;
+  box-shadow:0 0 0 2px rgba(255,255,255,.08);
 }
-.league.active{
-  border-color:var(--accent);
-}
-.league img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  background:#fff;
-  padding:6px;
-  border-radius:12px;
+body.light .league{
+  box-shadow:0 0 0 2px rgba(0,0,0,.08);
 }
 
-/* CONTENT */
-.content{
-  padding:14px;
-  padding-bottom:90px;
-}
-.match{
-  background:var(--card);
-  border-radius:18px;
-  padding:14px;
-}
-.match .league-name{
-  color:var(--accent);
-  font-size:13px;
-  margin-bottom:8px;
-}
-.teams{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.team{
-  width:40%;
-  text-align:center;
-}
-.team img{
-  width:48px;
-  height:48px;
-  object-fit:contain;
-  background:#fff;
-  padding:4px;
-  border-radius:10px;
-}
-.score{
-  font-size:22px;
-  font-weight:900;
-  color:var(--red);
+@keyframes scroll{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
 }
 
-/* BOTTOM */
-.bottom{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  background:linear-gradient(180deg,#200,#000);
-  border-top:2px solid var(--red);
-  display:flex;
+/* WRAP */
+.wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:10px 20px 60px;
 }
-.tab{
-  flex:1;
-  padding:10px 0;
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
+.card{
+  background:rgba(0,0,0,.55);
+  padding:28px;
+  border-radius:26px;
 }
-.tab.active{
-  color:var(--red);
-  font-weight:700;
+body.light .card{
+  background:rgba(255,255,255,.75);
 }
 </style>
 </head>
 
 <body>
+<div class="bg"></div>
 
-<header>
-  <div class="logo">
-    <span>QA</span> <span>BallGenius</span>
-  </div>
-  <div class="theme-btns">
-    <button onclick="setDark()">🌙</button>
-    <button onclick="setLight()">☀️</button>
-  </div>
-</header>
-
-<!-- LEAGUES : ครบ ทุกลีกหลัก -->
-<div class="leagues">
-  <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/2.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/3.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/1.png"></div>
+<div class="header">
+  <div class="logo">QA BallGenius</div>
+  <div class="toggle" onclick="toggle()">🌙</div>
 </div>
 
-<div class="content">
-  <div class="match">
-    <div class="league-name">🔥 HOT โปรแกรมวันนี้</div>
-    <div class="teams">
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/33.png">
-        <div>แมนยู</div>
-      </div>
-      <div class="score">0 : 0</div>
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/50.png">
-        <div>แมนซิตี้</div>
-      </div>
-    </div>
+<div class="slider">
+  <div class="track">
+    <div class="league">พรีเมียร์ลีก</div>
+    <div class="league">ลาลีกา</div>
+    <div class="league">บุนเดสลีกา</div>
+    <div class="league">กัลโช่</div>
+    <div class="league">ลีกเอิง</div>
+    <div class="league">ยูฟ่า</div>
+
+    <!-- ซ้ำเพื่อให้เลื่อนต่อเนื่อง -->
+    <div class="league">พรีเมียร์ลีก</div>
+    <div class="league">ลาลีกา</div>
+    <div class="league">บุนเดสลีกา</div>
+    <div class="league">กัลโช่</div>
+    <div class="league">ลีกเอิง</div>
+    <div class="league">ยูฟ่า</div>
   </div>
 </div>
 
-<div class="bottom">
-  <div class="tab active">ยอดนิยม</div>
-  <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
+<div class="wrap">
+  <div class="card">
+    <h2>ระบบวิเคราะห์บอลครบวงจร</h2>
+    <p>รองรับทุกลีก • ชัด • ใช้งานง่าย • โหมดขาว/ดำ แยกชัดเจน</p>
+  </div>
 </div>
 
 <script>
-Telegram.WebApp.ready();
-Telegram.WebApp.expand();
-
-document.querySelectorAll('.league').forEach(l=>{
-  l.onclick=()=>{
-    document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
-    l.classList.add('active');
-  }
-});
-
-function setDark(){
-  document.body.classList.remove('light');
-}
-function setLight(){
-  document.body.classList.add('light');
+function toggle(){
+  document.body.classList.toggle('light');
+  document.querySelector('.toggle').textContent =
+    document.body.classList.contains('light') ? '☀️' : '🌙';
 }
 </script>
 
