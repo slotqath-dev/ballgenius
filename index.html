@@ -15,7 +15,10 @@
   --muted:#b9a6c7;
 }
 
-*{box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif}
+*{
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,sans-serif;
+}
 
 body{
   margin:0;
@@ -32,54 +35,69 @@ body{
   border-bottom:2px solid #ff0033;
 }
 
-/* LEAGUE MENU */
-.league-wrap{
-  padding:14px;
+/* ===== LEAGUE SCROLL ===== */
+.league-scroll{
+  position:relative;
+  padding:14px 0;
   overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* ซ่อน scrollbar แต่ยังเลื่อน */
+.league-scroll::-webkit-scrollbar{
+  display:none;
 }
 
 .league-list{
   display:flex;
   gap:12px;
+  padding:0 14px;
   width:max-content;
 }
 
+/* เอฟเฟกต์บอกว่ามีให้เลื่อน */
+.league-scroll:after{
+  content:"";
+  position:absolute;
+  right:0;
+  top:0;
+  width:30px;
+  height:100%;
+  pointer-events:none;
+  background:linear-gradient(270deg,#09000d,transparent);
+}
+
+/* ลีกแต่ละอัน */
 .league{
-  min-width:86px;
-  padding:10px 12px;
+  min-width:90px;
+  padding:12px 10px;
   background:var(--card);
-  border-radius:14px;
+  border-radius:16px;
   border:2px solid #3a0f4a;
   text-align:center;
   font-size:12px;
   cursor:pointer;
   transition:.25s;
+  user-select:none;
 }
 
 .league img{
   width:32px;
   height:32px;
-  margin-bottom:6px;
+  display:block;
+  margin:0 auto 6px;
 }
 
+.league span{
+  font-weight:700;
+}
+
+/* active */
 .league.active{
   border-color:var(--accent);
   background:linear-gradient(180deg,#2a0a36,#14001c);
   box-shadow:0 0 0 2px rgba(255,204,51,.25);
-}
-
-.league span{
-  display:block;
-  font-weight:700;
-}
-
-/* SCROLL BAR (มือถือสวยขึ้น) */
-.league-wrap::-webkit-scrollbar{
-  height:6px;
-}
-.league-wrap::-webkit-scrollbar-thumb{
-  background:#ff2f6d;
-  border-radius:10px;
 }
 </style>
 </head>
@@ -88,8 +106,8 @@ body{
 
 <div class="header">⚽ BallGenius | โปรแกรมบอลวันนี้</div>
 
-<!-- เมนูลีก -->
-<div class="league-wrap">
+<!-- เมนูลีก (เลื่อนได้) -->
+<div class="league-scroll">
   <div class="league-list">
 
     <div class="league active" onclick="selectLeague(this,'all')">
@@ -122,6 +140,16 @@ body{
       <span>ลีกเอิง</span>
     </div>
 
+    <div class="league" onclick="selectLeague(this,'ucl')">
+      <img src="https://media.api-sports.io/football/leagues/2.png">
+      <span>UCL</span>
+    </div>
+
+    <div class="league" onclick="selectLeague(this,'uel')">
+      <img src="https://media.api-sports.io/football/leagues/3.png">
+      <span>UEL</span>
+    </div>
+
   </div>
 </div>
 
@@ -132,7 +160,7 @@ function selectLeague(el, league){
   el.classList.add('active');
 
   console.log("เลือกลีก:", league);
-  // ขั้นถัดไป: เอา league ไปกรอง API
+  // ขั้นถัดไป: เอา league ไป filter โปรแกรมบอล
 }
 </script>
 
