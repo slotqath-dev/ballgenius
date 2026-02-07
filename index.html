@@ -15,7 +15,7 @@
   --muted:#aaaaaa;
   --accent:#ffd200;
 
-  /* 🌙 DARK MODE : สนามบอลกว้าง */
+  /* 🌙 DARK : สนามบอลกว้าง */
   --bg-color:#000;
   --bg-img:url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1600&q=80");
   --overlay:rgba(0,0,0,.78);
@@ -25,7 +25,7 @@
   --white:#000;
   --muted:#555;
 
-  /* ☀️ LIGHT MODE : นักฟุตบอล */
+  /* ☀️ LIGHT : นักฟุตบอล */
   --bg-color:#f4f4f4;
   --bg-img:url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1400&q=80");
   --overlay:rgba(255,255,255,.88);
@@ -63,18 +63,22 @@ header{
 .logo span:first-child{color:var(--red)}
 .logo span:last-child{color:var(--white)}
 
+/* 🔥 ปุ่มโหมด (ย่อแล้ว) */
 .theme-btns button{
   background:transparent;
   border:1px solid var(--muted);
   color:var(--white);
-  font-size:18px;
-  padding:6px 10px;
+  width:34px;
+  height:34px;
+  font-size:14px;
+  padding:0;
   border-radius:50%;
   cursor:pointer;
   margin-left:6px;
+  line-height:34px;
 }
 
-/* LEAGUES */
+/* LEAGUES (เลื่อนข้าง) */
 .leagues{
   display:flex;
   gap:10px;
@@ -187,7 +191,7 @@ header{
 
 <div class="content">
   <div class="match">
-    <div class="league-name">HOT โปรแกรมวันนี้</div>
+    <div class="league-name">🔥 HOT โปรแกรมวันนี้</div>
     <div class="teams">
       <div class="team">
         <img src="https://media.api-sports.io/football/teams/33.png">
@@ -220,12 +224,8 @@ document.querySelectorAll('.league').forEach(l=>{
   }
 });
 
-function setDark(){
-  document.body.classList.remove('light');
-}
-function setLight(){
-  document.body.classList.add('light');
-}
+function setDark(){ document.body.classList.remove('light'); }
+function setLight(){ document.body.classList.add('light'); }
 </script>
 
 </body>
