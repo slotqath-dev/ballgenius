@@ -15,7 +15,7 @@
   --card:#161616;
 }
 
-/* ===== DARK MODE ===== */
+/* ===== DARK MODE (🌙) ===== */
 body{
   margin:0;
   font-family:sans-serif;
@@ -27,7 +27,7 @@ body{
   background-repeat:repeat;
 }
 
-/* ===== LIGHT MODE ===== */
+/* ===== LIGHT MODE (☀️) ===== */
 body.light{
   color:#000;
   background:
@@ -37,6 +37,7 @@ body.light{
   background-repeat:repeat;
 }
 
+/* ===== HEADER ===== */
 header{
   padding:14px;
   display:flex;
@@ -56,16 +57,17 @@ body.light header{
 .logo .qa{color:var(--red)}
 .logo .bg{color:inherit}
 
+/* ===== THEME TOGGLE ===== */
 .theme-btns button{
   background:none;
   border:1px solid var(--red);
   padding:6px 10px;
   border-radius:8px;
   cursor:pointer;
-  font-size:14px;
+  font-size:16px;
 }
 
-/* ===== LEAGUES ===== */
+/* ===== LEAGUES (ขนาดเดิม) ===== */
 .leagues{
   display:flex;
   gap:10px;
@@ -180,7 +182,7 @@ body.light .bottom{
     <span class="qa">QA</span> <span class="bg">BallGenius</span>
   </div>
   <div class="theme-btns">
-    <button onclick="setTheme()">ดำ / ขาว</button>
+    <button onclick="setTheme()" id="themeIcon">🌙</button>
   </div>
 </header>
 
@@ -219,6 +221,8 @@ Telegram.WebApp.expand();
 
 function setTheme(){
   document.body.classList.toggle('light');
+  const icon = document.getElementById('themeIcon');
+  icon.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
 }
 </script>
 
