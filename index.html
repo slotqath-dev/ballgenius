@@ -15,17 +15,19 @@
   --muted:#aaaaaa;
   --accent:#ffd200;
 
+  /* DARK MODE */
   --bg-color:#000;
-  --bg-img:url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80");
-  --overlay:rgba(0,0,0,.85);
+  --bg-img:url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1600&q=80");
+  --overlay:rgba(0,0,0,.88);
 }
 .light{
   --card:#ffffff;
-  --white:#000;
+  --white:#000000;
   --muted:#555;
 
+  /* LIGHT MODE */
   --bg-color:#f4f4f4;
-  --bg-img:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1200&q=80");
+  --bg-img:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1600&q=80");
   --overlay:rgba(255,255,255,.85);
 }
 
@@ -52,21 +54,21 @@ header{
 }
 .logo{
   font-weight:900;
-  font-size:22px;
+  font-size:24px;
 }
 .logo span:first-child{color:var(--red)}
 .logo span:last-child{color:#fff}
 
 .theme-btns button{
-  background:transparent;
-  border:1px solid var(--muted);
-  color:var(--white);
-  width:24px;
-  height:24px;
-  font-size:12px;
+  width:22px;
+  height:22px;
   border-radius:50%;
+  border:1px solid var(--muted);
+  background:transparent;
+  color:var(--white);
+  font-size:12px;
   cursor:pointer;
-  margin-left:4px;
+  margin-left:6px;
 }
 
 /* LEAGUES */
@@ -95,8 +97,8 @@ header{
   width:100%;
   height:100%;
   object-fit:contain;
-  padding:6px;
   background:#fff;
+  padding:6px;
   border-radius:12px;
 }
 
@@ -172,33 +174,15 @@ header{
   </div>
 </header>
 
-<!-- LEAGUES : ทุกลีกหลัก -->
+<!-- LEAGUES : ครบ ทุกลีกหลัก -->
 <div class="leagues">
-  <!-- อังกฤษ -->
   <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/40.png"></div>
-
-  <!-- สเปน -->
   <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/141.png"></div>
-
-  <!-- เยอรมัน -->
   <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/79.png"></div>
-
-  <!-- อิตาลี -->
   <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/136.png"></div>
-
-  <!-- ฝรั่งเศส -->
   <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/62.png"></div>
-
-  <!-- บอลยุโรป -->
   <div class="league"><img src="https://media.api-sports.io/football/leagues/2.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/3.png"></div>
-
-  <!-- ทีมชาติ -->
   <div class="league"><img src="https://media.api-sports.io/football/leagues/1.png"></div>
 </div>
 
