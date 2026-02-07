@@ -1,89 +1,72 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BallGenius</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>QA BallGenius</title>
+
+<!-- Telegram Mini App -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 :root{
-  --bg:#0b000f;
-  --card:#1a061f;
-  --red:#ff0033;
-  --red-dark:#b80024;
+  --bg:#0b0b0b;
+  --red:#e10600;
+  --red-dark:#8b0000;
   --text:#ffffff;
-  --muted:#9b8ca8;
 }
 
-*{
-  box-sizing:border-box;
-  font-family:system-ui,-apple-system,sans-serif;
-}
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 
 body{
   margin:0;
-  background:linear-gradient(180deg,#140018,#050007);
+  background:linear-gradient(180deg,#140000,#000);
   color:var(--text);
-  padding-bottom:90px;
 }
 
-/* HEADER */
+/* ===== HEADER ===== */
 .header{
   padding:14px;
   text-align:center;
   font-weight:800;
-  font-size:18px;
+  font-size:20px;
+  letter-spacing:.5px;
+  background:linear-gradient(180deg,#1a0000,#000);
   border-bottom:2px solid var(--red);
 }
 
-/* CONTENT */
-.page{
-  display:none;
-  padding:18px;
+.header span{
+  color:var(--red);
 }
 
-.page.active{
-  display:block;
+/* ===== CONTENT (เผื่อหน้าโล่งไม่พัง) ===== */
+.content{
+  padding:20px;
+  min-height:70vh;
+  color:#aaa;
+  text-align:center;
 }
 
-.card{
-  background:var(--card);
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:14px;
-  border:1px solid #2c0b35;
-}
-
-/* ===== BOTTOM MENU ===== */
-.bottom-nav{
+/* ===== BOTTOM TAB (กันโครงหาย) ===== */
+.bottom-tab{
   position:fixed;
   bottom:0;
   left:0;
-  width:100%;
-  background:linear-gradient(180deg,#1a061f,#0b000f);
-  border-top:2px solid var(--red);
+  right:0;
+  height:64px;
+  background:#111;
+  border-top:1px solid var(--red-dark);
   display:flex;
-  justify-content:space-around;
-  padding:10px 0 12px;
-  z-index:100;
 }
 
-.nav-item{
+.tab{
   flex:1;
   text-align:center;
-  color:var(--muted);
+  padding-top:8px;
   font-size:12px;
-  cursor:pointer;
-  transition:.25s;
+  color:#aaa;
 }
-
-.nav-item span{
-  display:block;
-  font-size:20px;
-  margin-bottom:4px;
-}
-
-.nav-item.active{
+.tab.active{
   color:var(--red);
   font-weight:700;
 }
@@ -92,63 +75,27 @@ body{
 
 <body>
 
-<div class="header">⚽ BallGenius | โปรแกรมบอลวันนี้</div>
-
-<!-- ===== PAGES ===== -->
-<div id="popular" class="page active">
-  <div class="card">
-    🔥 <b>ยอดนิยม</b><br>
-    คู่เด็ด / ลีกดัง / บอลคนดูเยอะ
-  </div>
+<!-- HEADER -->
+<div class="header">
+  QA <span>BallGenius</span>
 </div>
 
-<div id="live" class="page">
-  <div class="card">
-    🔴 <b>บอลสด</b><br>
-    (ขั้นต่อไปจะดึง API สด)
-  </div>
+<!-- CONTENT -->
+<div class="content">
+  พร้อมแก้เมนูถัดไป 👍
 </div>
 
-<div id="program" class="page">
-  <div class="card">
-    📅 <b>โปรแกรมบอล</b><br>
-    โปรแกรมแข่งวันนี้ / พรุ่งนี้
-  </div>
-</div>
-
-<div id="more" class="page">
-  <div class="card">
-    ⚙️ <b>เพิ่มเติม</b><br>
-    ตารางคะแนน / ไฮไลท์ / ตั้งค่า
-  </div>
-</div>
-
-<!-- ===== BOTTOM NAV ===== -->
-<div class="bottom-nav">
-  <div class="nav-item active" onclick="switchTab('popular',this)">
-    <span>🔥</span>ยอดนิยม
-  </div>
-  <div class="nav-item" onclick="switchTab('live',this)">
-    <span>🔴</span>สด
-  </div>
-  <div class="nav-item" onclick="switchTab('program',this)">
-    <span>📅</span>โปรแกรม
-  </div>
-  <div class="nav-item" onclick="switchTab('more',this)">
-    <span>⚙️</span>เพิ่มเติม
-  </div>
+<!-- BOTTOM TAB -->
+<div class="bottom-tab">
+  <div class="tab active">ยอดนิยม</div>
+  <div class="tab">สด</div>
+  <div class="tab">โปรแกรม</div>
+  <div class="tab">เพิ่มเติม</div>
 </div>
 
 <script>
-function switchTab(id, el){
-  document.querySelectorAll('.page')
-    .forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-
-  document.querySelectorAll('.nav-item')
-    .forEach(n=>n.classList.remove('active'));
-  el.classList.add('active');
-}
+const tg = window.Telegram.WebApp;
+tg.expand();
 </script>
 
 </body>
