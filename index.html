@@ -4,18 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
-
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 :root{
   --red:#e60000;
-  --white:#ffffff;
   --muted:#aaaaaa;
   --card:#161616;
 }
 
-/* ===== DARK MODE (🌙) ===== */
+/* ===== DARK (🌙) ===== */
 body{
   margin:0;
   font-family:sans-serif;
@@ -27,7 +25,7 @@ body{
   background-repeat:repeat;
 }
 
-/* ===== LIGHT MODE (☀️) ===== */
+/* ===== LIGHT (☀️) ===== */
 body.light{
   color:#000;
   background:
@@ -46,18 +44,14 @@ header{
   border-bottom:2px solid var(--red);
   background:rgba(0,0,0,.7);
 }
-body.light header{
-  background:rgba(255,255,255,.85);
-}
+body.light header{background:rgba(255,255,255,.85)}
 
 .logo{
   font-size:22px;
   font-weight:900;
 }
 .logo .qa{color:var(--red)}
-.logo .bg{color:inherit}
 
-/* ===== THEME TOGGLE ===== */
 .theme-btns button{
   background:none;
   border:1px solid var(--red);
@@ -67,7 +61,7 @@ body.light header{
   font-size:16px;
 }
 
-/* ===== LEAGUES (ขนาดเดิม) ===== */
+/* ===== LEAGUES ===== */
 .leagues{
   display:flex;
   gap:10px;
@@ -84,12 +78,10 @@ body.light header{
   align-items:center;
   justify-content:center;
 }
-body.light .league{
-  background:#fff;
-}
+body.light .league{background:#fff}
 .league img{
-  width:56px;
-  height:56px;
+  width:44px;   /* ขนาดเดิม */
+  height:44px;  /* ขนาดเดิม */
   background:#fff;
   padding:4px;
   border-radius:6px;
@@ -103,9 +95,7 @@ body.light .league{
   border:2px solid var(--red);
   background:rgba(0,0,0,.8);
 }
-body.light .hot-card{
-  background:#fff;
-}
+body.light .hot-card{background:#fff}
 .hot-top{
   display:flex;
   justify-content:space-between;
@@ -129,8 +119,8 @@ body.light .hot-card{
   text-align:center;
 }
 .hot-team img{
-  width:48px;
-  height:48px;
+  width:42px;   /* ขนาดเดิม */
+  height:42px;  /* ขนาดเดิม */
   background:#fff;
   padding:4px;
   border-radius:6px;
@@ -144,16 +134,12 @@ body.light .hot-card{
 /* ===== BOTTOM ===== */
 .bottom{
   position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
+  bottom:0; left:0; right:0;
   display:flex;
   border-top:2px solid var(--red);
   background:rgba(0,0,0,.9);
 }
-body.light .bottom{
-  background:#fff;
-}
+body.light .bottom{background:#fff}
 .tab{
   flex:1;
   padding:10px;
@@ -179,10 +165,10 @@ body.light .bottom{
 
 <header>
   <div class="logo">
-    <span class="qa">QA</span> <span class="bg">BallGenius</span>
+    <span class="qa">QA</span> BallGenius
   </div>
   <div class="theme-btns">
-    <button onclick="setTheme()" id="themeIcon">🌙</button>
+    <button id="themeIcon" onclick="toggleTheme()">🌙</button>
   </div>
 </header>
 
@@ -218,11 +204,10 @@ body.light .bottom{
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
-
-function setTheme(){
+function toggleTheme(){
   document.body.classList.toggle('light');
-  const icon = document.getElementById('themeIcon');
-  icon.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
+  document.getElementById('themeIcon').textContent =
+    document.body.classList.contains('light') ? '☀️' : '🌙';
 }
 </script>
 
