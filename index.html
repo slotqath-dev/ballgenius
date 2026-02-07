@@ -8,7 +8,6 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-/* ===== THEME ===== */
 :root{
   --bg:#0b0000;
   --card:#120000;
@@ -26,48 +25,35 @@ body.light{
   --border:#ddd;
 }
 
-*{
-  box-sizing:border-box;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
-}
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 
 body{
   margin:0;
   background:var(--bg);
   color:var(--text);
-  padding-bottom:70px;
+  padding-bottom:80px;
   transition:.3s;
 }
 
 /* ===== HEADER ===== */
 .header{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   padding:14px;
   border-bottom:2px solid var(--red);
   background:linear-gradient(180deg,#1a0000,#000);
 }
 
-body.light .header{
-  background:#fff;
-}
+body.light .header{background:#fff}
 
 .title{
   font-size:22px;
   font-weight:900;
 }
-
 .title .qa{color:#fff}
 body.light .title .qa{color:#000}
-
 .title .brand{color:var(--red)}
-
-/* ===== TOGGLE ===== */
-.theme-toggle{
-  display:flex;
-  gap:8px;
-}
 
 .theme-toggle button{
   border:none;
@@ -77,14 +63,50 @@ body.light .title .qa{color:#000}
   width:34px;
   height:34px;
   border-radius:50%;
-  cursor:pointer;
+  margin-left:6px;
 }
 
 /* ===== CONTENT ===== */
-.content{
-  padding:20px;
+.content{padding:14px}
+
+/* ===== LEAGUE SCROLL (NEW) ===== */
+.league-row{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  padding:12px 4px;
+  margin-bottom:16px;
+}
+
+.league-row::-webkit-scrollbar{display:none}
+
+.league-item{
+  min-width:72px;
+  background:var(--card);
+  border:2px solid var(--border);
+  border-radius:14px;
+  padding:10px 6px;
+  text-align:center;
+  font-size:11px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.league-item.active{
+  border-color:var(--red);
+  color:var(--red);
+}
+
+.league-icon{
+  font-size:22px;
+  margin-bottom:6px;
+}
+
+/* ===== PLACEHOLDER ===== */
+.placeholder{
   text-align:center;
   color:var(--muted);
+  padding:40px 10px;
 }
 
 /* ===== BOTTOM NAV ===== */
@@ -93,7 +115,7 @@ body.light .title .qa{color:#000}
   bottom:0;
   left:0;
   right:0;
-  height:70px;
+  height:72px;
   background:var(--card);
   border-top:2px solid var(--border);
   display:flex;
@@ -125,21 +147,52 @@ body.light .title .qa{color:#000}
 <!-- HEADER -->
 <div class="header">
   <div class="title">
-    <span class="qa">QA</span>
-    <span class="brand"> BallGenius</span>
+    <span class="qa">QA</span><span class="brand"> BallGenius</span>
   </div>
-
   <div class="theme-toggle">
     <button onclick="setTheme('dark')">🌙</button>
     <button onclick="setTheme('light')">☀️</button>
   </div>
 </div>
 
+<!-- CONTENT (POPULAR TAB ONLY) -->
 <div class="content">
-  โหมดขาว / ดำ พร้อมใช้งาน ✔
+
+  <!-- LEAGUE SCROLL -->
+  <div class="league-row">
+    <div class="league-item active">
+      <div class="league-icon">⭐</div>ทั้งหมด
+    </div>
+    <div class="league-item">
+      <div class="league-icon">🏴</div>พรีเมียร์ลีก
+    </div>
+    <div class="league-item">
+      <div class="league-icon">🇪🇸</div>ลาลีกา
+    </div>
+    <div class="league-item">
+      <div class="league-icon">🇩🇪</div>บุนเดส
+    </div>
+    <div class="league-item">
+      <div class="league-icon">🇮🇹</div>เซเรีย A
+    </div>
+    <div class="league-item">
+      <div class="league-icon">🇫🇷</div>ลีกเอิง
+    </div>
+    <div class="league-item">
+      <div class="league-icon">🇯🇵</div>J-League
+    </div>
+    <div class="league-item">
+      <div class="league-icon">🇹🇭</div>ไทยลีก
+    </div>
+  </div>
+
+  <div class="placeholder">
+    เลือกลีกด้านบนเพื่อดูคู่แข่งขัน
+  </div>
+
 </div>
 
-<!-- BOTTOM MENU -->
+<!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <div class="nav-item active"><span>🔥</span>ยอดนิยม</div>
   <div class="nav-item"><span>🔴</span>สด</div>
@@ -150,9 +203,9 @@ body.light .title .qa{color:#000}
 <script>
 Telegram.WebApp.expand();
 
-/* ===== THEME LOGIC ===== */
+/* theme */
 function setTheme(mode){
-  if(mode === 'light'){
+  if(mode==='light'){
     document.body.classList.add('light');
     localStorage.setItem('theme','light');
   }else{
@@ -160,11 +213,15 @@ function setTheme(mode){
     localStorage.setItem('theme','dark');
   }
 }
+if(localStorage.getItem('theme')==='light') setTheme('light');
 
-/* load saved theme */
-if(localStorage.getItem('theme') === 'light'){
-  setTheme('light');
-}
+/* league select (UI only) */
+document.querySelectorAll('.league-item').forEach(item=>{
+  item.onclick=()=>{
+    document.querySelectorAll('.league-item').forEach(i=>i.classList.remove('active'));
+    item.classList.add('active');
+  }
+});
 </script>
 
 </body>
