@@ -7,12 +7,12 @@
 
 <style>
 :root{
-  --bg:#120018;
-  --card:#1d0826;
-  --accent:#ffcc33;
-  --accent2:#ff2f6d;
+  --bg:#0b000f;
+  --card:#1a061f;
+  --red:#ff0033;
+  --red-dark:#b80024;
   --text:#ffffff;
-  --muted:#b9a6c7;
+  --muted:#9b8ca8;
 }
 
 *{
@@ -22,8 +22,9 @@
 
 body{
   margin:0;
-  background:linear-gradient(180deg,#1a001f,#09000d);
+  background:linear-gradient(180deg,#140018,#050007);
   color:var(--text);
+  padding-bottom:90px;
 }
 
 /* HEADER */
@@ -32,72 +33,59 @@ body{
   text-align:center;
   font-weight:800;
   font-size:18px;
-  border-bottom:2px solid #ff0033;
+  border-bottom:2px solid var(--red);
 }
 
-/* ===== LEAGUE SCROLL ===== */
-.league-scroll{
-  position:relative;
-  padding:14px 0;
-  overflow-x:auto;
-  overflow-y:hidden;
-  -webkit-overflow-scrolling:touch;
-}
-
-/* ซ่อน scrollbar แต่ยังเลื่อน */
-.league-scroll::-webkit-scrollbar{
+/* CONTENT */
+.page{
   display:none;
+  padding:18px;
 }
 
-.league-list{
-  display:flex;
-  gap:12px;
-  padding:0 14px;
-  width:max-content;
+.page.active{
+  display:block;
 }
 
-/* เอฟเฟกต์บอกว่ามีให้เลื่อน */
-.league-scroll:after{
-  content:"";
-  position:absolute;
-  right:0;
-  top:0;
-  width:30px;
-  height:100%;
-  pointer-events:none;
-  background:linear-gradient(270deg,#09000d,transparent);
-}
-
-/* ลีกแต่ละอัน */
-.league{
-  min-width:90px;
-  padding:12px 10px;
+.card{
   background:var(--card);
-  border-radius:16px;
-  border:2px solid #3a0f4a;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:14px;
+  border:1px solid #2c0b35;
+}
+
+/* ===== BOTTOM MENU ===== */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:linear-gradient(180deg,#1a061f,#0b000f);
+  border-top:2px solid var(--red);
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0 12px;
+  z-index:100;
+}
+
+.nav-item{
+  flex:1;
   text-align:center;
+  color:var(--muted);
   font-size:12px;
   cursor:pointer;
   transition:.25s;
-  user-select:none;
 }
 
-.league img{
-  width:32px;
-  height:32px;
+.nav-item span{
   display:block;
-  margin:0 auto 6px;
+  font-size:20px;
+  margin-bottom:4px;
 }
 
-.league span{
+.nav-item.active{
+  color:var(--red);
   font-weight:700;
-}
-
-/* active */
-.league.active{
-  border-color:var(--accent);
-  background:linear-gradient(180deg,#2a0a36,#14001c);
-  box-shadow:0 0 0 2px rgba(255,204,51,.25);
 }
 </style>
 </head>
@@ -106,61 +94,60 @@ body{
 
 <div class="header">⚽ BallGenius | โปรแกรมบอลวันนี้</div>
 
-<!-- เมนูลีก (เลื่อนได้) -->
-<div class="league-scroll">
-  <div class="league-list">
+<!-- ===== PAGES ===== -->
+<div id="popular" class="page active">
+  <div class="card">
+    🔥 <b>ยอดนิยม</b><br>
+    คู่เด็ด / ลีกดัง / บอลคนดูเยอะ
+  </div>
+</div>
 
-    <div class="league active" onclick="selectLeague(this,'all')">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Football_%28soccer_ball%29.svg">
-      <span>ทั้งหมด</span>
-    </div>
+<div id="live" class="page">
+  <div class="card">
+    🔴 <b>บอลสด</b><br>
+    (ขั้นต่อไปจะดึง API สด)
+  </div>
+</div>
 
-    <div class="league" onclick="selectLeague(this,'premier')">
-      <img src="https://media.api-sports.io/football/leagues/39.png">
-      <span>พรีเมียร์ลีก</span>
-    </div>
+<div id="program" class="page">
+  <div class="card">
+    📅 <b>โปรแกรมบอล</b><br>
+    โปรแกรมแข่งวันนี้ / พรุ่งนี้
+  </div>
+</div>
 
-    <div class="league" onclick="selectLeague(this,'laliga')">
-      <img src="https://media.api-sports.io/football/leagues/140.png">
-      <span>ลาลีกา</span>
-    </div>
+<div id="more" class="page">
+  <div class="card">
+    ⚙️ <b>เพิ่มเติม</b><br>
+    ตารางคะแนน / ไฮไลท์ / ตั้งค่า
+  </div>
+</div>
 
-    <div class="league" onclick="selectLeague(this,'bundesliga')">
-      <img src="https://media.api-sports.io/football/leagues/78.png">
-      <span>บุนเดสลีกา</span>
-    </div>
-
-    <div class="league" onclick="selectLeague(this,'seriea')">
-      <img src="https://media.api-sports.io/football/leagues/135.png">
-      <span>เซเรียอา</span>
-    </div>
-
-    <div class="league" onclick="selectLeague(this,'ligue1')">
-      <img src="https://media.api-sports.io/football/leagues/61.png">
-      <span>ลีกเอิง</span>
-    </div>
-
-    <div class="league" onclick="selectLeague(this,'ucl')">
-      <img src="https://media.api-sports.io/football/leagues/2.png">
-      <span>UCL</span>
-    </div>
-
-    <div class="league" onclick="selectLeague(this,'uel')">
-      <img src="https://media.api-sports.io/football/leagues/3.png">
-      <span>UEL</span>
-    </div>
-
+<!-- ===== BOTTOM NAV ===== -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="switchTab('popular',this)">
+    <span>🔥</span>ยอดนิยม
+  </div>
+  <div class="nav-item" onclick="switchTab('live',this)">
+    <span>🔴</span>สด
+  </div>
+  <div class="nav-item" onclick="switchTab('program',this)">
+    <span>📅</span>โปรแกรม
+  </div>
+  <div class="nav-item" onclick="switchTab('more',this)">
+    <span>⚙️</span>เพิ่มเติม
   </div>
 </div>
 
 <script>
-function selectLeague(el, league){
-  document.querySelectorAll('.league')
-    .forEach(l=>l.classList.remove('active'));
-  el.classList.add('active');
+function switchTab(id, el){
+  document.querySelectorAll('.page')
+    .forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 
-  console.log("เลือกลีก:", league);
-  // ขั้นถัดไป: เอา league ไป filter โปรแกรมบอล
+  document.querySelectorAll('.nav-item')
+    .forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
 }
 </script>
 
