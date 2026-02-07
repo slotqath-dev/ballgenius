@@ -9,54 +9,60 @@
 
 <style>
 :root{
-  --bg:#0b0b0b;
-  --card:#161616;
   --red:#e60000;
   --white:#ffffff;
   --muted:#aaaaaa;
-}
-.light{
-  --bg:#f4f4f4;
-  --card:#ffffff;
-  --white:#000000;
-  --muted:#555;
+  --card:#161616;
 }
 
-*{box-sizing:border-box;font-family:sans-serif}
+/* ===== DARK MODE ===== */
 body{
   margin:0;
-  color:var(--white);
+  font-family:sans-serif;
+  color:#fff;
   background:
-    linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.85)),
-    url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1600&q=80");
-  background-size:cover;
-  background-position:center;
+    linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.9)),
+    url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80");
+  background-size:700px auto;
+  background-repeat:repeat;
 }
 
-/* ===== HEADER ===== */
+/* ===== LIGHT MODE ===== */
+body.light{
+  color:#000;
+  background:
+    linear-gradient(rgba(255,255,255,.85),rgba(255,255,255,.95)),
+    url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80");
+  background-size:700px auto;
+  background-repeat:repeat;
+}
+
 header{
   padding:14px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:rgba(0,0,0,.8);
   border-bottom:2px solid var(--red);
+  background:rgba(0,0,0,.7);
 }
+body.light header{
+  background:rgba(255,255,255,.85);
+}
+
 .logo{
-  font-weight:900;
   font-size:22px;
+  font-weight:900;
 }
 .logo .qa{color:var(--red)}
-.logo .bg{color:var(--white)}
+.logo .bg{color:inherit}
 
 .theme-btns button{
-  background:#111;
+  background:none;
   border:1px solid var(--red);
-  color:#fff;
-  margin-left:6px;
   padding:6px 10px;
   border-radius:8px;
   cursor:pointer;
+  font-size:14px;
 }
 
 /* ===== LEAGUES ===== */
@@ -70,30 +76,33 @@ header{
   min-width:80px;
   height:80px;
   background:var(--card);
-  border-radius:14px;
-  padding:8px;
-  text-align:center;
   border:2px solid var(--red);
-  cursor:pointer;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-.league.active{
-  box-shadow:0 0 10px rgba(230,0,0,.6);
+body.light .league{
+  background:#fff;
 }
 .league img{
   width:56px;
   height:56px;
   background:#fff;
-  border-radius:6px;
   padding:4px;
+  border-radius:6px;
 }
 
 /* ===== HOT CARD ===== */
 .hot-card{
   margin:14px;
-  background:rgba(20,20,20,.85);
-  border:2px solid var(--red);
-  border-radius:18px;
   padding:14px;
+  border-radius:18px;
+  border:2px solid var(--red);
+  background:rgba(0,0,0,.8);
+}
+body.light .hot-card{
+  background:#fff;
 }
 .hot-top{
   display:flex;
@@ -121,8 +130,8 @@ header{
   width:48px;
   height:48px;
   background:#fff;
-  border-radius:6px;
   padding:4px;
+  border-radius:6px;
 }
 .hot-score{
   font-size:20px;
@@ -136,13 +145,16 @@ header{
   bottom:0;
   left:0;
   right:0;
-  background:rgba(0,0,0,.9);
-  border-top:2px solid var(--red);
   display:flex;
+  border-top:2px solid var(--red);
+  background:rgba(0,0,0,.9);
+}
+body.light .bottom{
+  background:#fff;
 }
 .tab{
   flex:1;
-  padding:10px 0;
+  padding:10px;
   text-align:center;
   font-size:12px;
   color:var(--muted);
@@ -156,7 +168,7 @@ header{
   text-align:center;
   font-size:11px;
   color:var(--muted);
-  margin:10px 0 80px;
+  margin:12px 0 80px;
 }
 </style>
 </head>
@@ -168,25 +180,22 @@ header{
     <span class="qa">QA</span> <span class="bg">BallGenius</span>
   </div>
   <div class="theme-btns">
-    <button onclick="setTheme('dark')">🌙</button>
-    <button onclick="setTheme('light')">☀️</button>
+    <button onclick="setTheme()">ดำ / ขาว</button>
   </div>
 </header>
 
-<!-- LEAGUES (เหมือนเดิม ครบ) -->
 <div class="leagues">
-  <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
 </div>
 
-<!-- HOT -->
 <div class="hot-card">
   <div class="hot-top">
-    <div><span class="hot-badge">HOT</span> พรีเมียร์ลีก</div>
-    <div>วันนี้</div>
+    <div><span class="hot-badge">HOT</span> โปรแกรมวันนี้</div>
+    <div>Today</div>
   </div>
   <div class="hot-teams">
     <div class="hot-team"><img src="https://media.api-sports.io/football/teams/33.png"></div>
@@ -207,8 +216,9 @@ header{
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
-function setTheme(mode){
-  document.body.className = mode === 'light' ? 'light' : '';
+
+function setTheme(){
+  document.body.classList.toggle('light');
 }
 </script>
 
