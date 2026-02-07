@@ -22,10 +22,32 @@ body{
   border-bottom:2px solid red;
 }
 
+/* TABS LEAGUE */
+.tabs{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:10px;
+}
+.tabs button{
+  background:#222;
+  color:#fff;
+  border:none;
+  padding:8px 14px;
+  border-radius:20px;
+  cursor:pointer;
+  white-space:nowrap;
+  opacity:.6;
+}
+.tabs button.active{
+  background:red;
+  opacity:1;
+}
+
 /* CONTENT */
 .page{
   display:none;
-  padding:12px;
+  padding:10px;
   padding-bottom:90px;
 }
 .page.active{display:block}
@@ -50,14 +72,15 @@ body{
 .team{
   width:40%;
   text-align:center;
+  font-size:13px;
 }
 .team img{
-  width:48px;
-  height:48px;
+  width:44px;
+  height:44px;
   object-fit:contain;
 }
 .score{
-  font-size:18px;
+  font-size:16px;
   font-weight:bold;
   color:#ff3b3b;
 }
@@ -67,8 +90,6 @@ body{
   color:#aaa;
   margin-top:6px;
 }
-
-/* BUTTON */
 .btn{
   margin-top:10px;
   background:linear-gradient(135deg,#ff004c,#ff7a00);
@@ -108,31 +129,15 @@ body{
 
 <div class="header">⚽ BallGenius | โปรแกรมบอลวันนี้</div>
 
-<!-- วันนี้ -->
-<div class="page active" id="today">
-  กำลังโหลดข้อมูล...
-</div>
+<div class="tabs" id="leagueTabs"></div>
 
-<!-- สด -->
-<div class="page" id="live">
-  ⚠ API ฟรีไม่มี Live นาทีต่อนาที<br>ใช้ดูผล + ไฮไลท์ย้อนหลัง
-</div>
+<div class="page active" id="today">กำลังโหลดข้อมูล...</div>
+<div class="page" id="live">API ฟรี ไม่มี Live นาทีต่อนาที</div>
+<div class="page" id="more">@BallGeniusBot</div>
 
-<!-- ลีก -->
-<div class="page" id="league">
-  พรีเมียร์ลีก / ลาลีกา / บุนเดส / ลีกอื่นๆ (ต่อเพิ่มได้)
-</div>
-
-<!-- เพิ่ม -->
-<div class="page" id="more">
-  BallGenius<br>@BallGeniusBot
-</div>
-
-<!-- NAV -->
 <div class="nav">
   <div class="active" onclick="showPage('today',this)">🔥 วันนี้</div>
   <div onclick="showPage('live',this)">📺 สด</div>
-  <div onclick="showPage('league',this)">🏆 ลีก</div>
   <div onclick="showPage('more',this)">⚙ เพิ่ม</div>
 </div>
 
@@ -144,25 +149,53 @@ function showPage(id,el){
   el.classList.add('active');
 }
 
-/* LOAD MATCH */
-fetch("https://www.scorebat.com/video-api/v3/")
-.then(r=>r.json())
-.then(data=>{
+const leagues = {
+  "ทั้งหมด":()=>true,
+  "พรีเมียร์ลีก":c=>c.includes("Premier League"),
+  "ลาลีกา":c=>c.includes("La Liga"),
+  "บุนเดสลีกา":c=>c.includes("Bundesliga"),
+  "เซเรีย อา":c=>c.includes("Serie A"),
+  "ลีกอื่น":c=>!(
+    c.includes("Premier League")||
+    c.includes("La Liga")||
+    c.includes("Bundesliga")||
+    c.includes("Serie A")
+  )
+};
+
+let matches=[];
+
+function renderTabs(){
+  const t=document.getElementById("leagueTabs");
+  Object.keys(leagues).forEach((l,i)=>{
+    const b=document.createElement("button");
+    b.textContent=l;
+    if(i==0) b.classList.add("active");
+    b.onclick=()=>{
+      document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
+      b.classList.add("active");
+      renderMatches(l);
+    };
+    t.appendChild(b);
+  });
+}
+
+function renderMatches(league){
   const box=document.getElementById("today");
   box.innerHTML="";
-  data.response.slice(0,20).forEach(m=>{
+  matches.filter(m=>leagues[league](m.competition)).forEach(m=>{
     box.innerHTML+=`
     <div class="match">
       <div class="league">${m.competition}</div>
       <div class="teams">
         <div class="team">
           <img src="${m.thumbnail}">
-          <div>${m.title.split(" - ")[0]}</div>
+          ${m.title.split(" - ")[0]}
         </div>
         <div class="score">VS</div>
         <div class="team">
           <img src="${m.thumbnail}">
-          <div>${m.title.split(" - ")[1]}</div>
+          ${m.title.split(" - ")[1]}
         </div>
       </div>
       <div class="time">${new Date(m.date).toLocaleString("th-TH")}</div>
@@ -171,6 +204,14 @@ fetch("https://www.scorebat.com/video-api/v3/")
       </div>
     </div>`;
   });
+}
+
+fetch("https://www.scorebat.com/video-api/v3/")
+.then(r=>r.json())
+.then(d=>{
+  matches=d.response;
+  renderTabs();
+  renderMatches("ทั้งหมด");
 })
 .catch(()=>{
   document.getElementById("today").innerHTML="โหลดข้อมูลไม่ได้ (API)";
