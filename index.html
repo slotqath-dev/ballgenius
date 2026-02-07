@@ -11,23 +11,27 @@
 body{
   margin:0;
   transition:.3s;
+  background-repeat:no-repeat;
+  background-position:center;
 }
 
-/* ===== THEME ===== */
+/* ===== DARK MODE : สนามบอล (เห็นห่าง) ===== */
 body.dark{
-  background:
-    linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.9)),
+  background-color:#000;
+  background-image:
+    linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.85)),
     url('https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d');
-  background-size:cover;
-  background-position:center;
+  background-size:contain;
   color:#fff;
 }
+
+/* ===== LIGHT MODE : ถ้วยรางวัล (เห็นเต็ม) ===== */
 body.light{
-  background:
+  background-color:#f5f5f5;
+  background-image:
     linear-gradient(rgba(255,255,255,.85),rgba(255,255,255,.95)),
-    url('https://images.unsplash.com/photo-1606925797300-0b35e9d1794e');
-  background-size:cover;
-  background-position:center;
+    url('https://images.unsplash.com/photo-1546519638-68e109498ffc');
+  background-size:contain;
   color:#111;
 }
 
@@ -38,26 +42,28 @@ body.light{
   align-items:center;
   padding:16px 20px;
 }
+
 .logo-text{
   font-size:28px;
   font-weight:800;
 }
-.logo-text span.qa{color:#d60000}
+.logo-text .qa{color:#d60000}
 
-/* ===== MODE TOGGLE ===== */
+/* ===== TOGGLE ===== */
 .toggle{
   font-size:26px;
   cursor:pointer;
   user-select:none;
 }
 
-/* ===== LEAGUES ===== */
+/* ===== CONTENT ===== */
 .container{
   max-width:1100px;
   margin:auto;
-  padding:10px 18px 30px;
+  padding:20px;
 }
 
+/* ===== LEAGUES ===== */
 .leagues{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(72px,1fr));
@@ -77,7 +83,7 @@ body.light{
 }
 
 body.light .league{
-  background:rgba(255,255,255,.8);
+  background:rgba(255,255,255,.85);
 }
 
 .league.active{
@@ -93,7 +99,6 @@ body.light .league{
   background:#fff;
   padding:4px;
   border-radius:10px;
-  box-shadow:0 0 0 1px rgba(0,0,0,.15);
 }
 </style>
 </head>
@@ -112,27 +117,16 @@ body.light .league{
 </div>
 
 <script>
-const leagues = [
-  {logo:'https://media.api-sports.io/football/leagues/39.png'}, // EPL
-  {logo:'https://media.api-sports.io/football/leagues/140.png'}, // LaLiga
-  {logo:'https://media.api-sports.io/football/leagues/135.png'}, // Serie A
-  {logo:'https://media.api-sports.io/football/leagues/78.png'}, // Bundesliga
-  {logo:'https://media.api-sports.io/football/leagues/61.png'}, // Ligue 1
-  {logo:'https://media.api-sports.io/football/leagues/2.png'}, // UCL
-  {logo:'https://media.api-sports.io/football/leagues/3.png'}, // UEL
-  {logo:'https://media.api-sports.io/football/leagues/88.png'}, // Eredivisie
-  {logo:'https://media.api-sports.io/football/leagues/94.png'}, // Primeira
-  {logo:'https://media.api-sports.io/football/leagues/203.png'}, // Turkey
-  {logo:'https://media.api-sports.io/football/leagues/307.png'}, // Saudi
-  {logo:'https://media.api-sports.io/football/leagues/292.png'}, // MLS
+const leagues=[
+  39,140,135,78,61,2,3,88,94,203,307,292
 ];
 
-const box = document.getElementById('leagues');
+const box=document.getElementById('leagues');
 
-leagues.forEach(l=>{
+leagues.forEach(id=>{
   const d=document.createElement('div');
   d.className='league';
-  d.innerHTML=`<img src="${l.logo}">`;
+  d.innerHTML=`<img src="https://media.api-sports.io/football/leagues/${id}.png">`;
   d.onclick=()=>{
     document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
     d.classList.add('active');
