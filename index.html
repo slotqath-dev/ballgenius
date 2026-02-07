@@ -173,60 +173,44 @@ header{
   <div class="league"><img src="https://media.api-sports.io/football/leagues/1.png"><div>โลก</div></div>
 </div>
 
-<!-- CONTENT -->
-<div class="content">
-  <div class="match">
-    <div class="league-name">HOT MATCH</div>
-    <div class="teams">
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/33.png">
-        <div>แมนยู</div>
+<div class="container">
+
+  <!-- ===== โปรแกรมบอลวันนี้ ===== -->
+  <section class="today-match">
+    <div class="today-header">
+      <h2>โปรแกรมบอลวันนี้</h2>
+      <button>ดูทั้งหมด</button>
+    </div>
+
+    <div class="match-card">
+      <div class="match-top">
+        <div class="badge-hot">🔥 HOT</div>
+        <div class="league-name">อังกฤษ พรีเมียร์ลีก</div>
+        <div class="match-time">วันนี้ 19:30</div>
       </div>
-      <div class="score">0 : 0</div>
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/50.png">
-        <div>แมนซิตี้</div>
+
+      <div class="teams">
+        <div class="team">
+          <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg">
+          <span>แมนเชสเตอร์ ยูไนเต็ด</span>
+        </div>
+
+        <div class="score">
+          <div>0</div>
+          <strong>VS</strong>
+          <div>0</div>
+        </div>
+
+        <div class="team">
+          <img src="https://upload.wikimedia.org/wikipedia/en/b/b4/Tottenham_Hotspur.svg">
+          <span>ท็อตแน่ม ฮ็อทสเปอร์</span>
+        </div>
       </div>
+
+      <button class="watch-btn">คลิกเพื่อรับชมถ่ายทอดสด</button>
     </div>
-  </div>
+  </section>
+
 </div>
-
-<!-- BOTTOM MENU -->
-<div class="bottom">
-  <div class="tab active">ยอดนิยม</div>
-  <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
-</div>
-
-<div class="footer">@BallGeniusBot</div>
-</div> 
-  <!-- ===== PROGRAM TODAY (เสริม) ===== -->
-<div class="match today">
-  <div class="league-name">โปรแกรมบอลวันนี้</div>
-
-  <div class="teams">
-    <div class="team">
-      <img src="https://media.api-sports.io/football/teams/33.png">
-      <div>แมนยู</div>
-    </div>
-
-    <div class="score">0 : 0</div>
-
-    <div class="team">
-      <img src="https://media.api-sports.io/football/teams/50.png">
-      <div>สเปอร์ส</div>
-    </div>
-  </div>
-</div>
-
-<script>
-Telegram.WebApp.ready();
-
-function setTheme(mode){
-  document.body.className = mode === 'light' ? 'light' : '';
-}
-</script>
-
 </body>
-</html> 
+</html>
