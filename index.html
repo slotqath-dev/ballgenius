@@ -28,7 +28,6 @@ body{
 header{
   padding:14px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
   background:linear-gradient(180deg,#300,#000);
   border-bottom:2px solid var(--red);
@@ -39,20 +38,19 @@ header{
   color:#fff;
 }
 
-/* ===== LEAGUE SCROLL ===== */
+/* ===== LEAGUE LOGO BAR ===== */
 .leagues{
   display:flex;
-  gap:12px;
+  gap:14px;
   padding:14px;
   overflow-x:auto;
 }
 .league{
-  min-width:84px;
-  height:84px;
+  min-width:76px;
+  height:76px;
   background:var(--card);
-  border-radius:16px;
+  border-radius:18px;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
   border:2px solid #222;
@@ -63,14 +61,10 @@ header{
   border-color:var(--accent);
 }
 .league img{
-  width:56px;
-  height:56px;
+  width:52px;
+  height:52px;
   object-fit:contain;
-}
-.league div{
-  font-size:11px;
-  margin-top:4px;
-  color:#fff;
+  filter:drop-shadow(0 0 2px #000);
 }
 
 /* ===== HOT CARD ===== */
@@ -88,12 +82,11 @@ header{
   margin-bottom:10px;
 }
 .hot-badge{
-  color:#000;
   background:var(--accent);
+  color:#000;
   padding:2px 8px;
   border-radius:10px;
   font-weight:700;
-  margin-right:6px;
 }
 .hot-teams{
   display:flex;
@@ -105,8 +98,8 @@ header{
   text-align:center;
 }
 .hot-team img{
-  width:48px;
-  height:48px;
+  width:46px;
+  height:46px;
 }
 .hot-score{
   font-size:20px;
@@ -123,7 +116,7 @@ header{
   font-weight:700;
 }
 
-/* ===== BOTTOM TAB ===== */
+/* ===== BOTTOM ===== */
 .bottom{
   position:fixed;
   bottom:0;
@@ -159,21 +152,21 @@ header{
   <div class="logo">QA BallGenius</div>
 </header>
 
-<!-- LEAGUES -->
-<div class="leagues" id="leagueBar">
-  <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"><div>พรีเมียร์ลีก</div></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"><div>ลาลีกา</div></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"><div>บุนเดส</div></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"><div>เซเรียอา</div></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"><div>ลีกเอิง</div></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/2.png"><div>UCL</div></div>
+<!-- LEAGUE LOGOS (ไม่มีชื่อ) -->
+<div class="leagues">
+  <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/2.png"></div>
 </div>
 
 <!-- HOT MATCH -->
 <div class="hot-card">
   <div class="hot-top">
-    <div><span class="hot-badge">HOT</span>พรีเมียร์ลีก</div>
-    <div>วันนี้ 19:30</div>
+    <div><span class="hot-badge">HOT</span> โปรแกรมวันนี้</div>
+    <div>19:30</div>
   </div>
 
   <div class="hot-teams">
@@ -193,7 +186,6 @@ header{
   <div class="hot-btn">ดูรายละเอียด</div>
 </div>
 
-<!-- BOTTOM -->
 <div class="bottom">
   <div class="tab active">ยอดนิยม</div>
   <div class="tab">สด</div>
@@ -207,7 +199,6 @@ header{
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* click league */
 document.querySelectorAll('.league').forEach(l=>{
   l.onclick=()=>{
     document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
