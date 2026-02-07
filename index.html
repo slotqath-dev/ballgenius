@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>League Logos</title>
+<title>League Bar</title>
 
 <style>
 *{box-sizing:border-box;font-family:sans-serif}
@@ -13,33 +13,30 @@ body{
   background:linear-gradient(180deg,#140000,#050505,#000);
 }
 
-/* ===== LEAGUE BAR ===== */
 .league-bar{
   display:flex;
   gap:14px;
-  overflow-x:auto;
 }
-.league-bar::-webkit-scrollbar{display:none}
 
-.league-item{
-  width:64px;
-  height:64px;
+.league{
+  width:62px;
+  height:62px;
   border-radius:14px;
-  background:#2a1240;
+  background:#2b1342;
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-/* active */
-.league-item.active{
+.league.active{
   background:#f5b400;
+  color:#000;
+  font-weight:700;
 }
 
-/* svg size */
-.league-item svg{
-  width:36px;
-  height:36px;
+.league svg{
+  width:34px;
+  height:34px;
 }
 </style>
 </head>
@@ -49,46 +46,45 @@ body{
 <div class="league-bar">
 
   <!-- ALL -->
-  <div class="league-item active">
-    <span style="font-weight:700">ทั้งหมด</span>
-  </div>
+  <div class="league active">ทั้งหมด</div>
 
   <!-- PREMIER LEAGUE -->
-  <div class="league-item">
-    <svg viewBox="0 0 100 100" fill="#3b1c5a">
-      <path d="M50 5l20 10-5 15 10 20-15 10-10 20-10-20-15-10 10-20-5-15z"/>
+  <div class="league">
+    <svg viewBox="0 0 64 64">
+      <path fill="#ffffff" d="M32 6l12 8-4 12 6 12-10 6-4 14-4-14-10-6 6-12-4-12z"/>
     </svg>
   </div>
 
   <!-- LALIGA -->
-  <div class="league-item">
-    <svg viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="45" fill="#fff"/>
-      <text x="50" y="58" font-size="32" text-anchor="middle" fill="#ff2d2d">L</text>
+  <div class="league">
+    <svg viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="26" fill="#ffffff"/>
+      <circle cx="32" cy="32" r="16" fill="#ff2d2d"/>
     </svg>
   </div>
 
   <!-- BUNDESLIGA -->
-  <div class="league-item">
-    <svg viewBox="0 0 100 100">
-      <rect width="100" height="100" rx="18" fill="#e00000"/>
-      <circle cx="55" cy="40" r="12" fill="#fff"/>
-      <path d="M30 70l40-20" stroke="#fff" stroke-width="10"/>
+  <div class="league">
+    <svg viewBox="0 0 64 64">
+      <rect width="64" height="64" rx="14" fill="#e00000"/>
+      <path d="M20 42l18-10" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="38" cy="26" r="6" fill="#fff"/>
     </svg>
   </div>
 
   <!-- SERIE A -->
-  <div class="league-item">
-    <svg viewBox="0 0 100 100">
-      <polygon points="50,10 90,90 10,90" fill="#1ea5ff"/>
+  <div class="league">
+    <svg viewBox="0 0 64 64">
+      <polygon points="32,6 56,54 8,54" fill="#1ea5ff"/>
     </svg>
   </div>
 
   <!-- LIGUE 1 -->
-  <div class="league-item">
-    <svg viewBox="0 0 100 100">
-      <rect width="100" height="100" rx="18" fill="#fff"/>
-      <text x="50" y="60" font-size="32" text-anchor="middle" fill="#111">L1</text>
+  <div class="league">
+    <svg viewBox="0 0 64 64">
+      <rect width="64" height="64" rx="14" fill="#ffffff"/>
+      <text x="32" y="42" font-size="26" font-weight="700"
+            text-anchor="middle" fill="#111">L1</text>
     </svg>
   </div>
 
