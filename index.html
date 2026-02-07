@@ -1,148 +1,124 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BallGenius</title>
 
-<!-- Telegram Mini App -->
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
 <style>
-*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
 body{
   margin:0;
-  background:radial-gradient(circle at top,#2a0000,#000);
+  background:linear-gradient(180deg,#120000,#000);
   color:#fff;
+  font-family:sans-serif;
 }
-header{
+.header{
   padding:14px;
   text-align:center;
-  font-weight:700;
-  border-bottom:2px solid #b30000;
+  font-weight:bold;
+  border-bottom:2px solid red;
 }
-.container{padding:14px;padding-bottom:90px}
+.list{
+  padding:12px;
+  padding-bottom:90px;
+}
 .match{
-  background:linear-gradient(180deg,#140000,#000);
-  border:1px solid #b30000;
-  border-radius:18px;
+  background:rgba(255,255,255,0.05);
+  border-radius:16px;
   padding:14px;
   margin-bottom:14px;
-  box-shadow:0 0 25px rgba(255,0,0,.15);
 }
-.league{font-size:13px;color:#ffb}
+.league{
+  color:#ffcc00;
+  font-size:14px;
+  margin-bottom:6px;
+}
 .teams{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
+  display:flex;
   align-items:center;
-  margin:10px 0;
+  justify-content:space-between;
 }
-.team{text-align:center;font-size:14px}
-.team img{width:46px;height:46px;object-fit:contain;margin-bottom:6px}
+.team{
+  width:40%;
+  text-align:center;
+}
+.team img{
+  width:46px;
+  height:46px;
+}
 .score{
   font-size:22px;
-  font-weight:800;
-  color:#ff3333;
+  font-weight:bold;
+  color:#ff3b3b;
 }
-.time{text-align:center;font-size:12px;color:#ccc}
-
+.time{
+  text-align:center;
+  font-size:12px;
+  color:#aaa;
+  margin-top:6px;
+}
 .nav{
   position:fixed;
-  bottom:0;left:0;right:0;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  background:#0c0c0c;
-  border-top:2px solid #b30000;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#111;
+  display:flex;
+  border-top:1px solid red;
 }
-.nav button{
-  background:none;border:none;color:#aaa;
-  padding:12px;font-size:12px;
+.nav div{
+  flex:1;
+  text-align:center;
+  padding:10px 0;
+  font-size:12px;
 }
-.nav button.active{color:#ff4444}
-
-.loading{text-align:center;color:#ff5555;margin-top:20px}
 </style>
 </head>
 
 <body>
-<header>⚽ BallGenius | โปรแกรมบอลวันนี้</header>
 
-<div class="container" id="app">
-  <div class="loading">กำลังโหลดข้อมูล...</div>
+<div class="header">⚽ BallGenius | โปรแกรมบอลวันนี้</div>
+
+<div class="list" id="list">
+  กำลังโหลดข้อมูล...
 </div>
 
 <div class="nav">
-  <button class="active">วันนี้</button>
-  <button>สด</button>
-  <button>ลีก</button>
-  <button>เพิ่ม</button>
+  <div>🔥 วันนี้</div>
+  <div>📺 สด</div>
+  <div>🏆 ลีก</div>
+  <div>⚙ เพิ่ม</div>
 </div>
 
 <script>
-/* ==============================
-   ใส่ API KEY ของคุณตรงนี้
-   ============================== */
-const API_KEY = "PUT_YOUR_API_KEY_HERE";
-
-/* ==============================
-   ตั้งค่า
-   ============================== */
-const API_URL = "https://v3.football.api-sports.io/fixtures?date=";
-const today = new Date().toISOString().split("T")[0];
-
-const app = document.getElementById("app");
-
-/* ==============================
-   ดึงข้อมูลบอลวันนี้
-   ============================== */
-fetch(API_URL + today, {
-  headers: {
-    "x-apisports-key": API_KEY
-  }
-})
-.then(res => res.json())
-.then(data => {
-  app.innerHTML = "";
-  if(!data.response || data.response.length === 0){
-    app.innerHTML = "<div class='loading'>ไม่มีการแข่งขันวันนี้</div>";
-    return;
-  }
-
-  data.response.forEach(m => {
-    const home = m.teams.home;
-    const away = m.teams.away;
-    const goals = m.goals;
-    const league = m.league;
-
-    const el = document.createElement("div");
-    el.className = "match";
-    el.innerHTML = `
-      <div class="league">${league.name}</div>
+fetch("https://www.scorebat.com/video-api/v3/")
+.then(r=>r.json())
+.then(data=>{
+  const list=document.getElementById("list");
+  list.innerHTML="";
+  data.response.slice(0,20).forEach(m=>{
+    list.innerHTML+=`
+    <div class="match">
+      <div class="league">${m.competition}</div>
       <div class="teams">
         <div class="team">
-          <img src="${home.logo}">
-          <div>${home.name}</div>
+          <img src="${m.thumbnail}">
+          <div>${m.title.split(" - ")[0]}</div>
         </div>
-        <div class="score">${goals.home ?? "-"} : ${goals.away ?? "-"}</div>
+        <div class="score">VS</div>
         <div class="team">
-          <img src="${away.logo}">
-          <div>${away.name}</div>
+          <img src="${m.thumbnail}">
+          <div>${m.title.split(" - ")[1]}</div>
         </div>
       </div>
-      <div class="time">⏰ ${new Date(m.fixture.date).toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"})}</div>
-    `;
-    app.appendChild(el);
+      <div class="time">${new Date(m.date).toLocaleString("th-TH")}</div>
+    </div>`;
   });
 })
-.catch(err=>{
-  app.innerHTML = "<div class='loading'>โหลดข้อมูลไม่ได้ (API)</div>";
-  console.error(err);
+.catch(()=>{
+  document.getElementById("list").innerHTML="โหลดข้อมูลไม่ได้";
 });
-
-/* Telegram Mini App expand */
-if(window.Telegram?.WebApp){
-  Telegram.WebApp.expand();
-}
 </script>
+
 </body>
 </html>
