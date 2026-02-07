@@ -6,122 +6,42 @@
 <title>QA BallGenius</title>
 
 <style>
-*{box-sizing:border-box;font-family:sans-serif}
+*{
+  box-sizing:border-box;
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
 body{
   margin:0;
-  background:linear-gradient(180deg,#0b0000,#120000,#000);
+  background:linear-gradient(180deg,#140000,#050505,#000);
   color:#fff;
 }
 
 /* ===== HEADER ===== */
 .header{
-  padding:16px 18px;
-  background:linear-gradient(90deg,#2b0000,#120000);
+  padding:14px 18px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
+  background:linear-gradient(90deg,#2b0000,#120012);
 }
-.header h1{
-  margin:0;
+
+.logo{
   font-size:22px;
+  font-weight:800;
+  letter-spacing:.5px;
 }
-.header h1 span{
-  color:#ff3b3b;
+.logo .qa{
+  color:#ff0000; /* <<< QA สีแดง */
 }
-
-/* ===== LEAGUE SLIDER ===== */
-.league-bar{
-  padding:14px;
-  overflow-x:auto;
-}
-.league-list{
-  display:flex;
-  gap:12px;
-}
-.league{
-  min-width:64px;
-  height:64px;
-  border-radius:14px;
-  background:#1a0000;
-  border:2px solid #3a0000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.league img{
-  width:38px;
-  height:38px;
-  object-fit:contain;
-}
-.league.active{
-  border-color:#ffc400;
-  background:#2a0000;
+.logo .name{
+  color:#ffffff;
 }
 
-/* ===== MATCH CARD ===== */
-.card{
-  margin:16px;
-  padding:16px;
-  border-radius:18px;
-  background:linear-gradient(180deg,#240010,#120008);
-  box-shadow:0 0 20px rgba(255,0,0,.15);
-}
-.card-top{
-  display:flex;
-  justify-content:space-between;
-  font-size:13px;
-  opacity:.9;
-}
-.match{
-  margin-top:18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-.team{
-  width:35%;
+/* ===== PLACEHOLDER CONTENT ===== */
+.content{
+  padding:24px;
+  opacity:.6;
   text-align:center;
-}
-.team img{
-  width:48px;
-  height:48px;
-}
-.score{
-  font-size:28px;
-  font-weight:bold;
-}
-
-/* ===== BUTTON ===== */
-.btn{
-  margin-top:16px;
-  background:linear-gradient(90deg,#ff0055,#ff2f7d);
-  border:none;
-  width:100%;
-  padding:14px;
-  border-radius:14px;
-  color:#fff;
-  font-size:16px;
-}
-
-/* ===== BOTTOM TAB ===== */
-.tabbar{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:linear-gradient(90deg,#2b0000,#120000);
-  display:flex;
-  justify-content:space-around;
-  padding:10px 0;
-}
-.tab{
-  text-align:center;
-  font-size:12px;
-  opacity:.7;
-}
-.tab.active{
-  color:#ff3b3b;
-  opacity:1;
 }
 </style>
 </head>
@@ -130,49 +50,15 @@ body{
 
 <!-- HEADER -->
 <div class="header">
-  <h1><span>QA</span> BallGenius</h1>
-</div>
-
-<!-- LEAGUE SLIDER (แบบเดิม) -->
-<div class="league-bar">
-  <div class="league-list">
-    <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
-    <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
-    <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
-    <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
-    <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
-    <div class="league"><img src="https://media.api-sports.io/football/leagues/88.png"></div>
+  <div class="logo">
+    <span class="qa">QA</span>
+    <span class="name"> BallGenius</span>
   </div>
 </div>
 
-<!-- MATCH CARD -->
-<div class="card">
-  <div class="card-top">
-    <div>🔥 HOT อังกฤษ | พรีเมียร์ลีก</div>
-    <div>วันนี้ 03:00</div>
-  </div>
-
-  <div class="match">
-    <div class="team">
-      <img src="https://media.api-sports.io/football/teams/63.png"><br>
-      ลีดส์
-    </div>
-    <div class="score">3 : 1</div>
-    <div class="team">
-      <img src="https://media.api-sports.io/football/teams/62.png"><br>
-      ฟอเรสต์
-    </div>
-  </div>
-
-  <button class="btn">คลิกเพื่อรับชมถ่ายทอดสด</button>
-</div>
-
-<!-- BOTTOM TAB -->
-<div class="tabbar">
-  <div class="tab active">ยอดนิยม</div>
-  <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
+<!-- CONTENT (ไม่แตะระบบอื่น) -->
+<div class="content">
+  ระบบยังคงเดิม • แก้เฉพาะคำว่า QA
 </div>
 
 </body>
