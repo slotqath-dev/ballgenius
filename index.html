@@ -8,12 +8,22 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
+/* ===== THEME ===== */
 :root{
   --bg:#0b0000;
-  --red:#e10600;
-  --red-dark:#8b0000;
+  --card:#120000;
   --text:#ffffff;
   --muted:#888;
+  --red:#e10600;
+  --border:#8b0000;
+}
+
+body.light{
+  --bg:#f5f5f5;
+  --card:#ffffff;
+  --text:#111;
+  --muted:#666;
+  --border:#ddd;
 }
 
 *{
@@ -23,46 +33,69 @@
 
 body{
   margin:0;
-  background:linear-gradient(180deg,#140000,#000);
+  background:var(--bg);
   color:var(--text);
   padding-bottom:70px;
+  transition:.3s;
 }
 
 /* ===== HEADER ===== */
 .header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   padding:14px;
-  text-align:center;
-  font-size:22px;
-  font-weight:900;
-  letter-spacing:.5px;
   border-bottom:2px solid var(--red);
   background:linear-gradient(180deg,#1a0000,#000);
 }
 
-.header .qa{
-  color:#fff;
+body.light .header{
+  background:#fff;
 }
 
-.header .brand{
-  color:var(--red);
+.title{
+  font-size:22px;
+  font-weight:900;
 }
 
-/* ===== CONTENT (placeholder) ===== */
+.title .qa{color:#fff}
+body.light .title .qa{color:#000}
+
+.title .brand{color:var(--red)}
+
+/* ===== TOGGLE ===== */
+.theme-toggle{
+  display:flex;
+  gap:8px;
+}
+
+.theme-toggle button{
+  border:none;
+  background:var(--card);
+  color:var(--text);
+  font-size:18px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+/* ===== CONTENT ===== */
 .content{
   padding:20px;
   text-align:center;
-  color:#aaa;
+  color:var(--muted);
 }
 
-/* ===== BOTTOM MENU ===== */
+/* ===== BOTTOM NAV ===== */
 .bottom-nav{
   position:fixed;
   bottom:0;
   left:0;
   right:0;
   height:70px;
-  background:linear-gradient(180deg,#1a0000,#000);
-  border-top:2px solid var(--red-dark);
+  background:var(--card);
+  border-top:2px solid var(--border);
   display:flex;
 }
 
@@ -91,15 +124,22 @@ body{
 
 <!-- HEADER -->
 <div class="header">
-  <span class="qa">QA</span>
-  <span class="brand"> BallGenius</span>
+  <div class="title">
+    <span class="qa">QA</span>
+    <span class="brand"> BallGenius</span>
+  </div>
+
+  <div class="theme-toggle">
+    <button onclick="setTheme('dark')">🌙</button>
+    <button onclick="setTheme('light')">☀️</button>
+  </div>
 </div>
 
 <div class="content">
-  หัวข้อเรียบร้อย ✔
+  โหมดขาว / ดำ พร้อมใช้งาน ✔
 </div>
 
-<!-- BOTTOM TAB -->
+<!-- BOTTOM MENU -->
 <div class="bottom-nav">
   <div class="nav-item active"><span>🔥</span>ยอดนิยม</div>
   <div class="nav-item"><span>🔴</span>สด</div>
@@ -109,6 +149,22 @@ body{
 
 <script>
 Telegram.WebApp.expand();
+
+/* ===== THEME LOGIC ===== */
+function setTheme(mode){
+  if(mode === 'light'){
+    document.body.classList.add('light');
+    localStorage.setItem('theme','light');
+  }else{
+    document.body.classList.remove('light');
+    localStorage.setItem('theme','dark');
+  }
+}
+
+/* load saved theme */
+if(localStorage.getItem('theme') === 'light'){
+  setTheme('light');
+}
 </script>
 
 </body>
