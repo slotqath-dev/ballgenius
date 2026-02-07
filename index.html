@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
 
-<!-- Telegram Mini App (ไฟล์เดียวที่ต้องใช้) -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
@@ -17,21 +16,10 @@
   --muted:#aaaaaa;
   --accent:#ffd200;
 }
-.light{
-  --bg:#f4f4f4;
-  --card:#ffffff;
-  --white:#000000;
-  --muted:#555;
-}
-
 *{box-sizing:border-box;font-family:sans-serif}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--white);
-}
+body{margin:0;background:var(--bg);color:var(--white)}
 
-/* ===== HEADER ===== */
+/* HEADER */
 header{
   padding:14px;
   display:flex;
@@ -40,94 +28,72 @@ header{
   background:linear-gradient(180deg,#300,#000);
   border-bottom:2px solid var(--red);
 }
-.logo{
-  font-weight:900;
-  font-size:18px;
-}
-.logo span:first-child{color:#fff}
+.logo{font-weight:900}
 .logo span:last-child{color:var(--red)}
-.theme-btns button{
-  background:#222;
-  border:none;
-  color:#fff;
-  margin-left:6px;
-  padding:6px 10px;
-  border-radius:8px;
-  cursor:pointer;
-}
 
-/* ===== LEAGUE SCROLL ===== */
-.leagues{
-  display:flex;
-  gap:10px;
-  padding:12px;
-  overflow-x:auto;
-}
-.league{
-  min-width:80px;
-  background:var(--card);
-  border-radius:14px;
-  padding:10px;
-  text-align:center;
-  border:2px solid transparent;
-  cursor:pointer;
-}
-.league.active{
-  border-color:var(--accent);
-}
-.league img{
-  width:36px;
-  height:36px;
-}
-.league div{
-  font-size:12px;
-  margin-top:6px;
-}
-
-/* ===== CONTENT ===== */
-.content{
-  padding:14px;
-  padding-bottom:90px;
-}
-.match{
+/* CONTENT */
+.content{padding:14px;padding-bottom:90px}
+.card{
   background:var(--card);
   border-radius:18px;
   padding:14px;
   margin-bottom:14px;
 }
-.match .league-name{
-  color:var(--accent);
-  font-size:13px;
-  margin-bottom:8px;
-}
-.teams{
+
+/* SECTION HEADER */
+.section-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  cursor:pointer;
 }
-.team{
-  width:40%;
-  text-align:center;
+.section-title{
+  font-weight:700;
+  color:var(--accent);
 }
-.team img{
-  width:42px;
-  height:42px;
-}
-.score{
-  font-size:22px;
-  font-weight:900;
-  color:var(--red);
+.view-all{
+  font-size:12px;
+  color:var(--muted);
 }
 
-/* ===== BOTTOM TAB ===== */
+/* SLIDE */
+.slide{
+  max-height:0;
+  overflow:hidden;
+  transition:.3s;
+}
+.slide.open{max-height:1000px;margin-top:10px}
+
+/* MATCH */
+.match{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px solid #222;
+}
+.match:last-child{border:none}
+
+/* TABLE */
+.table-row{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  padding:6px 0;
+  border-bottom:1px solid #222;
+}
+.league-title{
+  margin-top:10px;
+  font-weight:700;
+  color:var(--accent);
+}
+
+/* BOTTOM */
 .bottom{
   position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
+  bottom:0;left:0;right:0;
+  display:flex;
   background:linear-gradient(180deg,#200,#000);
   border-top:2px solid var(--red);
-  display:flex;
 }
 .tab{
   flex:1;
@@ -136,58 +102,59 @@ header{
   font-size:12px;
   color:var(--muted);
 }
-.tab.active{
-  color:var(--red);
-  font-weight:700;
-}
-.footer{
-  text-align:center;
-  font-size:11px;
-  color:var(--muted);
-  margin-top:10px;
-}
+.tab.active{color:var(--red);font-weight:700}
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="logo">
-    <span>QA</span> <span>BallGenius</span>
-  </div>
-  <div class="theme-btns">
-    <button onclick="setTheme('light')">☀️</button>
-    <button onclick="setTheme('dark')">🌙</button>
-  </div>
+  <div class="logo">QA <span>BallGenius</span></div>
 </header>
 
-<!-- LEAGUES -->
-<div class="leagues">
-  <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"><div>พรีเมียร์ลีก</div></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"><div>ลาลีกา</div></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"><div>บุนเดส</div></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"><div>เซเรียอา</div></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"><div>ลีกเอิง</div></div>
-</div>
-
 <div class="content">
-  <div class="match">
-    <div class="league-name">โปรแกรมบอลวันนี้</div>
-    <div class="teams">
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/33.png">
-        <div>แมนยู</div>
-      </div>
-      <div class="score">0 : 0</div>
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/50.png">
-        <div>แมนซิตี้</div>
-      </div>
-    </div>
+
+<!-- โปรแกรมบอลวันนี้ -->
+<div class="card">
+  <div class="section-head" onclick="toggle(this)">
+    <div class="section-title">⚽ โปรแกรมบอลวันนี้</div>
+    <div class="view-all">ดูทั้งหมด</div>
+  </div>
+  <div class="slide">
+    <div class="match"><span>แมนยู</span><span>vs</span><span>แมนซิตี้</span></div>
+    <div class="match"><span>บาร์ซ่า</span><span>vs</span><span>มาดริด</span></div>
   </div>
 </div>
 
-<!-- BOTTOM MENU -->
+<!-- ทีมยอดฮิต -->
+<div class="card">
+  <div class="section-title">🔥 ทีมที่เจอกันวันนี้ยอดฮิต</div>
+  <div class="league-title">พรีเมียร์ลีก</div>
+  <div class="match"><span>ลิเวอร์พูล</span><span>vs</span><span>อาร์เซน่อล</span></div>
+</div>
+
+<!-- ไฮไลท์ -->
+<div class="card">
+  <div class="section-title">⭐ ไฮไลท์ยอดนิยม</div>
+  <div class="match">แมนยู ยิงนาที 90+</div>
+  <div class="match">ลิเวอร์พูล ชนะขาด</div>
+</div>
+
+<!-- ตารางคะแนน -->
+<div class="card">
+  <div class="section-title">📊 ตารางคะแนน</div>
+
+  <div class="league-title">พรีเมียร์ลีก</div>
+  <div class="table-row"><span>1. อาร์เซน่อล</span><span>45</span></div>
+  <div class="table-row"><span>2. แมนซิตี้</span><span>43</span></div>
+
+  <div class="league-title">ลาลีกา</div>
+  <div class="table-row"><span>1. เรอัล มาดริด</span><span>50</span></div>
+  <div class="table-row"><span>2. บาร์ซ่า</span><span>48</span></div>
+</div>
+
+</div>
+
 <div class="bottom">
   <div class="tab active">ยอดนิยม</div>
   <div class="tab">สด</div>
@@ -195,14 +162,12 @@ header{
   <div class="tab">เพิ่มเติม</div>
 </div>
 
-<div class="footer">@BallGeniusBot</div>
-
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-function setTheme(mode){
-  document.body.className = mode === 'light' ? 'light' : '';
+function toggle(el){
+  el.nextElementSibling.classList.toggle('open');
 }
 </script>
 
