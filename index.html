@@ -13,7 +13,7 @@
   --card:#161616;
 }
 
-/* ===== DARK (🌙) ===== */
+/* ===== DARK / LIGHT ===== */
 body{
   margin:0;
   font-family:sans-serif;
@@ -24,8 +24,6 @@ body{
   background-size:700px auto;
   background-repeat:repeat;
 }
-
-/* ===== LIGHT (☀️) ===== */
 body.light{
   color:#000;
   background:
@@ -68,22 +66,22 @@ body.light header{background:rgba(255,255,255,.85)}
   padding:12px;
   overflow-x:auto;
 }
+
 .league{
-  min-width:80px;
-  height:80px;
-  background:var(--card);
-  border:2px solid var(--red);
-  border-radius:14px;
-  display:flex;
+  display:inline-flex;
   align-items:center;
   justify-content:center;
+  padding:6px;                 /* กรอบพอดี */
+  border:2px solid var(--red);
+  border-radius:10px;
+  background:var(--card);
 }
 body.light .league{background:#fff}
+
 .league img{
-  width:44px;   /* ขนาดเดิม */
-  height:44px;  /* ขนาดเดิม */
+  width:36px;                  /* เล็กลงอีกนิด */
+  height:36px;
   background:#fff;
-  padding:4px;
   border-radius:6px;
 }
 
@@ -96,6 +94,7 @@ body.light .league{background:#fff}
   background:rgba(0,0,0,.8);
 }
 body.light .hot-card{background:#fff}
+
 .hot-top{
   display:flex;
   justify-content:space-between;
@@ -115,12 +114,11 @@ body.light .hot-card{background:#fff}
   align-items:center;
 }
 .hot-team{
-  width:40%;
   text-align:center;
 }
 .hot-team img{
-  width:42px;   /* ขนาดเดิม */
-  height:42px;  /* ขนาดเดิม */
+  width:36px;
+  height:36px;
   background:#fff;
   padding:4px;
   border-radius:6px;
@@ -164,9 +162,7 @@ body.light .bottom{background:#fff}
 <body>
 
 <header>
-  <div class="logo">
-    <span class="qa">QA</span> BallGenius
-  </div>
+  <div class="logo"><span class="qa">QA</span> BallGenius</div>
   <div class="theme-btns">
     <button id="themeIcon" onclick="toggleTheme()">🌙</button>
   </div>
