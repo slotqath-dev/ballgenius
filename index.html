@@ -15,16 +15,20 @@
   --muted:#aaaaaa;
   --accent:#ffd200;
 
-  /* DARK MODE : สนามฟุตบอล */
+  /* DARK MODE */
+  --bg-color:#000;
   --bg-img:url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80");
+  --overlay:rgba(0,0,0,.85);
 }
 .light{
   --card:#ffffff;
   --white:#000;
   --muted:#555;
 
-  /* LIGHT MODE : ถ้วยรางวัล */
+  /* LIGHT MODE */
+  --bg-color:#f4f4f4;
   --bg-img:url("https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1200&q=80");
+  --overlay:rgba(255,255,255,.85);
 }
 
 *{box-sizing:border-box;font-family:sans-serif}
@@ -32,8 +36,9 @@ body{
   margin:0;
   color:var(--white);
   background:
-    linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.85)),
+    linear-gradient(var(--overlay),var(--overlay)),
     var(--bg-img);
+  background-color:var(--bg-color);
   background-size:700px auto;
   background-repeat:repeat;
 }
@@ -53,7 +58,7 @@ header{
 }
 .logo span:first-child{color:var(--red)}
 .logo span:last-child{color:#fff}
-.theme-btn{
+.theme-btns button{
   background:#222;
   border:none;
   color:#fff;
@@ -61,6 +66,7 @@ header{
   padding:6px 10px;
   border-radius:10px;
   cursor:pointer;
+  margin-left:6px;
 }
 
 /* LEAGUES */
@@ -157,7 +163,10 @@ header{
   <div class="logo">
     <span>QA</span> <span>BallGenius</span>
   </div>
-  <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+  <div class="theme-btns">
+    <button onclick="setDark()">🌙</button>
+    <button onclick="setLight()">☀️</button>
+  </div>
 </header>
 
 <div class="leagues">
@@ -203,8 +212,11 @@ document.querySelectorAll('.league').forEach(l=>{
   }
 });
 
-function toggleTheme(){
-  document.body.classList.toggle('light');
+function setDark(){
+  document.body.classList.remove('light');
+}
+function setLight(){
+  document.body.classList.add('light');
 }
 </script>
 
