@@ -6,166 +6,173 @@
 <title>QA BallGenius</title>
 
 <style>
-:root{
-  --bg:#000;
-  --card:#120000;
-  --card2:#1a0000;
-  --red:#ff1e1e;
-  --text:#fff;
-}
-
-*{
-  box-sizing:border-box;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-
+*{box-sizing:border-box;font-family:sans-serif}
 body{
   margin:0;
-  background:linear-gradient(180deg,#140000,#000);
-  color:var(--text);
+  background:linear-gradient(180deg,#0b0000,#120000,#000);
+  color:#fff;
 }
 
-/* HEADER */
+/* ===== HEADER ===== */
 .header{
-  padding:14px;
-  text-align:center;
-  font-size:18px;
-  font-weight:800;
-  border-bottom:2px solid var(--red);
+  padding:16px 18px;
+  background:linear-gradient(90deg,#2b0000,#120000);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
-.header .qa{color:#fff}
-.header .name{color:var(--red)}
+.header h1{
+  margin:0;
+  font-size:22px;
+}
+.header h1 span{
+  color:#ff3b3b;
+}
 
-/* LEAGUE BAR */
+/* ===== LEAGUE SLIDER ===== */
 .league-bar{
+  padding:14px;
+  overflow-x:auto;
+}
+.league-list{
   display:flex;
   gap:12px;
-  overflow-x:auto;
-  padding:14px;
 }
-
 .league{
-  min-width:84px;
-  background:linear-gradient(180deg,#200000,#0b0000);
+  min-width:64px;
+  height:64px;
   border-radius:14px;
-  padding:10px;
-  text-align:center;
-  border:2px solid #2a0000;
-}
-
-.league.active{
-  border-color:#ffcc00;
-  box-shadow:0 0 10px #ffcc0060;
-}
-
-/* LOGO BOX (แบบในรูป) */
-.logo-box{
-  width:54px;
-  height:54px;
-  margin:auto;
-  background:#ffffff;
-  border-radius:10px;
+  background:#1a0000;
+  border:2px solid #3a0000;
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:0 4px 10px rgba(0,0,0,.6);
 }
-
-.logo-box img{
-  width:40px;
-  height:40px;
+.league img{
+  width:38px;
+  height:38px;
   object-fit:contain;
 }
-
-.league-name{
-  font-size:11px;
-  margin-top:6px;
-  white-space:nowrap;
+.league.active{
+  border-color:#ffc400;
+  background:#2a0000;
 }
 
-/* BOTTOM MENU */
-.bottom{
+/* ===== MATCH CARD ===== */
+.card{
+  margin:16px;
+  padding:16px;
+  border-radius:18px;
+  background:linear-gradient(180deg,#240010,#120008);
+  box-shadow:0 0 20px rgba(255,0,0,.15);
+}
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  opacity:.9;
+}
+.match{
+  margin-top:18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.team{
+  width:35%;
+  text-align:center;
+}
+.team img{
+  width:48px;
+  height:48px;
+}
+.score{
+  font-size:28px;
+  font-weight:bold;
+}
+
+/* ===== BUTTON ===== */
+.btn{
+  margin-top:16px;
+  background:linear-gradient(90deg,#ff0055,#ff2f7d);
+  border:none;
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  color:#fff;
+  font-size:16px;
+}
+
+/* ===== BOTTOM TAB ===== */
+.tabbar{
   position:fixed;
   bottom:0;
   left:0;
   right:0;
+  background:linear-gradient(90deg,#2b0000,#120000);
   display:flex;
-  background:#050000;
-  border-top:2px solid var(--red);
-}
-
-.tab{
-  flex:1;
-  text-align:center;
+  justify-content:space-around;
   padding:10px 0;
-  font-size:12px;
-  color:#aaa;
 }
-
-.tab.active{color:#fff}
-.tab span{display:block;font-size:18px}
+.tab{
+  text-align:center;
+  font-size:12px;
+  opacity:.7;
+}
+.tab.active{
+  color:#ff3b3b;
+  opacity:1;
+}
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <div class="header">
-  <span class="qa">QA</span> <span class="name">BallGenius</span>
+  <h1><span>QA</span> BallGenius</h1>
 </div>
 
-<!-- แถวลีก -->
+<!-- LEAGUE SLIDER (แบบเดิม) -->
 <div class="league-bar">
-
-  <div class="league active">
-    <div class="logo-box">
-      <span style="font-size:22px;font-weight:700">ALL</span>
-    </div>
-    <div class="league-name">ทั้งหมด</div>
+  <div class="league-list">
+    <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
+    <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
+    <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
+    <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
+    <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
+    <div class="league"><img src="https://media.api-sports.io/football/leagues/88.png"></div>
   </div>
-
-  <div class="league">
-    <div class="logo-box">
-      <img src="https://media.api-sports.io/football/leagues/39.png">
-    </div>
-    <div class="league-name">พรีเมียร์ลีก</div>
-  </div>
-
-  <div class="league">
-    <div class="logo-box">
-      <img src="https://media.api-sports.io/football/leagues/140.png">
-    </div>
-    <div class="league-name">ลาลีกา</div>
-  </div>
-
-  <div class="league">
-    <div class="logo-box">
-      <img src="https://media.api-sports.io/football/leagues/78.png">
-    </div>
-    <div class="league-name">บุนเดสลีกา</div>
-  </div>
-
-  <div class="league">
-    <div class="logo-box">
-      <img src="https://media.api-sports.io/football/leagues/135.png">
-    </div>
-    <div class="league-name">เซเรียอา</div>
-  </div>
-
-  <div class="league">
-    <div class="logo-box">
-      <img src="https://media.api-sports.io/football/leagues/61.png">
-    </div>
-    <div class="league-name">ลีกเอิง</div>
-  </div>
-
 </div>
 
-<!-- เมนูล่าง -->
-<div class="bottom">
-  <div class="tab active"><span>🔥</span>ยอดนิยม</div>
-  <div class="tab"><span>📺</span>สด</div>
-  <div class="tab"><span>📅</span>โปรแกรม</div>
-  <div class="tab"><span>⚙</span>เพิ่มเติม</div>
+<!-- MATCH CARD -->
+<div class="card">
+  <div class="card-top">
+    <div>🔥 HOT อังกฤษ | พรีเมียร์ลีก</div>
+    <div>วันนี้ 03:00</div>
+  </div>
+
+  <div class="match">
+    <div class="team">
+      <img src="https://media.api-sports.io/football/teams/63.png"><br>
+      ลีดส์
+    </div>
+    <div class="score">3 : 1</div>
+    <div class="team">
+      <img src="https://media.api-sports.io/football/teams/62.png"><br>
+      ฟอเรสต์
+    </div>
+  </div>
+
+  <button class="btn">คลิกเพื่อรับชมถ่ายทอดสด</button>
+</div>
+
+<!-- BOTTOM TAB -->
+<div class="tabbar">
+  <div class="tab active">ยอดนิยม</div>
+  <div class="tab">สด</div>
+  <div class="tab">โปรแกรม</div>
+  <div class="tab">เพิ่มเติม</div>
 </div>
 
 </body>
