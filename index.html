@@ -17,20 +17,19 @@
 
   /* DARK MODE */
   --bg-color:#000;
-  --bg-img:url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1600&q=80");
+  --field:url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1600&q=80");
   --overlay:rgba(0,0,0,.88);
 
-  /* WORLD CUP */
   --cup:url("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/FIFA_World_Cup_Trophy_%28Jules_Rimet_Trophy%29.svg/512px-FIFA_World_Cup_Trophy_%28Jules_Rimet_Trophy%29.svg.png");
 }
 .light{
   --card:#ffffff;
-  --white:#000000;
+  --white:#000;
   --muted:#555;
 
   /* LIGHT MODE */
   --bg-color:#f4f4f4;
-  --bg-img:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1600&q=80");
+  --field:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1600&q=80");
   --overlay:rgba(255,255,255,.85);
 }
 
@@ -38,34 +37,42 @@
 body{
   margin:0;
   color:var(--white);
-  background:
-    linear-gradient(var(--overlay),var(--overlay)),
-    var(--bg-img);
   background-color:var(--bg-color);
-  background-size:900px auto;
-  background-repeat:repeat;
   position:relative;
   overflow-x:hidden;
 }
 
-/* ===== WORLD CUP OVERLAY ===== */
+/* ===== สนามฟุตบอล ===== */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(var(--overlay),var(--overlay)),
+    var(--field);
+  background-size:1200px auto;
+  background-position:center;
+  background-repeat:repeat;
+  z-index:0;
+}
+
+/* ===== ถ้วยบอลโลก ===== */
 body::before{
   content:"";
   position:fixed;
   inset:0;
   background:
-    url("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/FIFA_World_Cup_Trophy_%28Jules_Rimet_Trophy%29.svg/512px-FIFA_World_Cup_Trophy_%28Jules_Rimet_Trophy%29.svg.png")
-    center center / 280px no-repeat;
-  opacity:.06;            /* บางมาก */
-  filter:blur(.3px);
+    var(--cup) center center / 260px no-repeat;
+  opacity:.05;          /* บางมาก */
+  filter:blur(.4px);
   pointer-events:none;
-  z-index:0;
+  z-index:1;
 }
 
-/* ทุกอย่างอยู่เหนือถ้วย */
+/* CONTENT LAYER */
 header,.leagues,.content,.bottom{
   position:relative;
-  z-index:1;
+  z-index:2;
 }
 
 /* HEADER */
@@ -106,14 +113,12 @@ header{
 .league{
   width:64px;
   height:64px;
-  flex:0 0 auto;
   background:var(--card);
   border-radius:16px;
   border:2px solid transparent;
   display:flex;
   align-items:center;
   justify-content:center;
-  cursor:pointer;
 }
 .league.active{border-color:var(--accent)}
 .league img{
@@ -152,7 +157,6 @@ header{
 .team img{
   width:48px;
   height:48px;
-  object-fit:contain;
   background:#fff;
   padding:4px;
   border-radius:10px;
@@ -233,13 +237,6 @@ header{
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
-
-document.querySelectorAll('.league').forEach(l=>{
-  l.onclick=()=>{
-    document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
-    l.classList.add('active');
-  }
-});
 
 function setDark(){document.body.classList.remove('light')}
 function setLight(){document.body.classList.add('light')}
