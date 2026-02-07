@@ -6,24 +6,33 @@
 <title>BallGenius</title>
 
 <style>
+*{box-sizing:border-box}
 body{
   margin:0;
   background:linear-gradient(180deg,#120000,#000);
   color:#fff;
   font-family:sans-serif;
 }
+
+/* HEADER */
 .header{
   padding:14px;
   text-align:center;
   font-weight:bold;
   border-bottom:2px solid red;
 }
-.list{
+
+/* CONTENT */
+.page{
+  display:none;
   padding:12px;
   padding-bottom:90px;
 }
+.page.active{display:block}
+
+/* MATCH CARD */
 .match{
-  background:rgba(255,255,255,0.05);
+  background:rgba(255,255,255,0.06);
   border-radius:16px;
   padding:14px;
   margin-bottom:14px;
@@ -43,11 +52,12 @@ body{
   text-align:center;
 }
 .team img{
-  width:46px;
-  height:46px;
+  width:48px;
+  height:48px;
+  object-fit:contain;
 }
 .score{
-  font-size:22px;
+  font-size:18px;
   font-weight:bold;
   color:#ff3b3b;
 }
@@ -57,6 +67,19 @@ body{
   color:#aaa;
   margin-top:6px;
 }
+
+/* BUTTON */
+.btn{
+  margin-top:10px;
+  background:linear-gradient(135deg,#ff004c,#ff7a00);
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* NAV */
 .nav{
   position:fixed;
   bottom:0;
@@ -71,6 +94,12 @@ body{
   text-align:center;
   padding:10px 0;
   font-size:12px;
+  cursor:pointer;
+  opacity:.6;
+}
+.nav div.active{
+  opacity:1;
+  color:#ff3b3b;
 }
 </style>
 </head>
@@ -79,25 +108,50 @@ body{
 
 <div class="header">⚽ BallGenius | โปรแกรมบอลวันนี้</div>
 
-<div class="list" id="list">
+<!-- วันนี้ -->
+<div class="page active" id="today">
   กำลังโหลดข้อมูล...
 </div>
 
+<!-- สด -->
+<div class="page" id="live">
+  ⚠ API ฟรีไม่มี Live นาทีต่อนาที<br>ใช้ดูผล + ไฮไลท์ย้อนหลัง
+</div>
+
+<!-- ลีก -->
+<div class="page" id="league">
+  พรีเมียร์ลีก / ลาลีกา / บุนเดส / ลีกอื่นๆ (ต่อเพิ่มได้)
+</div>
+
+<!-- เพิ่ม -->
+<div class="page" id="more">
+  BallGenius<br>@BallGeniusBot
+</div>
+
+<!-- NAV -->
 <div class="nav">
-  <div>🔥 วันนี้</div>
-  <div>📺 สด</div>
-  <div>🏆 ลีก</div>
-  <div>⚙ เพิ่ม</div>
+  <div class="active" onclick="showPage('today',this)">🔥 วันนี้</div>
+  <div onclick="showPage('live',this)">📺 สด</div>
+  <div onclick="showPage('league',this)">🏆 ลีก</div>
+  <div onclick="showPage('more',this)">⚙ เพิ่ม</div>
 </div>
 
 <script>
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav div').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* LOAD MATCH */
 fetch("https://www.scorebat.com/video-api/v3/")
 .then(r=>r.json())
 .then(data=>{
-  const list=document.getElementById("list");
-  list.innerHTML="";
+  const box=document.getElementById("today");
+  box.innerHTML="";
   data.response.slice(0,20).forEach(m=>{
-    list.innerHTML+=`
+    box.innerHTML+=`
     <div class="match">
       <div class="league">${m.competition}</div>
       <div class="teams">
@@ -112,11 +166,14 @@ fetch("https://www.scorebat.com/video-api/v3/")
         </div>
       </div>
       <div class="time">${new Date(m.date).toLocaleString("th-TH")}</div>
+      <div class="btn" onclick="window.open('${m.matchviewUrl}','_blank')">
+        ▶ ดูไฮไลท์
+      </div>
     </div>`;
   });
 })
 .catch(()=>{
-  document.getElementById("list").innerHTML="โหลดข้อมูลไม่ได้";
+  document.getElementById("today").innerHTML="โหลดข้อมูลไม่ได้ (API)";
 });
 </script>
 
