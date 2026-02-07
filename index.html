@@ -11,34 +11,53 @@
 :root{
   --bg:#0b0b0b;
   --card:#161616;
-  --red:#e60000;
-  --white:#ffffff;
-  --muted:#aaaaaa;
+  --border:#222;
+  --text:#ffffff;
   --accent:#ffd200;
 }
 
+.light{
+  --bg:#f2f2f2;
+  --card:#ffffff;
+  --border:#ddd;
+  --text:#000000;
+}
+
 *{box-sizing:border-box;font-family:sans-serif}
+
 body{
   margin:0;
   background:var(--bg);
-  color:var(--white);
+  color:var(--text);
 }
 
 /* ===== HEADER ===== */
 header{
-  padding:14px;
+  padding:12px 14px;
   display:flex;
   align-items:center;
   background:linear-gradient(180deg,#300,#000);
-  border-bottom:2px solid var(--red);
+  border-bottom:2px solid #e60000;
+  position:relative;
+}
+.theme-toggle{
+  position:absolute;
+  left:14px;
+  top:12px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:6px 10px;
+  cursor:pointer;
+  font-size:14px;
 }
 .logo{
+  margin:auto;
   font-weight:900;
   font-size:18px;
-  color:#fff;
 }
 
-/* ===== LEAGUE LOGO BAR ===== */
+/* ===== LEAGUE LOGOS ===== */
 .leagues{
   display:flex;
   gap:14px;
@@ -53,7 +72,7 @@ header{
   display:flex;
   align-items:center;
   justify-content:center;
-  border:2px solid #222;
+  border:2px solid var(--border);
   cursor:pointer;
   transition:.2s;
 }
@@ -64,7 +83,6 @@ header{
   width:52px;
   height:52px;
   object-fit:contain;
-  filter:drop-shadow(0 0 2px #000);
 }
 
 /* ===== HOT CARD ===== */
@@ -104,7 +122,7 @@ header{
 .hot-score{
   font-size:20px;
   font-weight:900;
-  color:var(--red);
+  color:#e60000;
 }
 .hot-btn{
   margin-top:10px;
@@ -123,7 +141,7 @@ header{
   left:0;
   right:0;
   background:linear-gradient(180deg,#200,#000);
-  border-top:2px solid var(--red);
+  border-top:2px solid #e60000;
   display:flex;
 }
 .tab{
@@ -131,16 +149,16 @@ header{
   padding:10px 0;
   text-align:center;
   font-size:12px;
-  color:var(--muted);
+  color:#aaa;
 }
 .tab.active{
-  color:var(--red);
+  color:#e60000;
   font-weight:700;
 }
 .footer{
   text-align:center;
   font-size:11px;
-  color:var(--muted);
+  color:#888;
   margin:90px 0 10px;
 }
 </style>
@@ -149,10 +167,11 @@ header{
 <body>
 
 <header>
+  <div class="theme-toggle" onclick="toggleTheme()">🌓</div>
   <div class="logo">QA BallGenius</div>
 </header>
 
-<!-- LEAGUE LOGOS (ไม่มีชื่อ) -->
+<!-- LEAGUE LOGOS : ครบทุกลีก -->
 <div class="leagues">
   <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
@@ -160,6 +179,8 @@ header{
   <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/2.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/3.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/848.png"></div>
 </div>
 
 <!-- HOT MATCH -->
@@ -198,6 +219,10 @@ header{
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
+
+function toggleTheme(){
+  document.body.classList.toggle('light');
+}
 
 document.querySelectorAll('.league').forEach(l=>{
   l.onclick=()=>{
