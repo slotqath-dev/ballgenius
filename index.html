@@ -15,23 +15,27 @@
   --muted:#aaaaaa;
   --accent:#ffd200;
 
-  /* DARK MODE : ธรรมดา */
-  --bg-main:linear-gradient(180deg,#0a0a0a,#000000);
-}
-.light{
-  --card:#ffffff;
-  --white:#000000;
-  --muted:#555;
-
-  /* LIGHT MODE : ธรรมดา */
-  --bg-main:linear-gradient(180deg,#f5f5f5,#eaeaea);
+  /* พื้นหลังสนาม (เบามาก) */
+  --bg-img:url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=60");
+  --overlay-dark:rgba(0,0,0,.82);
+  --overlay-red:rgba(120,0,0,.25);
 }
 
 *{box-sizing:border-box;font-family:sans-serif}
+
 body{
   margin:0;
   color:var(--white);
-  background:var(--bg-main);
+
+  /* ซ้อน 3 ชั้น = ดุ แต่ไม่แย่งซีน */
+  background:
+    linear-gradient(var(--overlay-dark),var(--overlay-dark)),
+    linear-gradient(var(--overlay-red),var(--overlay-red)),
+    var(--bg-img);
+
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
 }
 
 /* HEADER */
@@ -50,18 +54,6 @@ header{
 .logo span:first-child{color:var(--red)}
 .logo span:last-child{color:#fff}
 
-.theme-btns button{
-  width:22px;
-  height:22px;
-  border-radius:50%;
-  border:1px solid var(--muted);
-  background:transparent;
-  color:var(--white);
-  font-size:12px;
-  cursor:pointer;
-  margin-left:6px;
-}
-
 /* LEAGUES */
 .leagues{
   display:flex;
@@ -73,7 +65,7 @@ header{
   width:64px;
   height:64px;
   flex:0 0 auto;
-  background:var(--card);
+  background:rgba(0,0,0,.6);
   border-radius:16px;
   border:2px solid transparent;
   display:flex;
@@ -91,16 +83,14 @@ header{
 }
 
 /* CONTENT */
-.content{
-  padding:14px;
-  padding-bottom:90px;
-}
+.content{padding:14px;padding-bottom:90px}
 .match{
-  background:var(--card);
+  background:rgba(0,0,0,.65);
   border-radius:18px;
   padding:14px;
+  box-shadow:0 0 20px rgba(255,0,0,.15);
 }
-.match .league-name{
+.league-name{
   color:var(--accent);
   font-size:13px;
   margin-bottom:8px;
@@ -117,7 +107,6 @@ header{
 .team img{
   width:48px;
   height:48px;
-  object-fit:contain;
   background:#fff;
   padding:4px;
   border-radius:10px;
