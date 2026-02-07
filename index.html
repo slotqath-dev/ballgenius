@@ -19,12 +19,11 @@
 .light{
   --bg:#f2f2f2;
   --card:#ffffff;
-  --border:#ddd;
+  --border:#ccc;
   --text:#000000;
 }
 
 *{box-sizing:border-box;font-family:sans-serif}
-
 body{
   margin:0;
   background:var(--bg);
@@ -36,25 +35,31 @@ header{
   padding:12px 14px;
   display:flex;
   align-items:center;
+  justify-content:center;
   background:linear-gradient(180deg,#300,#000);
   border-bottom:2px solid #e60000;
   position:relative;
 }
-.theme-toggle{
+.logo{
+  font-weight:900;
+  font-size:18px;
+}
+
+/* ===== THEME BUTTONS (ขวาบน) ===== */
+.theme-box{
   position:absolute;
-  left:14px;
-  top:12px;
+  right:14px;
+  top:10px;
+  display:flex;
+  gap:6px;
+}
+.theme-btn{
   background:var(--card);
   border:1px solid var(--border);
   border-radius:10px;
-  padding:6px 10px;
+  padding:6px 8px;
   cursor:pointer;
   font-size:14px;
-}
-.logo{
-  margin:auto;
-  font-weight:900;
-  font-size:18px;
 }
 
 /* ===== LEAGUE LOGOS ===== */
@@ -83,6 +88,7 @@ header{
   width:52px;
   height:52px;
   object-fit:contain;
+  filter:drop-shadow(0 0 2px rgba(0,0,0,.6));
 }
 
 /* ===== HOT CARD ===== */
@@ -167,11 +173,16 @@ header{
 <body>
 
 <header>
-  <div class="theme-toggle" onclick="toggleTheme()">🌓</div>
   <div class="logo">QA BallGenius</div>
+
+  <!-- ปุ่มโหมด แยก ดวงอาทิตย์ / ดวงจันทร์ -->
+  <div class="theme-box">
+    <div class="theme-btn" onclick="setTheme('light')">☀️</div>
+    <div class="theme-btn" onclick="setTheme('dark')">🌙</div>
+  </div>
 </header>
 
-<!-- LEAGUE LOGOS : ครบทุกลีก -->
+<!-- LEAGUE LOGOS -->
 <div class="leagues">
   <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
@@ -179,8 +190,6 @@ header{
   <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/2.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/3.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/848.png"></div>
 </div>
 
 <!-- HOT MATCH -->
@@ -220,8 +229,8 @@ header{
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-function toggleTheme(){
-  document.body.classList.toggle('light');
+function setTheme(mode){
+  document.body.className = mode === 'light' ? 'light' : '';
 }
 
 document.querySelectorAll('.league').forEach(l=>{
