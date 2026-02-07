@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
 
-<!-- Telegram Mini App -->
+<!-- Telegram Mini App (ไฟล์เดียวที่ต้องใช้) -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
@@ -78,7 +78,6 @@ header{
 .league img{
   width:36px;
   height:36px;
-  object-fit:contain;
 }
 .league div{
   font-size:12px;
@@ -136,7 +135,6 @@ header{
   text-align:center;
   font-size:12px;
   color:var(--muted);
-  cursor:pointer;
 }
 .tab.active{
   color:var(--red);
@@ -170,31 +168,24 @@ header{
   <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"><div>บุนเดส</div></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"><div>เซเรียอา</div></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"><div>ลีกเอิง</div></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/1.png"><div>โลก</div></div>
 </div>
 
 <div class="content">
-  <section class="today-match">
-    <div class="match-card">
-      <div class="match today">
-        <div class="league-name">โปรแกรมบอลวันนี้</div>
-
-        <div class="teams">
-          <div class="team">
-            <img src="https://media.api-sports.io/football/teams/33.png">
-            <div>แมนยู</div>
-          </div>
-
-          <div class="score">0 : 0</div>
-
-          <div class="team">
-            <img src="https://media.api-sports.io/football/teams/50.png">
-            <div>แมนซิตี้</div>
-          </div>
-        </div>
+  <div class="match">
+    <div class="league-name">โปรแกรมบอลวันนี้</div>
+    <div class="teams">
+      <div class="team">
+        <img src="https://media.api-sports.io/football/teams/33.png">
+        <div>แมนยู</div>
       </div>
+      <div class="score">0 : 0</div>
+      <div class="team">
+        <img src="https://media.api-sports.io/football/teams/50.png">
+        <div>แมนซิตี้</div>
+      </div>
+    </div>
   </div>
-</section>
+</div>
 
 <!-- BOTTOM MENU -->
 <div class="bottom">
@@ -208,6 +199,7 @@ header{
 
 <script>
 Telegram.WebApp.ready();
+Telegram.WebApp.expand();
 
 function setTheme(mode){
   document.body.className = mode === 'light' ? 'light' : '';
@@ -215,4 +207,4 @@ function setTheme(mode){
 </script>
 
 </body>
-</html> 
+</html>
