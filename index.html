@@ -55,12 +55,16 @@ body::before{
   z-index:-2;
 }
 
-body::after{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:var(--overlay);
-  z-index:-1;
+body{
+  margin:0;
+  color:var(--white);
+  background:
+    linear-gradient(var(--overlay),var(--overlay)),
+    var(--bg-img);
+  background-color:var(--bg-color);
+  background-size:600px auto;      /* ไม่ใหญ่ */
+  background-position:center top;  /* กลางจอ */
+  background-repeat:no-repeat;
 }
 
 /* HEADER */
@@ -240,12 +244,8 @@ document.querySelectorAll('.league').forEach(l=>{
   }
 });
 
-function setDark(){
-  document.body.classList.remove('light');
-}
-function setLight(){
-  document.body.classList.add('light');
-}
+function setDark(){document.body.classList.remove('light')}
+function setLight(){document.body.classList.add('light')}
 </script>
 
 </body>
