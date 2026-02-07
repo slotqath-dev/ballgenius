@@ -9,31 +9,36 @@
 
 <style>
 :root{
+  --card:#161616;
   --red:#e60000;
-  --gold:#ffd200;
-  --card:#141414;
-  --text:#fff;
-  --muted:#aaa;
+  --white:#ffffff;
+  --muted:#aaaaaa;
+  --accent:#ffd200;
 
-  --bg-img:url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1600&q=80");
-  --overlay:rgba(0,0,0,.82);
+  /* DARK */
+  --bg-color:#000;
+  --bg-img:url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80");
+  --overlay:rgba(0,0,0,.85);
 }
 .light{
   --card:#ffffff;
-  --text:#000;
+  --white:#000;
   --muted:#555;
-  --bg-img:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1600&q=80");
+
+  /* LIGHT */
+  --bg-color:#f4f4f4;
+  --bg-img:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1200&q=80");
   --overlay:rgba(255,255,255,.85);
 }
 
 *{box-sizing:border-box;font-family:sans-serif}
-
 body{
   margin:0;
-  color:var(--text);
+  color:var(--white);
   background:
     linear-gradient(var(--overlay),var(--overlay)),
     var(--bg-img);
+  background-color:var(--bg-color);
   background-size:900px auto;
   background-repeat:repeat;
 }
@@ -44,29 +49,29 @@ header{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  background:linear-gradient(180deg,#300,#000);
   border-bottom:2px solid var(--red);
-  background:#000;
 }
 .logo{
-  font-size:24px;
   font-weight:900;
+  font-size:22px;
 }
 .logo span:first-child{color:var(--red)}
 .logo span:last-child{color:#fff}
 
 .theme-btns button{
-  width:26px;
-  height:26px;
-  border-radius:50%;
-  border:1px solid var(--muted);
   background:transparent;
-  color:var(--text);
+  border:1px solid var(--muted);
+  color:var(--white);
+  width:24px;
+  height:24px;
   font-size:12px;
-  margin-left:6px;
+  border-radius:50%;
   cursor:pointer;
+  margin-left:4px;
 }
 
-/* LEAGUES */
+/* ===== LEAGUES (โฟกัสตรงนี้) ===== */
 .leagues{
   display:flex;
   gap:12px;
@@ -74,37 +79,45 @@ header{
   overflow-x:auto;
 }
 .league{
-  min-width:64px;
+  width:64px;
   height:64px;
+  flex:0 0 auto;
   background:var(--card);
-  border-radius:14px;
+  border-radius:16px;
   border:2px solid transparent;
   display:flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
 }
-.league.active{border-color:var(--gold)}
+.league.active{
+  border-color:var(--accent);
+}
+
+/* โลโก้เต็มกรอบ ชัดทุกลีก */
 .league img{
-  width:44px;
-  height:44px;
+  width:100%;
+  height:100%;
   object-fit:contain;
+  padding:6px;
   background:#fff;
-  padding:4px;
-  border-radius:8px;
+  border-radius:12px;
 }
 
 /* CONTENT */
-.content{padding:14px}
+.content{
+  padding:14px;
+  padding-bottom:90px;
+}
 .match{
   background:var(--card);
   border-radius:18px;
-  padding:16px;
+  padding:14px;
 }
-.match-title{
-  color:var(--gold);
-  font-size:14px;
-  margin-bottom:12px;
+.match .league-name{
+  color:var(--accent);
+  font-size:13px;
+  margin-bottom:8px;
 }
 .teams{
   display:flex;
@@ -116,14 +129,15 @@ header{
   text-align:center;
 }
 .team img{
-  width:46px;
-  height:46px;
+  width:48px;
+  height:48px;
+  object-fit:contain;
   background:#fff;
   padding:4px;
   border-radius:10px;
 }
 .score{
-  font-size:24px;
+  font-size:22px;
   font-weight:900;
   color:var(--red);
 }
@@ -132,14 +146,14 @@ header{
 .bottom{
   position:fixed;
   bottom:0;left:0;right:0;
-  display:flex;
-  background:#000;
+  background:linear-gradient(180deg,#200,#000);
   border-top:2px solid var(--red);
+  display:flex;
 }
 .tab{
   flex:1;
-  text-align:center;
   padding:10px 0;
+  text-align:center;
   font-size:12px;
   color:var(--muted);
 }
@@ -153,13 +167,16 @@ header{
 <body>
 
 <header>
-  <div class="logo"><span>QA</span> <span>BallGenius</span></div>
+  <div class="logo">
+    <span>QA</span> <span>BallGenius</span>
+  </div>
   <div class="theme-btns">
-    <button onclick="dark()">🌙</button>
-    <button onclick="light()">☀️</button>
+    <button onclick="setDark()">🌙</button>
+    <button onclick="setLight()">☀️</button>
   </div>
 </header>
 
+<!-- LEAGUES -->
 <div class="leagues">
   <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
@@ -170,7 +187,7 @@ header{
 
 <div class="content">
   <div class="match">
-    <div class="match-title">🔥 HOT โปรแกรมวันนี้</div>
+    <div class="league-name">🔥 HOT โปรแกรมวันนี้</div>
     <div class="teams">
       <div class="team">
         <img src="https://media.api-sports.io/football/teams/33.png">
@@ -203,8 +220,12 @@ document.querySelectorAll('.league').forEach(l=>{
   }
 });
 
-function dark(){document.body.classList.remove('light')}
-function light(){document.body.classList.add('light')}
+function setDark(){
+  document.body.classList.remove('light');
+}
+function setLight(){
+  document.body.classList.add('light');
+}
 </script>
 
 </body>
