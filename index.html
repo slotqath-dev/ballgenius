@@ -171,19 +171,36 @@ header{
 </div>
 
 <div class="content">
-  <div class="match">
-    <div class="league-name">โปรแกรมบอลวันนี้</div>
-    <div class="teams">
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/33.png">
-        <div>แมนยู</div>
-      </div>
-      <div class="score">0 : 0</div>
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/50.png">
-        <div>แมนซิตี้</div>
+ <!-- HOT PROGRAM TODAY -->
+<div class="match">
+  <div class="league-name">
+    🔥 โปรแกรมวันนี้ (HOT)
+    <span style="float:right;font-size:12px;cursor:pointer"
+      onclick="toggleHot(this)">ย่อ / ขยาย</span>
+  </div>
+
+  <div class="hot-box" style="display:none">
+
+    <!-- พรีเมียร์ลีก -->
+    <div style="margin-bottom:8px">
+      <strong>พรีเมียร์ลีก</strong>
+      <div class="teams">
+        <div class="team">แมนยู</div>
+        <div class="score">vs</div>
+        <div class="team">แมนซิตี้</div>
       </div>
     </div>
+
+    <!-- ลาลีกา -->
+    <div style="margin-bottom:8px">
+      <strong>ลาลีกา</strong>
+      <div class="teams">
+        <div class="team">บาร์ซ่า</div>
+        <div class="score">vs</div>
+        <div class="team">มาดริด</div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -201,9 +218,11 @@ header{
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-function setTheme(mode){
-  document.body.className = mode === 'light' ? 'light' : '';
+function toggleHot(el){
+  const box = el.parentElement.nextElementSibling;
+  box.style.display = box.style.display === 'none' ? 'block' : 'none';
 }
+
 </script>
 
 </body>
