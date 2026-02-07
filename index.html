@@ -13,22 +13,21 @@
   --card:#161616;
 }
 
-/* ===== DARK / LIGHT ===== */
 body{
   margin:0;
   font-family:sans-serif;
   color:#fff;
   background:
-    linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.9)),
-    url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80");
+    linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.95)),
+    url("https://images.unsplash.com/photo-1522778119026-d647f0596c20");
   background-size:700px auto;
   background-repeat:repeat;
 }
 body.light{
   color:#000;
   background:
-    linear-gradient(rgba(255,255,255,.85),rgba(255,255,255,.95)),
-    url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80");
+    linear-gradient(rgba(255,255,255,.9),rgba(255,255,255,.95)),
+    url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2");
   background-size:700px auto;
   background-repeat:repeat;
 }
@@ -42,7 +41,7 @@ header{
   border-bottom:2px solid var(--red);
   background:rgba(0,0,0,.7);
 }
-body.light header{background:rgba(255,255,255,.85)}
+body.light header{background:rgba(255,255,255,.9)}
 
 .logo{
   font-size:22px;
@@ -55,43 +54,43 @@ body.light header{background:rgba(255,255,255,.85)}
   border:1px solid var(--red);
   padding:6px 10px;
   border-radius:8px;
-  cursor:pointer;
   font-size:16px;
+  cursor:pointer;
 }
 
-/* ===== LEAGUES ===== */
+/* ===== LEAGUE LIST ===== */
 .leagues{
   display:flex;
-  gap:10px;
-  padding:12px;
+  gap:12px;
+  padding:14px;
   overflow-x:auto;
 }
 
 .league{
-  display:inline-flex;
+  display:flex;
   align-items:center;
   justify-content:center;
-  padding:6px;                 /* กรอบพอดี */
+  padding:7px;
   border:2px solid var(--red);
-  border-radius:10px;
+  border-radius:12px;
   background:var(--card);
 }
 body.light .league{background:#fff}
 
 .league img{
-  width:36px;                  /* เล็กลงอีกนิด */
-  height:36px;
+  width:42px;
+  height:42px;
   background:#fff;
-  border-radius:6px;
+  border-radius:8px;
 }
 
 /* ===== HOT CARD ===== */
 .hot-card{
-  margin:14px;
-  padding:14px;
-  border-radius:18px;
+  margin:16px;
+  padding:16px;
+  border-radius:20px;
   border:2px solid var(--red);
-  background:rgba(0,0,0,.8);
+  background:rgba(0,0,0,.85);
 }
 body.light .hot-card{background:#fff}
 
@@ -99,29 +98,27 @@ body.light .hot-card{background:#fff}
   display:flex;
   justify-content:space-between;
   font-size:13px;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 .hot-badge{
   background:var(--red);
   color:#fff;
-  padding:3px 8px;
-  border-radius:10px;
+  padding:3px 9px;
+  border-radius:12px;
   font-size:11px;
 }
+
 .hot-teams{
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
-.hot-team{
-  text-align:center;
-}
 .hot-team img{
-  width:36px;
-  height:36px;
+  width:42px;
+  height:42px;
   background:#fff;
   padding:4px;
-  border-radius:6px;
+  border-radius:8px;
 }
 .hot-score{
   font-size:20px;
@@ -138,6 +135,7 @@ body.light .hot-card{background:#fff}
   background:rgba(0,0,0,.9);
 }
 body.light .bottom{background:#fff}
+
 .tab{
   flex:1;
   padding:10px;
@@ -154,7 +152,7 @@ body.light .bottom{background:#fff}
   text-align:center;
   font-size:11px;
   color:var(--muted);
-  margin:12px 0 80px;
+  margin:14px 0 80px;
 }
 </style>
 </head>
