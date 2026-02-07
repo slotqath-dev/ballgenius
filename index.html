@@ -3,62 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QA BallGenius</title>
+<title>League Logos</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  font-family:system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-}
+*{box-sizing:border-box;font-family:sans-serif}
 body{
   margin:0;
   background:linear-gradient(180deg,#140000,#050505,#000);
-  color:#fff;
+  padding:20px;
 }
 
-/* ===== HEADER ===== */
-.header{
-  padding:14px 18px;
+/* ===== LEAGUE BAR ===== */
+.league-bar{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  padding:8px 4px;
+}
+.league-bar::-webkit-scrollbar{display:none}
+
+.league-item{
+  min-width:64px;
+  height:64px;
+  border-radius:14px;
+  background:#2a1240;
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  background:linear-gradient(90deg,#2b0000,#120012);
+  justify-content:center;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.05);
 }
 
-.logo{
-  font-size:22px;
-  font-weight:800;
-  letter-spacing:.5px;
-}
-.logo .qa{
-  color:#ff0000; /* <<< QA สีแดง */
-}
-.logo .name{
-  color:#ffffff;
+/* active (ทั้งหมด) */
+.league-item.active{
+  background:#f5b400;
+  box-shadow:0 0 0 2px #f5b400;
 }
 
-/* ===== PLACEHOLDER CONTENT ===== */
-.content{
-  padding:24px;
-  opacity:.6;
-  text-align:center;
+.league-item img{
+  width:38px;
+  height:38px;
+  object-fit:contain;
 }
+
+/* ===== LOGO COLOR FIX ===== */
+.logo-dark{filter:none}
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="logo">
-    <span class="qa">QA</span>
-    <span class="name"> BallGenius</span>
-  </div>
-</div>
+<div class="league-bar">
 
-<!-- CONTENT (ไม่แตะระบบอื่น) -->
-<div class="content">
-  ระบบยังคงเดิม • แก้เฉพาะคำว่า QA
+  <div class="league-item active">
+    <span style="font-weight:700">ทั้งหมด</span>
+  </div>
+
+  <div class="league-item">
+    <img class="logo-dark" src="https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg">
+  </div>
+
+  <div class="league-item">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/LaLiga_Santander.svg">
+  </div>
+
+  <div class="league-item">
+    <img src="https://upload.wikimedia.org/wikipedia/en/d/df/Bundesliga_logo_%282017%29.svg">
+  </div>
+
+  <div class="league-item">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Serie_A_logo_%282019%29.svg">
+  </div>
+
+  <div class="league-item">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Ligue1.svg">
+  </div>
+
 </div>
 
 </body>
