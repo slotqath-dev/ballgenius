@@ -1,65 +1,63 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QA BallGenius</title>
-
 <style>
-*{
-  box-sizing:border-box;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+/* ===== LEAGUE LOGO ROW ===== */
+.league-row{
+  display:flex;
+  gap:14px;
+  padding:14px;
+  overflow-x:auto;
+  background:linear-gradient(180deg,#1a0830,#12001f);
 }
 
-body{
-  margin:0;
-  background:linear-gradient(180deg,#0b0000,#000);
-  color:#fff;
+.league-item{
+  min-width:86px;
+  height:86px;
+  background:#2a0f46;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.06);
 }
 
-/* ===== HEADER ===== */
-.header{
-  padding:16px 20px;
-  background:linear-gradient(90deg,#1a0000,#0a0000);
-  border-bottom:1px solid #330000;
+.league-item.active{
+  background:#f7b500;
+  box-shadow:
+    0 0 0 4px rgba(247,181,0,.35),
+    inset 0 0 0 2px rgba(0,0,0,.1);
 }
 
-.logo{
-  font-size:26px;
-  font-weight:800;
-  letter-spacing:1px;
-}
-
-.logo .qa{
-  color:#ff2b2b; /* QA สีแดง */
-}
-
-.logo .bg{
-  color:#ffffff;
-}
-
-/* ===== DEMO BODY ===== */
-.demo{
-  padding:40px 20px;
-  opacity:.3;
+.league-item img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  background:#fff;
+  border-radius:12px;
+  padding:6px;
 }
 </style>
-</head>
 
-<body>
-
-  <!-- หัวเว็บ -->
-  <div class="header">
-    <div class="logo">
-      <span class="qa">QA</span>
-      <span class="bg"> BallGenius</span>
-    </div>
+<div class="league-row">
+  <div class="league-item active">
+    <span style="font-weight:700;color:#000;">ทั้งหมด</span>
   </div>
 
-  <!-- เนื้อหาทดสอบ (ไม่เกี่ยว เอาไว้กันหน้าว่าง) -->
-  <div class="demo">
-    content area
+  <div class="league-item">
+    <img src="https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg">
   </div>
 
-</body>
-</html>
+  <div class="league-item">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/LaLiga_logo.svg">
+  </div>
+
+  <div class="league-item">
+    <img src="https://upload.wikimedia.org/wikipedia/en/d/df/Bundesliga_logo_%282017%29.svg">
+  </div>
+
+  <div class="league-item">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Serie_A_logo_%282019%29.svg">
+  </div>
+
+  <div class="league-item">
+    <img src="https://upload.wikimedia.org/wikipedia/en/9/9e/Ligue1_logo.svg">
+  </div>
+</div>
