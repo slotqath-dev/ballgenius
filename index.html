@@ -15,15 +15,25 @@
   --muted:#aaaaaa;
   --accent:#ffd200;
 
-  /* DARK MODE : พื้นหลังนักฟุตบอล */
-  --overlay:rgba(20,0,40,.78);
+  /* DARK MODE : ดำแดง + นักเตะ */
+  --bg-img:url("https://images.unsplash.com/photo-1600679472829-3044539ce8ed?auto=format&fit=crop&w=1600&q=80");
+  --overlay:linear-gradient(
+    rgba(0,0,0,.88),
+    rgba(120,0,0,.55)
+  );
 }
+
 .light{
   --card:#ffffff;
   --white:#000000;
   --muted:#555;
 
-  --overlay:rgba(255,255,255,.85);
+  /* LIGHT MODE : ดำแดงอ่อน */
+  --bg-img:url("https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1600&q=80");
+  --overlay:linear-gradient(
+    rgba(255,255,255,.88),
+    rgba(255,220,220,.75)
+  );
 }
 
 *{box-sizing:border-box;font-family:sans-serif}
@@ -31,15 +41,14 @@ body{
   margin:0;
   color:var(--white);
 
-  /* พื้นหลังรูป (ฝังในไฟล์เดียว) */
   background:
-    linear-gradient(var(--overlay),var(--overlay)),
-    url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...<ตัดสั้นเพื่อความเข้าใจ>...");
+    var(--overlay),
+    var(--bg-img);
 
-  background-size:cover;
-  background-position:right center;
+  background-size:cover;           /* ⭐ สำคัญ */
+  background-position:center right;/* ⭐ เห็นตัวนักเตะ */
   background-repeat:no-repeat;
-  background-color:#140020;
+  background-attachment:fixed;
 }
 
 /* HEADER */
@@ -48,7 +57,7 @@ header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:linear-gradient(180deg,#300,#000);
+  background:linear-gradient(180deg,#400,#000);
   border-bottom:2px solid var(--red);
 }
 .logo{
@@ -81,13 +90,12 @@ header{
   width:64px;
   height:64px;
   flex:0 0 auto;
-  background:rgba(0,0,0,.55);
+  background:rgba(0,0,0,.6);
   border-radius:16px;
   border:2px solid transparent;
   display:flex;
   align-items:center;
   justify-content:center;
-  cursor:pointer;
 }
 .league.active{border-color:var(--accent)}
 .league img{
@@ -105,7 +113,7 @@ header{
   padding-bottom:90px;
 }
 .match{
-  background:rgba(0,0,0,.55);
+  background:rgba(0,0,0,.6);
   backdrop-filter:blur(6px);
   border-radius:18px;
   padding:14px;
@@ -127,7 +135,6 @@ header{
 .team img{
   width:48px;
   height:48px;
-  object-fit:contain;
   background:#fff;
   padding:4px;
   border-radius:10px;
@@ -142,7 +149,7 @@ header{
 .bottom{
   position:fixed;
   bottom:0;left:0;right:0;
-  background:linear-gradient(180deg,#200,#000);
+  background:linear-gradient(180deg,#400,#000);
   border-top:2px solid var(--red);
   display:flex;
 }
@@ -163,9 +170,7 @@ header{
 <body>
 
 <header>
-  <div class="logo">
-    <span>QA</span> <span>BallGenius</span>
-  </div>
+  <div class="logo"><span>QA</span> <span>BallGenius</span></div>
   <div class="theme-btns">
     <button onclick="setDark()">🌙</button>
     <button onclick="setLight()">☀️</button>
