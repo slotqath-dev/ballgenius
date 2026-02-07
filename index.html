@@ -15,7 +15,7 @@
   --muted:#aaaaaa;
   --accent:#ffd200;
 
-  /* 🌙 DARK : สนามบอลกว้าง */
+  /* 🌙 DARK : สนามบอล */
   --bg-color:#000;
   --bg-img:url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1600&q=80");
   --overlay:rgba(0,0,0,.78);
@@ -46,7 +46,7 @@ body{
 
 /* HEADER */
 header{
-  padding:14px;
+  padding:14px 12px 14px 8px; /* ชิดซ้าย */
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -58,12 +58,12 @@ header{
 }
 .logo{
   font-weight:900;
-  font-size:20px;
+  font-size:24px;          /* ใหญ่ขึ้น */
+  letter-spacing:.5px;
 }
 .logo span:first-child{color:var(--red)}
 .logo span:last-child{color:var(--white)}
 
-/* 🔥 ปุ่มโหมด (ย่อแล้ว) */
 .theme-btns button{
   background:transparent;
   border:1px solid var(--muted);
@@ -78,7 +78,7 @@ header{
   line-height:34px;
 }
 
-/* LEAGUES (เลื่อนข้าง) */
+/* LEAGUES */
 .leagues{
   display:flex;
   gap:10px;
@@ -208,25 +208,4 @@ header{
 
 <div class="bottom">
   <div class="tab active">ยอดนิยม</div>
-  <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
-</div>
-
-<script>
-Telegram.WebApp.ready();
-Telegram.WebApp.expand();
-
-document.querySelectorAll('.league').forEach(l=>{
-  l.onclick=()=>{
-    document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
-    l.classList.add('active');
-  }
-});
-
-function setDark(){ document.body.classList.remove('light'); }
-function setLight(){ document.body.classList.add('light'); }
-</script>
-
-</body>
-</html>
+  <div class="tab">สด</d
