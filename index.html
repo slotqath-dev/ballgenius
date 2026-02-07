@@ -11,10 +11,9 @@
 :root{
   --bg:#0b0b0b;
   --card:#161616;
-  --red:#e60000;
+  --gold:#ffd200;
   --white:#ffffff;
-  --muted:#aaaaaa;
-  --accent:#ffd200;
+  --purple:#1b0f2e;
 }
 
 *{box-sizing:border-box;font-family:sans-serif}
@@ -27,52 +26,52 @@ body{
 /* HEADER */
 header{
   padding:14px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
   background:linear-gradient(180deg,#300,#000);
-  border-bottom:2px solid var(--red);
+  border-bottom:2px solid #e60000;
+  font-weight:900;
+  font-size:18px;
 }
-.logo{font-weight:900;font-size:18px}
-.logo span:last-child{color:var(--red)}
 
 /* LEAGUES */
 .leagues{
   display:flex;
-  gap:10px;
-  padding:12px;
+  gap:12px;
+  padding:14px;
   overflow-x:auto;
 }
 .league{
-  min-width:76px;
-  height:76px;
-  background:#1b0f2e;
-  border-radius:18px;
+  min-width:82px;
+  height:82px;
+  background:var(--purple);
+  border-radius:20px;
   border:2px solid #3f2b66;
   display:flex;
   align-items:center;
   justify-content:center;
-}
-.league.active{
-  background:#ffd200;
-  border-color:#fff;
+  cursor:pointer;
+  transition:.25s;
 }
 .league img{
-  width:56px;
-  height:56px;
-  background:#ffffff;
-  border-radius:14px;
+  width:60px;
+  height:60px;
+  background:#fff;
+  border-radius:16px;
   padding:4px;
-  border:2px solid #ffffff;
-  box-shadow:0 4px 12px rgba(0,0,0,.45);
   object-fit:contain;
+}
+
+/* ACTIVE = GOLD */
+.league.active{
+  background:var(--gold);
+  border-color:#fff;
+  box-shadow:0 0 14px rgba(255,210,0,.8);
 }
 
 /* HOT CARD */
 .hot-card{
   background:linear-gradient(180deg,#220033,#0a0012);
-  border-radius:18px;
-  padding:14px;
+  border-radius:20px;
+  padding:16px;
   margin:14px;
   border:1px solid #3a003f;
 }
@@ -80,12 +79,11 @@ header{
   display:flex;
   justify-content:space-between;
   font-size:13px;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 .hot-badge{
   background:#ff3d00;
-  color:#fff;
-  padding:3px 8px;
+  padding:4px 10px;
   border-radius:14px;
   font-weight:700;
 }
@@ -94,61 +92,53 @@ header{
   justify-content:space-between;
   align-items:center;
 }
-.hot-team{
-  width:40%;
-  text-align:center;
-}
 .hot-team img{
-  width:56px;
-  height:56px;
+  width:60px;
+  height:60px;
 }
 .hot-score{
-  font-size:20px;
+  font-size:22px;
   font-weight:900;
-  color:var(--accent);
+  color:var(--gold);
 }
 .hot-btn{
-  margin-top:12px;
+  margin-top:14px;
   background:linear-gradient(90deg,#ff0077,#ff3d00);
-  padding:12px;
-  border-radius:14px;
+  padding:14px;
+  border-radius:16px;
   text-align:center;
-  font-weight:700;
+  font-weight:800;
 }
 
 /* BOTTOM */
 .bottom{
   position:fixed;
   bottom:0;left:0;right:0;
-  background:linear-gradient(180deg,#200,#000);
-  border-top:2px solid var(--red);
+  background:#000;
+  border-top:2px solid #e60000;
   display:flex;
 }
 .tab{
   flex:1;
-  padding:10px 0;
+  padding:12px 0;
   text-align:center;
   font-size:12px;
-  color:var(--muted);
+  color:#aaa;
 }
-.tab.active{
-  color:var(--red);
-  font-weight:700;
-}
+.tab.active{color:#ffd200;font-weight:700}
+
 .footer{
   text-align:center;
   font-size:11px;
-  color:var(--muted);
-  margin:10px 0 80px;
+  color:#888;
+  margin:12px 0 90px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo"><span>QA</span> <span>BallGenius</span></div>
-</header>
+<header>QA <span style="color:#e60000">BallGenius</span></header>
 
 <div class="leagues">
   <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
@@ -160,7 +150,7 @@ header{
 
 <div class="hot-card">
   <div class="hot-top">
-    <div><span class="hot-badge">🔥 HOT</span> พรีเมียร์ลีก</div>
+    <div><span class="hot-badge">🔥 HOT</span></div>
     <div>วันนี้ 19:30</div>
   </div>
 
@@ -189,6 +179,14 @@ header{
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
+
+/* CLICK ACTIVE LEAGUE */
+document.querySelectorAll('.league').forEach(item=>{
+  item.addEventListener('click',()=>{
+    document.querySelectorAll('.league').forEach(l=>l.classList.remove('active'));
+    item.classList.add('active');
+  });
+});
 </script>
 
 </body>
