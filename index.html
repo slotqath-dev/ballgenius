@@ -9,28 +9,16 @@
 <style>
 *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 
-/* ===== THEME ===== */
-body.dark{
-  --bg:#000;
-  --bg-soft:#120000;
-  --card:#1a0000;
-  --text:#fff;
-  --muted:#aaa;
-  --accent:#ff1e1e;
-}
-body.light{
-  --bg:#f5f5f5;
-  --bg-soft:#ffffff;
-  --card:#ffffff;
-  --text:#111;
-  --muted:#666;
-  --accent:#d90000;
-}
-
+/* ===== THEME (Dark Only ก่อน) ===== */
 body{
   margin:0;
-  background:var(--bg);
-  color:var(--text);
+  background:#000;
+  color:#fff;
+}
+:root{
+  --accent:#ff1e1e;
+  --card:#140000;
+  --muted:#aaa;
 }
 
 /* ===== HEADER ===== */
@@ -38,31 +26,60 @@ body{
   height:56px;
   display:flex;
   align-items:center;
-  justify-content:space-between;
   padding:0 14px;
   font-weight:800;
-  background:linear-gradient(90deg,var(--bg-soft),var(--bg));
+  background:linear-gradient(90deg,#200000,#000);
   border-bottom:2px solid var(--accent);
-}
-.title{font-size:20px}
-.actions{display:flex;gap:10px}
-.btn{
-  width:30px;height:30px;border-radius:50%;
-  background:var(--card);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:15px;
-  box-shadow:0 0 6px rgba(0,0,0,.3);
 }
 
 /* ===== CONTENT ===== */
-.content{padding:16px;padding-bottom:90px}
+.content{
+  padding:14px;
+  padding-bottom:90px;
+}
+
 .card{
   background:var(--card);
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:14px;
-  box-shadow:0 4px 16px rgba(0,0,0,.25);
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:12px;
   border:1px solid rgba(255,0,0,.25);
+  box-shadow:0 4px 14px rgba(0,0,0,.4);
+}
+
+.league{
+  font-size:13px;
+  color:#ffb3b3;
+  margin-bottom:8px;
+}
+
+.match{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:700;
+}
+
+.score{
+  color:var(--accent);
+  font-size:18px;
+}
+
+.time{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+.btn{
+  margin-top:10px;
+  background:linear-gradient(180deg,#ff2b2b,#a00000);
+  color:#fff;
+  text-align:center;
+  padding:10px;
+  border-radius:12px;
+  font-weight:800;
+  cursor:pointer;
 }
 
 /* ===== BOTTOM NAV ===== */
@@ -70,18 +87,22 @@ body{
   position:fixed;
   bottom:0;left:0;right:0;
   height:74px;
-  background:var(--bg-soft);
+  background:#120000;
   border-top:2px solid var(--accent);
   display:flex;
 }
 .tab{
-  flex:1;text-align:center;
+  flex:1;
+  text-align:center;
   padding-top:10px;
   font-size:12px;
   color:var(--muted);
-  cursor:pointer;
 }
-.tab span{display:block;font-size:22px;margin-bottom:4px}
+.tab span{
+  display:block;
+  font-size:22px;
+  margin-bottom:4px;
+}
 .tab.active{
   background:linear-gradient(180deg,var(--accent),#700000);
   color:#fff;
@@ -90,23 +111,14 @@ body{
 </style>
 </head>
 
-<body class="dark">
+<body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="title">QA BallGenius</div>
-  <div class="actions">
-    <div class="btn" onclick="setTheme('dark')">🌙</div>
-    <div class="btn" onclick="setTheme('light')">☀️</div>
-  </div>
+<div class="header">⚽ BallGenius | โปรแกรมบอลวันนี้</div>
+
+<div class="content" id="list">
+  <div class="card">กำลังโหลดข้อมูล...</div>
 </div>
 
-<!-- CONTENT -->
-<div class="content">
-  <div class="card">โหมดทดสอบ QA / ระบบพร้อมใช้งาน</div>
-</div>
-
-<!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <div class="tab active"><span>🔥</span>วันนี้</div>
   <div class="tab"><span>📺</span>สด</div>
@@ -117,15 +129,40 @@ body{
 <script>
 Telegram.WebApp.ready();
 
-/* ===== THEME SWITCH ===== */
-function setTheme(mode){
-  document.body.className = mode;
-  localStorage.setItem('theme', mode);
-}
+/* ===== SCOREBAT API (FREE) ===== */
+fetch("https://www.scorebat.com/video-api/v3/")
+.then(res=>res.json())
+.then(data=>{
+  const list = document.getElementById("list");
+  list.innerHTML = "";
 
-/* LOAD SAVED THEME */
-const saved = localStorage.getItem('theme');
-if(saved){ setTheme(saved); }
+  data.response.slice(0,10).forEach(m=>{
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
+      <div class="league">${m.competition}</div>
+      <div class="match">
+        <div>${m.title.split(" - ")[0]}</div>
+        <div class="score">VS</div>
+        <div>${m.title.split(" - ")[1]}</div>
+      </div>
+      <div class="time">${new Date(m.date).toLocaleString("th-TH")}</div>
+      <div class="btn" onclick="openLink('${m.matchviewUrl}')">
+        ▶ ดูไฮไลท์
+      </div>
+    `;
+    list.appendChild(div);
+  });
+})
+.catch(()=>{
+  document.getElementById("list").innerHTML =
+    "<div class='card' style='color:red'>โหลดข้อมูลไม่ได้ (API)</div>";
+});
+
+/* ===== OPEN LINK ===== */
+function openLink(url){
+  Telegram.WebApp.openLink(url);
+}
 </script>
 
 </body>
