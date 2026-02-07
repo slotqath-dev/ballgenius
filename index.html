@@ -9,20 +9,22 @@
 
 <style>
 :root{
-  --bg:#0b0b0b;
   --card:#161616;
   --red:#e60000;
   --white:#ffffff;
   --muted:#aaaaaa;
   --accent:#ffd200;
+
+  /* DARK MODE : สนามฟุตบอล */
   --bg-img:url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80");
 }
 .light{
-  --bg:#f4f4f4;
   --card:#ffffff;
   --white:#000;
   --muted:#555;
-  --bg-img:url("https://images.unsplash.com/photo-1509027572446-af8401acfdc3?auto=format&fit=crop&w=1200&q=80");
+
+  /* LIGHT MODE : ถ้วยรางวัล */
+  --bg-img:url("https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1200&q=80");
 }
 
 *{box-sizing:border-box;font-family:sans-serif}
@@ -30,7 +32,7 @@ body{
   margin:0;
   color:var(--white);
   background:
-    linear-gradient(rgba(0,0,0,.78),rgba(0,0,0,.88)),
+    linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.85)),
     var(--bg-img);
   background-size:700px auto;
   background-repeat:repeat;
@@ -158,8 +160,7 @@ header{
   <button class="theme-btn" onclick="toggleTheme()">🌙</button>
 </header>
 
-<!-- LEAGUES -->
-<div class="leagues" id="leagues">
+<div class="leagues">
   <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
