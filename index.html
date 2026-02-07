@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
 
-<!-- Telegram Mini App -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 :root{
-  --bg:#0b0b0b;
+  --bg:#0b0000;
+  --card:#160000;
   --red:#e10600;
   --red-dark:#8b0000;
   --text:#ffffff;
+  --muted:#888;
 }
 
 *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -22,51 +23,55 @@ body{
   margin:0;
   background:linear-gradient(180deg,#140000,#000);
   color:var(--text);
+  padding-bottom:70px;
 }
 
-/* ===== HEADER ===== */
+/* HEADER (ไม่แตะ) */
 .header{
   padding:14px;
   text-align:center;
-  font-weight:800;
   font-size:20px;
-  letter-spacing:.5px;
-  background:linear-gradient(180deg,#1a0000,#000);
+  font-weight:800;
   border-bottom:2px solid var(--red);
 }
 
-.header span{
-  color:var(--red);
-}
-
-/* ===== CONTENT (เผื่อหน้าโล่งไม่พัง) ===== */
+/* CONTENT ตัวอย่าง */
 .content{
   padding:20px;
-  min-height:70vh;
   color:#aaa;
   text-align:center;
 }
 
-/* ===== BOTTOM TAB (กันโครงหาย) ===== */
-.bottom-tab{
+/* ===== BOTTOM MENU ===== */
+.bottom-nav{
   position:fixed;
   bottom:0;
   left:0;
   right:0;
-  height:64px;
-  background:#111;
-  border-top:1px solid var(--red-dark);
+  height:70px;
+  background:linear-gradient(180deg,#1a0000,#000);
+  border-top:2px solid var(--red-dark);
   display:flex;
+  z-index:99;
 }
 
-.tab{
+.nav-item{
   flex:1;
   text-align:center;
-  padding-top:8px;
   font-size:12px;
-  color:#aaa;
+  color:var(--muted);
+  padding-top:8px;
+  cursor:pointer;
+  transition:.2s;
 }
-.tab.active{
+
+.nav-item span{
+  display:block;
+  font-size:20px;
+  margin-bottom:4px;
+}
+
+.nav-item.active{
   color:var(--red);
   font-weight:700;
 }
@@ -75,27 +80,37 @@ body{
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  QA <span>BallGenius</span>
-</div>
+<div class="header">QA BallGenius</div>
 
-<!-- CONTENT -->
 <div class="content">
-  พร้อมแก้เมนูถัดไป 👍
+  แก้แท็บล่างเรียบร้อย ✔
 </div>
 
-<!-- BOTTOM TAB -->
-<div class="bottom-tab">
-  <div class="tab active">ยอดนิยม</div>
-  <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
+<!-- ===== BOTTOM TAB ===== -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="setTab(this)">
+    <span>🔥</span>ยอดนิยม
+  </div>
+  <div class="nav-item" onclick="setTab(this)">
+    <span>🔴</span>สด
+  </div>
+  <div class="nav-item" onclick="setTab(this)">
+    <span>📅</span>โปรแกรม
+  </div>
+  <div class="nav-item" onclick="setTab(this)">
+    <span>⚙️</span>เพิ่มเติม
+  </div>
 </div>
 
 <script>
 const tg = window.Telegram.WebApp;
 tg.expand();
+
+function setTab(el){
+  document.querySelectorAll('.nav-item')
+    .forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+}
 </script>
 
 </body>
