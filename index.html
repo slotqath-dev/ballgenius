@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
 
-<!-- Telegram Mini App -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
@@ -16,6 +15,7 @@
   --white:#ffffff;
   --muted:#aaaaaa;
   --accent:#ffd200;
+  --pink:#ff2f92;
 }
 .light{
   --bg:#f4f4f4;
@@ -88,36 +88,89 @@ header{
 /* ===== CONTENT ===== */
 .content{
   padding:14px;
-  padding-bottom:90px;
+  padding-bottom:110px;
 }
-.match{
-  background:var(--card);
-  border-radius:18px;
-  padding:14px;
-  margin-bottom:14px;
-}
-.match .league-name{
+
+/* ===== ADD : PROGRAM TODAY CARD ===== */
+.program-title{
   color:var(--accent);
-  font-size:13px;
-  margin-bottom:8px;
+  font-weight:800;
+  margin:10px 0;
 }
-.teams{
+
+.match-card{
+  background:linear-gradient(180deg,#2a0a3d,#120018);
+  border-radius:22px;
+  padding:14px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.05),
+             0 18px 40px rgba(0,0,0,.7);
+}
+
+.match-top{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  color:#ddd;
+  margin-bottom:12px;
+}
+.badge-hot{
+  background:linear-gradient(90deg,#ff6a00,#ff0000);
+  padding:4px 10px;
+  border-radius:14px;
+  font-size:12px;
+  font-weight:700;
+}
+.match-time{
+  margin-left:auto;
+  opacity:.8;
+}
+
+.match-card .teams{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  margin:12px 0 16px;
 }
-.team{
+.match-card .team{
   width:40%;
   text-align:center;
 }
-.team img{
-  width:42px;
-  height:42px;
+.match-card .team img{
+  width:52px;
+  height:52px;
 }
-.score{
+.match-card .team div{
+  font-size:13px;
+  margin-top:6px;
+}
+.match-card .score{
   font-size:22px;
   font-weight:900;
-  color:var(--red);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.match-card .score span{
+  background:rgba(255,255,255,.08);
+  padding:6px 10px;
+  border-radius:10px;
+}
+.match-card .score strong{
+  font-size:14px;
+}
+
+.watch-btn{
+  width:100%;
+  background:linear-gradient(90deg,#ff2f92,#ff004c);
+  border:none;
+  padding:14px;
+  border-radius:16px;
+  font-size:15px;
+  font-weight:800;
+  color:#fff;
+  cursor:pointer;
 }
 
 /* ===== BOTTOM TAB ===== */
@@ -146,7 +199,7 @@ header{
   text-align:center;
   font-size:11px;
   color:var(--muted);
-  margin-top:10px;
+  margin:10px 0 60px;
 }
 </style>
 </head>
@@ -154,49 +207,53 @@ header{
 <body>
 
 <header>
-  <div class="logo">
-    <span>QA</span> <span>BallGenius</span>
-  </div>
+  <div class="logo"><span>QA</span> <span>BallGenius</span></div>
   <div class="theme-btns">
     <button onclick="setTheme('light')">☀️</button>
     <button onclick="setTheme('dark')">🌙</button>
   </div>
 </header>
 
-<!-- LEAGUES -->
 <div class="leagues">
   <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"><div>พรีเมียร์ลีก</div></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"><div>ลาลีกา</div></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"><div>บุนเดส</div></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"><div>เซเรียอา</div></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"><div>ลีกเอิง</div></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/1.png"><div>โลก</div></div>
 </div>
 
 <div class="content">
-  <section class="today-match">
-    <div class="match-card">
-      <div class="match today">
-        <div class="league-name">โปรแกรมบอลวันนี้</div>
 
-        <div class="teams">
-          <div class="team">
-            <img src="https://media.api-sports.io/football/teams/33.png">
-            <div>แมนยู</div>
-          </div>
+  <div class="program-title">โปรแกรมบอลวันนี้</div>
 
-          <div class="score">0 : 0</div>
+  <div class="match-card">
+    <div class="match-top">
+      <span class="badge-hot">🔥 HOT</span>
+      <span>อังกฤษ | พรีเมียร์ลีก</span>
+      <span class="match-time">วันนี้ 19:30</span>
+    </div>
 
-          <div class="team">
-            <img src="https://media.api-sports.io/football/teams/50.png">
-            <div>แมนซิตี้</div>
-          </div>
-        </div>
+    <div class="teams">
+      <div class="team">
+        <img src="https://media.api-sports.io/football/teams/33.png">
+        <div>แมนเชสเตอร์ ยูไนเต็ด</div>
       </div>
-  </div>
-</section>
 
-<!-- BOTTOM MENU -->
+      <div class="score">
+        <span>0</span><strong>VS</strong><span>0</span>
+      </div>
+
+      <div class="team">
+        <img src="https://media.api-sports.io/football/teams/47.png">
+        <div>ท็อตแน่ม ฮ็อทสเปอร์</div>
+      </div>
+    </div>
+
+    <button class="watch-btn">คลิกเพื่อรับชมถ่ายทอดสด</button>
+  </div>
+
+</div>
+
 <div class="bottom">
   <div class="tab active">ยอดนิยม</div>
   <div class="tab">สด</div>
@@ -208,11 +265,10 @@ header{
 
 <script>
 Telegram.WebApp.ready();
-
 function setTheme(mode){
   document.body.className = mode === 'light' ? 'light' : '';
 }
 </script>
 
 </body>
-</html> 
+</html>
