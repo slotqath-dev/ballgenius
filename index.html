@@ -62,9 +62,12 @@ body{
     linear-gradient(var(--overlay),var(--overlay)),
     var(--bg-img);
   background-color:var(--bg-color);
-  background-size:600px auto;      /* ไม่ใหญ่ */
-  background-position:center top;  /* กลางจอ */
+
+  /* สำคัญ: เต็มจอ ไม่แตก ไม่พัง */
+  background-size:cover;
+  background-position:center;
   background-repeat:no-repeat;
+  min-height:100vh;
 }
 
 /* HEADER */
