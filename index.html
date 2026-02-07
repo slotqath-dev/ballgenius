@@ -5,23 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
 <style>
 :root{
-  --bg:#0b000f;
-  --bg2:#16001f;
-  --card:#22002e;
-  --red:#ff2b2b;
-  --gold:#ffcc33;
-  --text:#ffffff;
-  --muted:#a88bb5;
+  --bg:#000;
+  --card:#120000;
+  --card2:#1a0000;
+  --red:#ff1e1e;
+  --text:#fff;
 }
 
-*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{
+  box-sizing:border-box;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
 body{
   margin:0;
-  background:linear-gradient(180deg,var(--bg2),var(--bg));
+  background:linear-gradient(180deg,#140000,#000);
   color:var(--text);
 }
 
@@ -33,173 +33,140 @@ body{
   font-weight:800;
   border-bottom:2px solid var(--red);
 }
-.header span:first-child{color:#fff}
-.header span:last-child{color:var(--red)}
+.header .qa{color:#fff}
+.header .name{color:var(--red)}
 
-/* CONTENT */
-.content{
-  padding:14px;
-  padding-bottom:90px;
-}
-
-/* LEAGUE SCROLL */
-.league-scroll{
+/* LEAGUE BAR */
+.league-bar{
   display:flex;
-  gap:14px;
+  gap:12px;
   overflow-x:auto;
-  padding:10px 2px 16px;
+  padding:14px;
 }
 
-.league-item{
-  min-width:78px;
-  background:linear-gradient(180deg,#2a0038,#14001d);
-  border-radius:18px;
-  padding:10px 6px;
+.league{
+  min-width:84px;
+  background:linear-gradient(180deg,#200000,#0b0000);
+  border-radius:14px;
+  padding:10px;
   text-align:center;
-  border:2px solid #3a003f;
-  box-shadow:0 0 10px #000;
+  border:2px solid #2a0000;
 }
 
-.league-item.active{
-  border-color:var(--gold);
-  box-shadow:0 0 12px #ffcc3360;
+.league.active{
+  border-color:#ffcc00;
+  box-shadow:0 0 10px #ffcc0060;
 }
 
-.league-logo{
-  width:42px;
-  height:42px;
+/* LOGO BOX (แบบในรูป) */
+.logo-box{
+  width:54px;
+  height:54px;
   margin:auto;
-  border-radius:50%;
-  background:#000;
+  background:#ffffff;
+  border-radius:10px;
   display:flex;
   align-items:center;
   justify-content:center;
-  border:2px solid var(--red);
+  box-shadow:0 4px 10px rgba(0,0,0,.6);
 }
 
-.league-logo img{
-  width:28px;
-  height:28px;
+.logo-box img{
+  width:40px;
+  height:40px;
   object-fit:contain;
-
-  /* ทำโลโก้ให้ชัด เข้ม */
-  filter:
-    brightness(1.2)
-    contrast(1.3)
-    saturate(1.4)
-    drop-shadow(0 0 4px #ff0000aa);
 }
 
-.league-item div{
+.league-name{
   font-size:11px;
   margin-top:6px;
-  color:#fff;
   white-space:nowrap;
 }
 
-/* BOTTOM TAB */
+/* BOTTOM MENU */
 .bottom{
   position:fixed;
   bottom:0;
   left:0;
   right:0;
-  background:#120018;
   display:flex;
+  background:#050000;
   border-top:2px solid var(--red);
 }
+
 .tab{
   flex:1;
-  padding:10px 0;
   text-align:center;
-  color:var(--muted);
+  padding:10px 0;
   font-size:12px;
+  color:#aaa;
 }
-.tab.active{
-  color:#fff;
-}
-.tab span{
-  display:block;
-  font-size:20px;
-  margin-bottom:2px;
-}
+
+.tab.active{color:#fff}
+.tab span{display:block;font-size:18px}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-  <span>QA</span> <span>BallGenius</span>
+  <span class="qa">QA</span> <span class="name">BallGenius</span>
 </div>
 
-<div class="content">
+<!-- แถวลีก -->
+<div class="league-bar">
 
-  <!-- แถวลีก (โทนแดงดำ ชัด) -->
-  <div class="league-scroll">
-
-    <div class="league-item active">
-      <div class="league-logo">
-        <img src="https://cdn-icons-png.flaticon.com/512/5971/5971785.png">
-      </div>
-      <div>ทั้งหมด</div>
+  <div class="league active">
+    <div class="logo-box">
+      <span style="font-size:22px;font-weight:700">ALL</span>
     </div>
+    <div class="league-name">ทั้งหมด</div>
+  </div>
 
-    <div class="league-item">
-      <div class="league-logo">
-        <img src="https://media.api-sports.io/football/leagues/39.png">
-      </div>
-      <div>พรีเมียร์ลีก</div>
+  <div class="league">
+    <div class="logo-box">
+      <img src="https://media.api-sports.io/football/leagues/39.png">
     </div>
+    <div class="league-name">พรีเมียร์ลีก</div>
+  </div>
 
-    <div class="league-item">
-      <div class="league-logo">
-        <img src="https://media.api-sports.io/football/leagues/140.png">
-      </div>
-      <div>ลาลีกา</div>
+  <div class="league">
+    <div class="logo-box">
+      <img src="https://media.api-sports.io/football/leagues/140.png">
     </div>
+    <div class="league-name">ลาลีกา</div>
+  </div>
 
-    <div class="league-item">
-      <div class="league-logo">
-        <img src="https://media.api-sports.io/football/leagues/78.png">
-      </div>
-      <div>บุนเดสลีกา</div>
+  <div class="league">
+    <div class="logo-box">
+      <img src="https://media.api-sports.io/football/leagues/78.png">
     </div>
+    <div class="league-name">บุนเดสลีกา</div>
+  </div>
 
-    <div class="league-item">
-      <div class="league-logo">
-        <img src="https://media.api-sports.io/football/leagues/135.png">
-      </div>
-      <div>เซเรียอา</div>
+  <div class="league">
+    <div class="logo-box">
+      <img src="https://media.api-sports.io/football/leagues/135.png">
     </div>
+    <div class="league-name">เซเรียอา</div>
+  </div>
 
-    <div class="league-item">
-      <div class="league-logo">
-        <img src="https://media.api-sports.io/football/leagues/61.png">
-      </div>
-      <div>ลีกเอิง</div>
+  <div class="league">
+    <div class="logo-box">
+      <img src="https://media.api-sports.io/football/leagues/61.png">
     </div>
-
-    <div class="league-item">
-      <div class="league-logo">
-        <img src="https://media.api-sports.io/football/leagues/2.png">
-      </div>
-      <div>UCL</div>
-    </div>
-
+    <div class="league-name">ลีกเอิง</div>
   </div>
 
 </div>
 
-<!-- Bottom Menu -->
+<!-- เมนูล่าง -->
 <div class="bottom">
   <div class="tab active"><span>🔥</span>ยอดนิยม</div>
   <div class="tab"><span>📺</span>สด</div>
   <div class="tab"><span>📅</span>โปรแกรม</div>
   <div class="tab"><span>⚙</span>เพิ่มเติม</div>
 </div>
-
-<script>
-Telegram.WebApp.ready();
-</script>
 
 </body>
 </html>
