@@ -3,47 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QA BallGenius</title>
-
+<title>BallGenius</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 :root{
   --bg:#0b0b0b;
-  --card:#161616;
   --gold:#ffd200;
-  --white:#ffffff;
   --purple:#1b0f2e;
 }
-
 *{box-sizing:border-box;font-family:sans-serif}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--white);
-}
+body{margin:0;background:var(--bg);color:#fff}
 
-/* HEADER */
 header{
   padding:14px;
-  background:linear-gradient(180deg,#300,#000);
+  background:#120000;
   border-bottom:2px solid #e60000;
   font-weight:900;
-  font-size:18px;
 }
 
-/* LEAGUES */
+/* LEAGUE BAR */
 .leagues{
   display:flex;
-  gap:12px;
+  gap:14px;
   padding:14px;
   overflow-x:auto;
 }
 .league{
-  min-width:82px;
-  height:82px;
+  min-width:90px;
+  height:90px;
   background:var(--purple);
-  border-radius:20px;
+  border-radius:22px;
   border:2px solid #3f2b66;
   display:flex;
   align-items:center;
@@ -52,49 +42,34 @@ header{
   transition:.25s;
 }
 .league img{
-  width:60px;
-  height:60px;
+  width:70px;
+  height:70px;
   background:#fff;
-  border-radius:16px;
-  padding:4px;
+  border-radius:18px;
+  padding:6px;
   object-fit:contain;
 }
-
-/* ACTIVE = GOLD */
 .league.active{
   background:var(--gold);
   border-color:#fff;
-  box-shadow:0 0 14px rgba(255,210,0,.8);
+  box-shadow:0 0 14px rgba(255,210,0,.9);
 }
 
 /* HOT CARD */
 .hot-card{
-  background:linear-gradient(180deg,#220033,#0a0012);
-  border-radius:20px;
+  background:#120016;
+  border-radius:22px;
   padding:16px;
   margin:14px;
   border:1px solid #3a003f;
-}
-.hot-top{
-  display:flex;
-  justify-content:space-between;
-  font-size:13px;
-  margin-bottom:12px;
-}
-.hot-badge{
-  background:#ff3d00;
-  padding:4px 10px;
-  border-radius:14px;
-  font-weight:700;
 }
 .hot-teams{
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
-.hot-team img{
-  width:60px;
-  height:60px;
+.hot-teams img{
+  width:64px;height:64px;
 }
 .hot-score{
   font-size:22px;
@@ -103,89 +78,70 @@ header{
 }
 .hot-btn{
   margin-top:14px;
-  background:linear-gradient(90deg,#ff0077,#ff3d00);
+  background:#ff0033;
   padding:14px;
   border-radius:16px;
   text-align:center;
   font-weight:800;
-}
-
-/* BOTTOM */
-.bottom{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  background:#000;
-  border-top:2px solid #e60000;
-  display:flex;
-}
-.tab{
-  flex:1;
-  padding:12px 0;
-  text-align:center;
-  font-size:12px;
-  color:#aaa;
-}
-.tab.active{color:#ffd200;font-weight:700}
-
-.footer{
-  text-align:center;
-  font-size:11px;
-  color:#888;
-  margin:12px 0 90px;
 }
 </style>
 </head>
 
 <body>
 
-<header>QA <span style="color:#e60000">BallGenius</span></header>
+<header>⚽ BallGenius</header>
 
+<!-- 🔥 ทุกลีก พร้อมโลโก้ -->
 <div class="leagues">
+  <!-- England -->
   <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/40.png"></div>
+
+  <!-- Spain -->
   <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/141.png"></div>
+
+  <!-- Italy -->
   <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/136.png"></div>
+
+  <!-- Germany -->
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/79.png"></div>
+
+  <!-- France -->
   <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/62.png"></div>
+
+  <!-- Europe -->
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/2.png"></div>
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/3.png"></div>
+
+  <!-- Asia -->
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/294.png"></div>
+
+  <!-- Thailand -->
+  <div class="league"><img src="https://media.api-sports.io/football/leagues/288.png"></div>
 </div>
 
 <div class="hot-card">
-  <div class="hot-top">
-    <div><span class="hot-badge">🔥 HOT</span></div>
-    <div>วันนี้ 19:30</div>
-  </div>
-
   <div class="hot-teams">
-    <div class="hot-team">
-      <img src="https://media.api-sports.io/football/teams/33.png">
-    </div>
-    <div class="hot-score">0 VS 0</div>
-    <div class="hot-team">
-      <img src="https://media.api-sports.io/football/teams/50.png">
-    </div>
+    <img src="https://media.api-sports.io/football/teams/33.png">
+    <div class="hot-score">VS</div>
+    <img src="https://media.api-sports.io/football/teams/50.png">
   </div>
-
-  <div class="hot-btn">คลิกเพื่อรับชมถ่ายทอดสด</div>
+  <div class="hot-btn">🔥 คู่เด่นวันนี้</div>
 </div>
-
-<div class="bottom">
-  <div class="tab active">ยอดนิยม</div>
-  <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
-</div>
-
-<div class="footer">@BallGeniusBot</div>
 
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* CLICK ACTIVE LEAGUE */
-document.querySelectorAll('.league').forEach(item=>{
-  item.addEventListener('click',()=>{
-    document.querySelectorAll('.league').forEach(l=>l.classList.remove('active'));
-    item.classList.add('active');
-  });
+document.querySelectorAll('.league').forEach(l=>{
+  l.onclick=()=>{
+    document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
+    l.classList.add('active');
+  }
 });
 </script>
 
