@@ -6,149 +6,113 @@
 <title>QA BallGenius</title>
 
 <style>
-:root{
-  --bg:#000;
-  --fg:#fff;
-  --card:#0c0c0c;
-  --overlay:rgba(0,0,0,.68);
-}
-body.light{
-  --bg:#fff;
-  --fg:#111;
-  --card:#f2f2f2;
-  --overlay:rgba(255,255,255,.65);
-}
+*{box-sizing:border-box;font-family:Arial,sans-serif}
 
-*{box-sizing:border-box;font-family:system-ui,sans-serif}
 body{
   margin:0;
-  background:var(--bg);
-  color:var(--fg);
-  overflow-x:hidden;
+  color:#fff;
+  background:#000;
 }
 
-/* BACKGROUND */
-.bg{
-  position:fixed;
-  inset:0;
+/* ===== BACKGROUND ===== */
+body.dark{
   background:
-    linear-gradient(var(--overlay),var(--overlay)),
-    url('https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d');
+    linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)),
+    url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2");
   background-size:cover;
   background-position:center;
-  filter:grayscale(100%);
-  z-index:-1;
 }
-body.light .bg{
+body.light{
+  color:#111;
   background:
-    linear-gradient(var(--overlay),var(--overlay)),
-    url('https://images.unsplash.com/photo-1521412644187-c49fa049e84d');
+    linear-gradient(rgba(255,255,255,.8),rgba(255,255,255,.8)),
+    url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d");
+  background-size:cover;
+  background-position:center;
 }
 
-/* HEADER */
+/* ===== HEADER ===== */
 .header{
-  padding:26px 20px;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  padding:20px;
 }
 .logo{
-  font-size:34px;
+  font-size:36px;
   font-weight:900;
-  letter-spacing:1px;
 }
 .toggle{
-  cursor:pointer;
   font-size:26px;
+  cursor:pointer;
 }
 
-/* LEAGUE SLIDER */
-.slider{
-  overflow:hidden;
-  padding:30px 0;
-}
-.track{
+/* ===== LEAGUE AREA ===== */
+.leagues{
   display:flex;
-  gap:22px;
-  animation:scroll 28s linear infinite;
+  gap:20px;
+  overflow-x:auto;
+  padding:20px;
 }
 .league{
   min-width:140px;
   height:140px;
-  background:var(--card);
   border-radius:18px;
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:800;
   font-size:18px;
-  box-shadow:0 0 0 2px rgba(255,255,255,.08);
+  background:rgba(0,0,0,.55);
+  border:2px solid #fff;
 }
 body.light .league{
-  box-shadow:0 0 0 2px rgba(0,0,0,.08);
+  background:rgba(255,255,255,.85);
+  border:2px solid #000;
 }
 
-@keyframes scroll{
-  from{transform:translateX(0)}
-  to{transform:translateX(-50%)}
-}
-
-/* WRAP */
-.wrap{
-  max-width:1200px;
-  margin:auto;
-  padding:10px 20px 60px;
-}
-.card{
-  background:rgba(0,0,0,.55);
-  padding:28px;
+/* ===== CONTENT ===== */
+.box{
+  max-width:1100px;
+  margin:20px auto;
+  background:rgba(0,0,0,.6);
+  padding:30px;
   border-radius:26px;
 }
-body.light .card{
-  background:rgba(255,255,255,.75);
+body.light .box{
+  background:rgba(255,255,255,.85);
 }
 </style>
 </head>
 
-<body>
-<div class="bg"></div>
+<body class="dark">
 
 <div class="header">
   <div class="logo">QA BallGenius</div>
-  <div class="toggle" onclick="toggle()">🌙</div>
+  <div class="toggle" onclick="toggleMode()">🌙</div>
 </div>
 
-<div class="slider">
-  <div class="track">
-    <div class="league">พรีเมียร์ลีก</div>
-    <div class="league">ลาลีกา</div>
-    <div class="league">บุนเดสลีกา</div>
-    <div class="league">กัลโช่</div>
-    <div class="league">ลีกเอิง</div>
-    <div class="league">ยูฟ่า</div>
-
-    <!-- ซ้ำเพื่อให้เลื่อนต่อเนื่อง -->
-    <div class="league">พรีเมียร์ลีก</div>
-    <div class="league">ลาลีกา</div>
-    <div class="league">บุนเดสลีกา</div>
-    <div class="league">กัลโช่</div>
-    <div class="league">ลีกเอิง</div>
-    <div class="league">ยูฟ่า</div>
-  </div>
+<div class="leagues">
+  <div class="league">พรีเมียร์ลีก</div>
+  <div class="league">ลาลีกา</div>
+  <div class="league">บุนเดสลีกา</div>
+  <div class="league">กัลโช่</div>
+  <div class="league">ลีกเอิง</div>
+  <div class="league">ยูฟ่า</div>
 </div>
 
-<div class="wrap">
-  <div class="card">
-    <h2>ระบบวิเคราะห์บอลครบวงจร</h2>
-    <p>รองรับทุกลีก • ชัด • ใช้งานง่าย • โหมดขาว/ดำ แยกชัดเจน</p>
-  </div>
+<div class="box">
+  <h2>ระบบวิเคราะห์บอล</h2>
+  <p>ครบทุกลีก • ชัด • เรียบ • ใช้งานจริง</p>
 </div>
 
 <script>
-function toggle(){
-  document.body.classList.toggle('light');
-  document.querySelector('.toggle').textContent =
-    document.body.classList.contains('light') ? '☀️' : '🌙';
+function toggleMode(){
+  const body=document.body;
+  const icon=document.querySelector(".toggle");
+  body.classList.toggle("light");
+  body.classList.toggle("dark");
+  icon.textContent = body.classList.contains("light") ? "☀️" : "🌙";
 }
 </script>
 
