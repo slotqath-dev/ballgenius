@@ -9,74 +9,75 @@
 
 <style>
 :root{
-  --bg:#000;
-  --card:#141414;
-  --red:#e60000;
-  --gold:#ffd200;
-  --white:#fff;
+  --bg:#0b0617;
+  --card:#1b1230;
+  --hot:#ff3b3b;
+  --pink:#ff2d87;
+  --text:#fff;
   --muted:#aaa;
+  --accent:#ffd200;
 }
-*{box-sizing:border-box;font-family:sans-serif}
 
+*{box-sizing:border-box;font-family:sans-serif}
 body{
   margin:0;
-  background:linear-gradient(180deg,#100,#000);
-  color:var(--white);
+  background:radial-gradient(circle at top,var(--card),#000);
+  color:var(--text);
 }
 
 /* HEADER */
 header{
   padding:14px;
-  background:linear-gradient(180deg,#300,#000);
-  border-bottom:2px solid var(--red);
-  font-weight:900;
   font-size:22px;
+  font-weight:900;
+  border-bottom:2px solid #300;
 }
-header span{color:var(--red)}
+header span{color:red}
 
 /* LEAGUES */
 .leagues{
   display:flex;
-  gap:12px;
+  gap:10px;
   padding:12px;
   overflow-x:auto;
 }
 .league{
   width:64px;height:64px;
-  background:var(--card);
-  border-radius:16px;
-  border:2px solid transparent;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;
-}
-.league.active{border-color:var(--gold)}
-.league img{
-  width:100%;height:100%;
-  object-fit:contain;
   background:#fff;
+  border-radius:16px;
   padding:6px;
-  border-radius:12px;
+  cursor:pointer;
+  border:2px solid transparent;
 }
+.league.active{border-color:var(--accent)}
+.league img{width:100%;height:100%;object-fit:contain}
 
 /* CONTENT */
-.content{padding:14px;padding-bottom:90px}
+.content{padding:14px}
 
-/* MATCH */
-.match{
-  background:var(--card);
-  border-radius:22px;
-  padding:16px;
-  border:1px solid #222;
+/* HOT CARD */
+.hot-card{
+  background:linear-gradient(180deg,#3a145f,#1a0b2e);
+  border-radius:20px;
+  padding:14px;
+  margin-bottom:18px;
 }
-.league-name{
-  color:var(--gold);
-  font-weight:800;
-  margin-bottom:12px;
-}
-.teams{
+.hot-top{
   display:flex;
   justify-content:space-between;
+  font-size:13px;
+  margin-bottom:10px;
+}
+.badge{
+  background:#ff5722;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+}
+.match-row{
+  display:flex;
   align-items:center;
+  justify-content:space-between;
 }
 .team{
   width:40%;
@@ -85,40 +86,45 @@ header span{color:var(--red)}
 .team img{
   width:48px;height:48px;
   background:#fff;
-  padding:5px;
   border-radius:12px;
+  padding:4px;
 }
-.vs{
+.score{
   font-size:22px;
   font-weight:900;
-  color:var(--red);
 }
-.time{
-  margin-top:10px;
+.btn-live{
+  margin-top:12px;
+  background:var(--pink);
   text-align:center;
-  font-size:13px;
-  color:var(--muted);
+  padding:12px;
+  border-radius:14px;
+  font-weight:700;
+  cursor:pointer;
 }
 
-/* BOTTOM */
-.bottom{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  background:linear-gradient(180deg,#200,#000);
-  border-top:2px solid var(--red);
+/* LIST */
+.list-item{
+  background:#111;
+  border-radius:14px;
+  padding:12px;
   display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
 }
-.tab{
-  flex:1;
-  padding:10px 0;
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
+.list-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
-.tab.active{
-  color:var(--red);
-  font-weight:700;
+.list-left img{
+  width:24px;height:24px;
+  background:#fff;
+  border-radius:50%;
+  padding:2px;
 }
+.time{color:var(--muted);font-size:13px}
 </style>
 </head>
 
@@ -135,36 +141,84 @@ header span{color:var(--red)}
 </div>
 
 <div class="content">
-  <div class="match">
-    <div class="league-name" id="leagueName"></div>
-    <div class="teams">
+
+  <!-- HOT MATCH -->
+  <div class="hot-card">
+    <div class="hot-top">
+      <div class="badge">🔥 HOT <span id="leagueName"></span></div>
+      <div id="matchTime"></div>
+    </div>
+
+    <div class="match-row">
       <div class="team">
         <img id="homeLogo">
         <div id="homeName"></div>
       </div>
-      <div class="vs">VS</div>
+      <div class="score">0 VS 0</div>
       <div class="team">
         <img id="awayLogo">
         <div id="awayName"></div>
       </div>
     </div>
-    <div class="time" id="matchTime"></div>
-  </div>
-</div>
 
-<div class="bottom">
-  <div class="tab active">ยอดนิยม</div>
-  <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
+    <div class="btn-live" onclick="openLive()">คลิกเพื่อรับชมถ่ายทอดสด</div>
+  </div>
+
+  <!-- LIST -->
+  <div class="list-item">
+    <div class="list-left">
+      <img id="listHomeLogo">
+      <img id="listAwayLogo">
+      <div id="listMatch"></div>
+    </div>
+    <div class="time" id="listTime"></div>
+  </div>
+
 </div>
 
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* ลีกละ 1 คู่ */
-const DATA = {
-  39:{name:"พรีเมียร์ลีก",h:["Man Utd",33],a:["Liverpool",40],t:"21:00"},
-  140:{name:"ลาลีกา",h:["Real Madrid",541],a:["Barcelona",529],t:"02:00"},
-  78:{name:"บุนเดสลีกา
+const data = {
+  39:{league:"พรีเมียร์ลีก",time:"21:00",home:["Man Utd",33],away:["Liverpool",40]},
+  140:{league:"ลาลีกา",time:"22:00",home:["Barcelona",529],away:["Real Madrid",541]},
+  78:{league:"บุนเดสลีกา",time:"20:30",home:["Bayern",157],away:["Dortmund",165]},
+  135:{league:"กัลโช่",time:"01:45",home:["Juventus",496],away:["Milan",489]},
+  61:{league:"ลีกเอิง",time:"23:00",home:["PSG",85],away:["Marseille",81]}
+};
+
+function render(id){
+  const d=data[id];
+  leagueName.innerText=" "+d.league;
+  matchTime.innerText="🕘 "+d.time;
+
+  homeName.innerText=d.home[0];
+  awayName.innerText=d.away[0];
+
+  homeLogo.src=`https://media.api-sports.io/football/teams/${d.home[1]}.png`;
+  awayLogo.src=`https://media.api-sports.io/football/teams/${d.away[1]}.png`;
+
+  listHomeLogo.src=homeLogo.src;
+  listAwayLogo.src=awayLogo.src;
+  listMatch.innerText=d.home[0]+" vs "+d.away[0];
+  listTime.innerText=d.time;
+}
+
+render(39);
+
+document.querySelectorAll('.league').forEach(l=>{
+  l.onclick=()=>{
+    document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
+    l.classList.add('active');
+    render(l.dataset.id);
+  }
+});
+
+function openLive(){
+  Telegram.WebApp.openTelegramLink("https://t.me/your_channel_here");
+}
+</script>
+
+</body>
+</html>
