@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
+
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
@@ -13,13 +14,26 @@
   --white:#ffffff;
   --muted:#aaaaaa;
   --accent:#ffd200;
+
   --bg-color:#000;
   --bg-img:url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1200&q=80");
   --overlay:rgba(0,0,0,.88);
 }
+.light{
+  --card:#ffffff;
+  --white:#000000;
+  --muted:#555;
+
+  --bg-color:#f4f4f4;
+  --bg-img:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1200&q=80");
+  --overlay:rgba(255,255,255,.88);
+}
+
 *{box-sizing:border-box;font-family:sans-serif}
+
 body{
-  margin:0;color:var(--white);
+  margin:0;
+  color:var(--white);
   background:
     linear-gradient(var(--overlay),var(--overlay)),
     linear-gradient(180deg,var(--bg-color),#000),
@@ -28,8 +42,11 @@ body{
   background-position:center,center,center top;
   background-repeat:no-repeat;
   min-height:100vh;
-  padding-bottom:90px;
+  padding-top:env(safe-area-inset-top);
+  padding-bottom:env(safe-area-inset-bottom);
 }
+
+/* HEADER */
 header{
   padding:14px;
   display:flex;
@@ -38,96 +55,140 @@ header{
   background:linear-gradient(180deg,#300,#000);
   border-bottom:2px solid var(--red);
 }
-.logo{font-size:24px;font-weight:900}
-.logo span{color:var(--red)}
-.leagues{display:flex;gap:12px;padding:12px;overflow-x:auto}
-.league{
-  width:64px;height:64px;
-  background:var(--card);
-  border-radius:16px;
-  display:flex;align-items:center;justify-content:center;
+.logo{font-weight:900;font-size:24px}
+.logo span:first-child{color:var(--red)}
+.logo span:last-child{color:#fff}
+
+.theme-btns button{
+  width:22px;height:22px;
+  border-radius:50%;
+  border:1px solid var(--muted);
+  background:transparent;
+  color:var(--white);
+  cursor:pointer;
+  margin-left:6px;
 }
-.league img{width:100%;padding:6px;background:#fff;border-radius:12px}
-.content{padding:14px}
+
+/* CONTENT */
+.content{padding:14px;padding-bottom:90px}
 .match{
   background:var(--card);
   border-radius:18px;
   padding:14px;
   margin-bottom:12px;
 }
-.league-name{color:var(--accent);font-size:13px;margin-bottom:6px}
-.teams{display:flex;justify-content:space-between;align-items:center}
-.team{width:40%;text-align:center}
-.team img{width:40px;height:40px;background:#fff;border-radius:8px;padding:4px}
-.score{color:var(--red);font-weight:900}
+.league-name{
+  color:var(--accent);
+  font-size:13px;
+  margin-bottom:8px;
+}
+.teams{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.team{
+  width:40%;
+  text-align:center;
+  font-size:13px;
+}
+.team img{
+  width:42px;height:42px;
+  object-fit:contain;
+  background:#fff;
+  padding:4px;
+  border-radius:10px;
+}
+.score{
+  font-size:18px;
+  font-weight:900;
+  color:var(--red);
+}
+
+/* BOTTOM */
 .bottom{
-  position:fixed;bottom:0;left:0;right:0;
-  background:#000;
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:linear-gradient(180deg,#200,#000);
   border-top:2px solid var(--red);
   display:flex;
 }
-.tab{flex:1;text-align:center;padding:10px 0;color:var(--muted)}
-.tab.active{color:var(--red)}
+.tab{
+  flex:1;
+  padding:10px 0;
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+.tab.active{
+  color:var(--red);
+  font-weight:700;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="logo"><span>QA</span> BallGenius</div>
+  <div class="logo"><span>QA</span> <span>BallGenius</span></div>
+  <div class="theme-btns">
+    <button onclick="setDark()">🌙</button>
+    <button onclick="setLight()">☀️</button>
+  </div>
 </header>
-
-<div class="leagues">
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
-</div>
 
 <div class="content" id="matches">
   <div class="match">⏳ กำลังโหลดโปรแกรมวันนี้...</div>
 </div>
 
 <div class="bottom">
-  <div class="tab active">วันนี้</div>
+  <div class="tab active">โปรแกรมวันนี้</div>
   <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">อื่นๆ</div>
+  <div class="tab">วิเคราะห์</div>
+  <div class="tab">เพิ่มเติม</div>
 </div>
 
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* ✅ ดึงโปรแกรมวันนี้จริง (API ฟรี) */
-fetch("https://www.scorebat.com/video-api/v3/")
+function setDark(){document.body.classList.remove("light")}
+function setLight(){document.body.classList.add("light")}
+
+/* ===== API ฟรี (ScoreBat) ผ่าน CORS Proxy ===== */
+const API =
+"https://api.allorigins.win/raw?url=https://www.scorebat.com/video-api/v3/";
+
+fetch(API)
 .then(r=>r.json())
 .then(data=>{
-  const today = new Date().toISOString().slice(0,10);
   const box = document.getElementById("matches");
   box.innerHTML = "";
 
-  const todayMatches = data.response.filter(m=>m.date.startsWith(today));
+  const today = new Date().toISOString().slice(0,10);
+  const matches = data.response.filter(m =>
+    m.date && m.date.startsWith(today)
+  );
 
-  if(todayMatches.length===0){
-    box.innerHTML = `<div class="match">❌ วันนี้ไม่มีโปรแกรม</div>`;
+  if(matches.length===0){
+    box.innerHTML = `<div class="match">❌ วันนี้ไม่มีโปรแกรมแข่ง</div>`;
     return;
   }
 
-  todayMatches.slice(0,10).forEach(m=>{
+  matches.slice(0,15).forEach(m=>{
+    const t = m.title.split(" - ");
     box.innerHTML += `
       <div class="match">
         <div class="league-name">${m.competition}</div>
         <div class="teams">
           <div class="team">
             <img src="${m.thumbnail}">
-            <div>${m.title.split(" - ")[0]}</div>
+            <div>${t[0]}</div>
           </div>
           <div class="score">VS</div>
           <div class="team">
             <img src="${m.thumbnail}">
-            <div>${m.title.split(" - ")[1]}</div>
+            <div>${t[1]}</div>
           </div>
         </div>
       </div>`;
