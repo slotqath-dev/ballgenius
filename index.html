@@ -3,92 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QA BallGenius</title>
+<title>QA BallGenius - โปรแกรมวันนี้</title>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-:root{
-  --card:#161616;
-  --red:#e60000;
-  --white:#ffffff;
-  --muted:#aaaaaa;
-  --accent:#ffd200;
-  --bg:#000;
-}
-
 *{box-sizing:border-box;font-family:sans-serif}
-
 body{
   margin:0;
   background:#000;
-  color:var(--white);
+  color:#fff;
 }
 
 /* HEADER */
 header{
   padding:14px;
-  display:flex;
-  align-items:center;
-  background:linear-gradient(180deg,#300,#000);
-  border-bottom:2px solid var(--red);
+  background:#000;
+  border-bottom:2px solid #e60000;
 }
 .logo{
   font-size:22px;
   font-weight:900;
 }
-.logo span{color:var(--red)}
+.logo span{color:#e60000}
 
-/* LEAGUES */
+/* LEAGUE BAR */
 .leagues{
   display:flex;
-  gap:12px;
-  padding:12px;
+  gap:10px;
+  padding:10px;
   overflow-x:auto;
 }
 .league{
-  width:64px;
-  height:64px;
-  flex:0 0 auto;
-  background:var(--card);
-  border-radius:16px;
-  border:2px solid #222;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  transition:.25s;
-}
-.league img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  background:#fff;
-  padding:6px;
+  min-width:90px;
+  padding:6px 10px;
   border-radius:12px;
+  background:#111;
+  font-size:12px;
+  text-align:center;
+  cursor:pointer;
+  border:1px solid #222;
 }
 .league.active{
-  border-color:var(--accent);
-  box-shadow:
-    0 0 12px rgba(255,210,0,.9),
-    0 0 30px rgba(255,210,0,.8);
-  transform:scale(1.15);
+  border-color:#e60000;
+  color:#e60000;
 }
 
 /* CONTENT */
-.content{
-  padding:14px;
-  padding-bottom:90px;
-}
+.content{padding:12px;padding-bottom:80px}
 .match{
-  background:var(--card);
-  border-radius:18px;
-  padding:16px;
-}
-.league-name{
-  color:var(--accent);
-  font-size:14px;
-  margin-bottom:12px;
+  background:#111;
+  border-radius:14px;
+  padding:12px;
+  margin-bottom:10px;
 }
 .teams{
   display:flex;
@@ -96,45 +63,38 @@ header{
   align-items:center;
 }
 .team{
-  width:40%;
+  width:45%;
   text-align:center;
-}
-.team img{
-  width:54px;
-  height:54px;
-  background:#fff;
-  padding:6px;
-  border-radius:12px;
-}
-.team-name{
-  margin-top:6px;
-  font-size:14px;
+  font-size:13px;
 }
 .vs{
-  font-size:20px;
-  font-weight:900;
-  color:var(--red);
+  color:#e60000;
+  font-weight:700;
+  font-size:14px;
+}
+.time{
+  margin-top:6px;
+  font-size:11px;
+  color:#aaa;
+  text-align:center;
 }
 
 /* BOTTOM */
 .bottom{
   position:fixed;
   bottom:0;left:0;right:0;
-  background:#000;
-  border-top:2px solid var(--red);
   display:flex;
+  background:#000;
+  border-top:2px solid #e60000;
 }
 .tab{
   flex:1;
   padding:10px 0;
   text-align:center;
   font-size:12px;
-  color:var(--muted);
+  color:#aaa;
 }
-.tab.active{
-  color:var(--red);
-  font-weight:700;
-}
+.tab.active{color:#e60000;font-weight:700}
 </style>
 </head>
 
@@ -144,44 +104,18 @@ header{
   <div class="logo"><span>QA</span> BallGenius</div>
 </header>
 
-<!-- LEAGUES -->
-<div class="leagues">
-  <div class="league active" data-id="39"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
-  <div class="league" data-id="140"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
-  <div class="league" data-id="78"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
-  <div class="league" data-id="135"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
-  <div class="league" data-id="61"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
-  <div class="league" data-id="2"><img src="https://media.api-sports.io/football/leagues/2.png"></div>
-  <div class="league" data-id="3"><img src="https://media.api-sports.io/football/leagues/3.png"></div>
-  <div class="league" data-id="1"><img src="https://media.api-sports.io/football/leagues/1.png"></div>
+<!-- ลีก (กรองจากข้อมูลจริง) -->
+<div class="leagues" id="leagueBar"></div>
+
+<!-- โปรแกรมวันนี้ -->
+<div class="content" id="matches">
+  <div style="color:#aaa;font-size:13px">กำลังโหลดโปรแกรมวันนี้…</div>
 </div>
 
-<!-- CONTENT -->
-<div class="content">
-  <div class="match">
-    <div class="league-name">🔥 พรีเมียร์ลีก</div>
-
-    <div class="teams">
-      <div class="team">
-        <img id="homeLogo">
-        <div class="team-name" id="homeName"></div>
-      </div>
-
-      <div class="vs">VS</div>
-
-      <div class="team">
-        <img id="awayLogo">
-        <div class="team-name" id="awayName"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- BOTTOM -->
 <div class="bottom">
-  <div class="tab active">ยอดนิยม</div>
+  <div class="tab active">วันนี้</div>
   <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
+  <div class="tab">ลีก</div>
   <div class="tab">เพิ่มเติม</div>
 </div>
 
@@ -189,40 +123,75 @@ header{
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* ข้อมูลไฮไลต์ลีก (ไม่มีค่าน้ำ) */
-const leagues = {
-  39:{name:"พรีเมียร์ลีก",home:["แมนยู",33],away:["แมนซิตี้",50]},
-  140:{name:"ลาลีกา",home:["บาร์เซโลนา",529],away:["เรอัล มาดริด",541]},
-  78:{name:"บุนเดสลีกา",home:["บาเยิร์น มิวนิค",157],away:["ดอร์ทมุนด์",165]},
-  135:{name:"กัลโช่ เซเรียอา",home:["ยูเวนตุส",496],away:["เอซี มิลาน",489]},
-  61:{name:"ลีกเอิง",home:["PSG",85],away:["มาร์กเซย",81]},
-  2:{name:"UEFA Champions League",home:["เรอัล มาดริด",541],away:["บาเยิร์น",157]},
-  3:{name:"UEFA Europa League",home:["ลิเวอร์พูล",40],away:["โรม่า",497]},
-  1:{name:"FIFA World Cup",home:["บราซิล",6],away:["อาร์เจนตินา",7]}
-};
+/* API ฟรี ไม่ต้อง KEY */
+const API = "https://www.scorebat.com/video-api/v3/";
 
-function render(id){
-  const d = leagues[id];
-  if(!d) return;
+let allMatches = [];
+let currentLeague = "ALL";
 
-  document.querySelector('.league-name').innerText = "🔥 " + d.name;
-  homeName.innerText = d.home[0];
-  awayName.innerText = d.away[0];
-  homeLogo.src = `https://media.api-sports.io/football/teams/${d.home[1]}.png`;
-  awayLogo.src = `https://media.api-sports.io/football/teams/${d.away[1]}.png`;
+fetch(API)
+.then(res=>res.json())
+.then(data=>{
+  allMatches = data.response;
+  buildLeagues();
+  renderMatches();
+})
+.catch(()=>{
+  document.getElementById("matches").innerHTML =
+    "<div style='color:#f66'>โหลดข้อมูลไม่สำเร็จ</div>";
+});
+
+/* สร้างรายชื่อลีกจากข้อมูลจริง */
+function buildLeagues(){
+  const leagues = [...new Set(allMatches.map(m=>m.competition))];
+  const bar = document.getElementById("leagueBar");
+
+  bar.innerHTML = `<div class="league active" data-lg="ALL">ทั้งหมด</div>`;
+
+  leagues.forEach(lg=>{
+    bar.innerHTML += `<div class="league" data-lg="${lg}">${lg}</div>`;
+  });
+
+  document.querySelectorAll(".league").forEach(l=>{
+    l.onclick=()=>{
+      document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
+      l.classList.add("active");
+      currentLeague = l.dataset.lg;
+      renderMatches();
+    };
+  });
 }
 
-/* ค่าเริ่มต้น */
-render(39);
+/* แสดงแมตช์วันนี้ */
+function renderMatches(){
+  const box = document.getElementById("matches");
+  box.innerHTML = "";
 
-/* เลือกลีก + ไฮไลต์แรง */
-document.querySelectorAll('.league').forEach(l=>{
-  l.onclick = ()=>{
-    document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
-    l.classList.add('active');
-    render(l.dataset.id);
-  };
-});
+  const today = new Date().toDateString();
+
+  const list = allMatches.filter(m=>{
+    const d = new Date(m.date).toDateString();
+    return d===today && (currentLeague==="ALL" || m.competition===currentLeague);
+  });
+
+  if(list.length===0){
+    box.innerHTML = "<div style='color:#aaa'>วันนี้ไม่มีโปรแกรม</div>";
+    return;
+  }
+
+  list.forEach(m=>{
+    box.innerHTML += `
+      <div class="match">
+        <div class="teams">
+          <div class="team">${m.side1.name}</div>
+          <div class="vs">VS</div>
+          <div class="team">${m.side2.name}</div>
+        </div>
+        <div class="time">${new Date(m.date).toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"})}</div>
+      </div>
+    `;
+  });
+}
 </script>
 
 </body>
