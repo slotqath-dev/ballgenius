@@ -5,21 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
 
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 <style>
 :root{
-  --bg:#000;
-  --card:#111;
+  --card:#161616;
   --red:#e60000;
-  --darkred:#8b0000;
-  --white:#fff;
-  --muted:#aaa;
+  --white:#ffffff;
+  --muted:#aaaaaa;
+  --accent:#ff2a2a;
 }
-
 *{box-sizing:border-box;font-family:sans-serif}
-
 body{
   margin:0;
-  background:linear-gradient(180deg,#000,#050505);
+  background:#000;
   color:var(--white);
 }
 
@@ -29,7 +28,7 @@ header{
   background:linear-gradient(180deg,#300,#000);
   border-bottom:2px solid var(--red);
 }
-.logo{font-size:22px;font-weight:900}
+.logo{font-weight:900;font-size:22px}
 .logo span{color:var(--red)}
 
 /* LEAGUES */
@@ -41,18 +40,18 @@ header{
 }
 .league{
   width:64px;height:64px;
-  background:var(--card);
+  background:#111;
   border-radius:16px;
   border:2px solid transparent;
   display:flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
-  flex:0 0 auto;
 }
 .league.active{border-color:var(--red)}
 .league img{
-  width:100%;height:100%;
+  width:100%;
+  height:100%;
   object-fit:contain;
   background:#fff;
   padding:6px;
@@ -60,64 +59,89 @@ header{
 }
 
 /* CONTENT */
-.content{padding:14px;padding-bottom:80px}
+.content{padding:14px;padding-bottom:90px}
 
 /* FEATURE MATCH */
-.feature{
-  background:linear-gradient(180deg,#200,#000);
-  border:2px solid var(--red);
+.match{
+  background:var(--card);
   border-radius:18px;
   padding:14px;
-  margin-bottom:12px;
+  border:1px solid #300;
 }
-.league-name{color:var(--red);font-size:14px;margin-bottom:8px}
+.league-name{
+  color:var(--accent);
+  font-size:13px;
+  margin-bottom:8px;
+}
 .teams{
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
-.team{text-align:center;width:40%}
+.team{
+  width:40%;
+  text-align:center;
+}
 .team img{
-  width:46px;height:46px;
+  width:48px;height:48px;
+  object-fit:contain;
   background:#fff;
   padding:4px;
   border-radius:10px;
 }
-.vs{font-weight:900;color:var(--red)}
-.time{font-size:12px;color:var(--muted);margin-top:6px}
+.score{
+  font-size:22px;
+  font-weight:900;
+  color:var(--red);
+}
 
-/* MATCH LIST */
-.match{
-  background:var(--card);
+/* ALL TEAMS */
+.teams-grid{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+.team-card{
+  background:#111;
+  border:1px solid #300;
   border-radius:14px;
   padding:10px;
-  margin-bottom:8px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  text-align:center;
+  cursor:pointer;
+  transition:.15s;
 }
-.match .left{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:13px;
+.team-card:hover{
+  border-color:var(--red);
+  transform:translateY(-2px);
 }
-.match img{
-  width:22px;height:22px;
+.team-card img{
+  width:34px;height:34px;
   background:#fff;
-  padding:2px;
-  border-radius:6px;
+  padding:4px;
+  border-radius:10px;
 }
-.watch{
-  background:var(--red);
-  color:#fff;
-  text-decoration:none;
-  padding:6px 10px;
-  border-radius:8px;
+.team-card div{
   font-size:12px;
-  font-weight:700;
+  margin-top:6px;
 }
-.watch:hover{background:var(--darkred)}
+
+/* BOTTOM */
+.bottom{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:linear-gradient(180deg,#200,#000);
+  border-top:2px solid var(--red);
+  display:flex;
+}
+.tab{
+  flex:1;
+  padding:10px 0;
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+.tab.active{color:var(--red);font-weight:700}
 </style>
 </head>
 
@@ -127,7 +151,7 @@ header{
   <div class="logo"><span>QA</span> BallGenius</div>
 </header>
 
-<!-- ลีก (เรียง + ขนาดเดิม) -->
+<!-- LEAGUES -->
 <div class="leagues">
   <div class="league active" data-id="39"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league" data-id="140"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
@@ -141,82 +165,91 @@ header{
 
 <div class="content" id="content"></div>
 
+<div class="bottom">
+  <div class="tab active">ยอดนิยม</div>
+  <div class="tab">สด</div>
+  <div class="tab">โปรแกรม</div>
+  <div class="tab">เพิ่มเติม</div>
+</div>
+
 <script>
+Telegram.WebApp.ready();
+Telegram.WebApp.expand();
+
+/* DATA */
 const data = {
   39:{
     name:"พรีเมียร์ลีก",
-    feature:{h:["แมนยู",33],a:["แมนซิตี้",50],time:"22:30"},
-    matches:[
-      {h:["ลิเวอร์พูล",40],a:["อาร์เซน่อล",42],time:"19:00"},
-      {h:["เชลซี",49],a:["สเปอร์",47],time:"21:00"}
+    hot:{home:["แมนยู",33],away:["แมนซิตี้",50]},
+    teams:[
+      [33,"แมนยู"],[50,"แมนซิตี้"],[40,"ลิเวอร์พูล"],[42,"อาร์เซน่อล"],
+      [49,"เชลซี"],[47,"สเปอร์"],[51,"นิวคาสเซิล"],[34,"เอฟเวอร์ตัน"]
     ]
   },
   140:{
     name:"ลาลีกา",
-    feature:{h:["บาร์ซ่า",529],a:["มาดริด",541],time:"02:00"},
-    matches:[
-      {h:["แอต.มาดริด",530],a:["บียาร์เรอัล",533],time:"23:30"}
+    hot:{home:["บาร์เซโลนา",529],away:["เรอัล มาดริด",541]},
+    teams:[
+      [529,"บาร์เซโลนา"],[541,"เรอัล มาดริด"],[530,"แอตมาดริด"],[543,"บียาร์เรอัล"]
     ]
   },
   78:{
     name:"บุนเดสลีกา",
-    feature:{h:["บาเยิร์น",157],a:["ดอร์ทมุนด์",165],time:"00:30"},
-    matches:[
-      {h:["ไลป์ซิก",173],a:["เลเวอร์",168],time:"20:30"}
+    hot:{home:["บาเยิร์น",157],away:["ดอร์ทมุนด์",165]},
+    teams:[
+      [157,"บาเยิร์น"],[165,"ดอร์ทมุนด์"],[168,"เลเวอร์คูเซ่น"],[173,"แฟรงค์เฟิร์ต"]
     ]
   },
   135:{
     name:"กัลโช่",
-    feature:{h:["ยูเว่",496],a:["มิลาน",489],time:"01:45"},
-    matches:[
-      {h:["นาโปลี",492],a:["โรม่า",497],time:"23:00"}
+    hot:{home:["ยูเวนตุส",496],away:["เอซี มิลาน",489]},
+    teams:[
+      [496,"ยูเวนตุส"],[489,"มิลาน"],[505,"อินเตอร์"],[497,"โรม่า"]
     ]
   },
   61:{
     name:"ลีกเอิง",
-    feature:{h:["PSG",85],a:["มาร์กเซย",81],time:"03:00"},
-    matches:[
-      {h:["ลียง",80],a:["โมนาโก",91],time:"22:00"}
+    hot:{home:["PSG",85],away:["มาร์กเซย",81]},
+    teams:[
+      [85,"PSG"],[81,"มาร์กเซย"],[84,"ลียง"],[79,"ลีลล์"]
     ]
   },
-  2:{name:"UCL",feature:{h:["อินเตอร์",505],a:["บาเยิร์น",157],time:"02:00"},matches:[]},
-  3:{name:"UEL",feature:{h:["เซบีย่า",536],a:["โรมา",497],time:"02:00"},matches:[]},
-  1:{name:"WC",feature:{h:["บราซิล",6],a:["อาร์เจน",7],time:"01:00"},matches:[]}
+  2:{name:"UCL",hot:{home:["เรอัล",541],away:["บาเยิร์น",157]},teams:[]},
+  3:{name:"UEL",hot:{home:["ลิเวอร์พูล",40],away:["โรม่า",497]},teams:[]},
+  1:{name:"World Cup",hot:{home:["บราซิล",6],away:["อาร์เจนตินา",7]},teams:[]}
 };
 
 function render(id){
-  const d = data[id];
-  let html = `
-    <div class="feature">
-      <div class="league-name">🔥 ${d.name} (คู่เด่น)</div>
-      <div class="teams">
-        <div class="team">
-          <img src="https://media.api-sports.io/football/teams/${d.feature.h[1]}.png">
-          <div>${d.feature.h[0]}</div>
-        </div>
-        <div class="vs">VS</div>
-        <div class="team">
-          <img src="https://media.api-sports.io/football/teams/${d.feature.a[1]}.png">
-          <div>${d.feature.a[0]}</div>
-        </div>
+  const d=data[id];
+  let html=`
+  <div class="match">
+    <div class="league-name">🔥 ${d.name} | คู่เด่น</div>
+    <div class="teams">
+      <div class="team">
+        <img src="https://media.api-sports.io/football/teams/${d.hot.home[1]}.png">
+        <div>${d.hot.home[0]}</div>
       </div>
-      <div class="time">🕒 ${d.feature.time}</div>
+      <div class="score">VS</div>
+      <div class="team">
+        <img src="https://media.api-sports.io/football/teams/${d.hot.away[1]}.png">
+        <div>${d.hot.away[0]}</div>
+      </div>
     </div>
-  `;
+  </div>`;
 
-  d.matches.forEach(m=>{
-    html+=`
-      <div class="match">
-        <div class="left">
-          <img src="https://media.api-sports.io/football/teams/${m.h[1]}.png">
-          ${m.h[0]} vs ${m.a[0]}
-        </div>
-        <a class="watch" href="https://t.me/" target="_blank">ดูถ่ายทอด</a>
-      </div>
-    `;
-  });
+  if(d.teams.length){
+    html+=`<div class="teams-grid">`;
+    d.teams.forEach(t=>{
+      html+=`
+      <div class="team-card">
+        <img src="https://media.api-sports.io/football/teams/${t[0]}.png">
+        <div>${t[1]}</div>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
 
-  document.getElementById("content").innerHTML = html;
+  content.innerHTML=html;
 }
 
 render(39);
