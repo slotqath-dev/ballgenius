@@ -154,3 +154,105 @@ header span{color:var(--red)}
 }
 
 /* BOTTOM MENU */
+.bottom{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  display:flex;
+  background:#000;
+  border-top:2px solid var(--red);
+}
+.tab{
+  flex:1;
+  text-align:center;
+  padding:10px 0;
+  font-size:12px;
+  opacity:.6;
+}
+.tab.active{opacity:1;color:var(--red)}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div><span>QA</span> BallGenius</div>
+</header>
+
+<div class="leagues" id="leagueBar"></div>
+
+<div class="content">
+  <div class="hot-card" id="hotCard"></div>
+</div>
+
+<div class="bottom">
+  <div class="tab active">ยอดนิยม</div>
+  <div class="tab">สด</div>
+  <div class="tab">โปรแกรม</div>
+  <div class="tab">เพิ่มเติม</div>
+</div>
+
+<script>
+Telegram.WebApp.ready();
+Telegram.WebApp.expand();
+
+const LEAGUES=[
+ {id:39,name:"อังกฤษ | พรีเมียร์ลีก",time:"21:00",home:["Liverpool",40],away:["Man City",50]},
+ {id:140,name:"สเปน | ลาลีกา",time:"22:00",home:["Barcelona",529],away:["Real Madrid",541]},
+ {id:78,name:"เยอรมัน | บุนเดสลีกา",time:"20:30",home:["Bayern",157],away:["Dortmund",165]},
+ {id:135,name:"อิตาลี | กัลโช่",time:"01:45",home:["Juventus",496],away:["AC Milan",489]},
+ {id:61,name:"ฝรั่งเศส | ลีกเอิง",time:"02:00",home:["PSG",85],away:["Marseille",81]},
+ {id:2,name:"UCL",time:"02:00",home:["Man City",50],away:["PSG",85]},
+ {id:3,name:"Europa",time:"00:45",home:["Roma",497],away:["Leverkusen",168]},
+ {id:1,name:"World Cup",time:"19:00",home:["Brazil",6],away:["Argentina",7]}
+];
+
+const bar=document.getElementById("leagueBar");
+
+LEAGUES.forEach((l,i)=>{
+  const d=document.createElement("div");
+  d.className="league"+(i===0?" active":"");
+  d.innerHTML=`<img src="https://media.api-sports.io/football/leagues/${l.id}.png">`;
+  d.onclick=()=>{
+    document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
+    d.classList.add("active");
+    render(l);
+  };
+  bar.appendChild(d);
+});
+
+function render(l){
+  hotCard.innerHTML=`
+    <div class="hot-head">
+      <div><span class="hot-badge">🔥 HOT</span>${l.name}</div>
+      <div>🕒 ${l.time}</div>
+    </div>
+
+    <div class="match">
+      <div class="team">
+        <img src="https://media.api-sports.io/football/teams/${l.home[1]}.png">
+        <div class="team-name">${l.home[0]}</div>
+      </div>
+
+      <div class="vs">
+        <div class="score-box">0</div>
+        <div class="vs-text">VS</div>
+        <div class="score-box">0</div>
+      </div>
+
+      <div class="team">
+        <img src="https://media.api-sports.io/football/teams/${l.away[1]}.png">
+        <div class="team-name">${l.away[0]}</div>
+      </div>
+    </div>
+
+    <a class="watch" href="#">
+      คลิกเพื่อรับชมถ่ายทอดสด
+    </a>
+  `;
+}
+
+render(LEAGUES[0]);
+</script>
+
+</body>
+</html>
