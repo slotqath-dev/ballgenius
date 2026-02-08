@@ -14,7 +14,6 @@
   --white:#ffffff;
   --muted:#aaaaaa;
   --accent:#ffd200;
-  --bg:#000;
 }
 *{box-sizing:border-box;font-family:sans-serif}
 
@@ -29,7 +28,6 @@ body{
 header{
   padding:14px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
   background:linear-gradient(180deg,#300,#000);
   border-bottom:2px solid var(--red);
@@ -55,9 +53,7 @@ header{
   justify-content:center;
   cursor:pointer;
 }
-.league.active{
-  border-color:var(--accent);
-}
+.league.active{border-color:var(--accent)}
 .league img{
   width:100%;
   height:100%;
@@ -78,10 +74,10 @@ header{
   padding:14px;
   margin-bottom:12px;
 }
-.league-name{
+.match-time{
   color:var(--accent);
-  font-size:13px;
-  margin-bottom:10px;
+  font-size:12px;
+  margin-bottom:8px;
 }
 .teams{
   display:flex;
@@ -128,10 +124,7 @@ header{
   font-size:12px;
   color:var(--muted);
 }
-.tab.active{
-  color:var(--red);
-  font-weight:700;
-}
+.tab.active{color:var(--red);font-weight:700}
 </style>
 </head>
 
@@ -141,7 +134,7 @@ header{
   <div class="logo"><span>QA</span> BallGenius</div>
 </header>
 
-<!-- 🔥 ลำดับลีก = ตาม HTML นี้เท่านั้น -->
+<!-- ลำดับลีก = ยึดตามนี้ -->
 <div class="leagues">
   <div class="league active" data-id="39"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league" data-id="140"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
@@ -156,7 +149,7 @@ header{
 <div class="content" id="matches"></div>
 
 <div class="bottom">
-  <div class="tab active">วันนี้เตะ</div>
+  <div class="tab active">วันนี้</div>
   <div class="tab">สด</div>
   <div class="tab">โปรแกรม</div>
   <div class="tab">เพิ่มเติม</div>
@@ -166,32 +159,41 @@ header{
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* MOCK วันนี้เตะจริง (เปลี่ยนเป็น API ทีหลังได้) */
+/* แปลงวันเวลาเป็นภาษาไทย */
+function formatThaiDateTime(date){
+  return date.toLocaleDateString("th-TH",{
+    weekday:"short",
+    day:"numeric",
+    month:"short"
+  }) + " · " + date.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});
+}
+
+/* MOCK DATA (โครงสร้างเหมือน API) */
 const DATA = {
   39:{name:"พรีเมียร์ลีก",matches:[
-    ["แมนยู",33,"แมนซิตี้",50],
-    ["ลิเวอร์พูล",40,"เชลซี",49]
+    {h:["แมนยู",33],a:["แมนซิตี้",50],time:"2026-02-08T23:30"},
+    {h:["ลิเวอร์พูล",40],a:["เชลซี",49],time:"2026-02-09T02:00"}
   ]},
   140:{name:"ลาลีกา",matches:[
-    ["บาร์เซโลนา",529,"เรอัล มาดริด",541]
+    {h:["บาร์เซโลนา",529],a:["เรอัล มาดริด",541],time:"2026-02-08T03:00"}
   ]},
   78:{name:"บุนเดสลีกา",matches:[
-    ["บาเยิร์น",157,"ดอร์ทมุนด์",165]
+    {h:["บาเยิร์น",157],a:["ดอร์ทมุนด์",165],time:"2026-02-08T21:30"}
   ]},
   135:{name:"กัลโช่",matches:[
-    ["ยูเวนตุส",496,"เอซี มิลาน",489]
+    {h:["ยูเวนตุส",496],a:["เอซี มิลาน",489],time:"2026-02-09T01:45"}
   ]},
   61:{name:"ลีกเอิง",matches:[
-    ["PSG",85,"มาร์กเซย",81]
+    {h:["PSG",85],a:["มาร์กเซย",81],time:"2026-02-08T22:00"}
   ]},
   2:{name:"UCL",matches:[
-    ["ทีม A",1,"ทีม B",2]
+    {h:["ทีม A",1],a:["ทีม B",2],time:"2026-02-10T02:00"}
   ]},
   3:{name:"UEL",matches:[
-    ["ทีม C",3,"ทีม D",4]
+    {h:["ทีม C",3],a:["ทีม D",4],time:"2026-02-11T00:45"}
   ]},
   1:{name:"FIFA",matches:[
-    ["ทีมชาติ A",5,"ทีมชาติ B",6]
+    {h:["ทีมชาติ A",5],a:["ทีมชาติ B",6],time:"2026-02-12T19:00"}
   ]}
 };
 
@@ -204,18 +206,19 @@ function renderLeague(id){
 
   matchesEl.innerHTML = "";
   d.matches.forEach(m=>{
+    const dt = formatThaiDateTime(new Date(m.time));
     matchesEl.innerHTML += `
       <div class="match">
-        <div class="league-name">วันนี้เตะจริง · ${d.name}</div>
+        <div class="match-time">${dt} · ${d.name}</div>
         <div class="teams">
           <div class="team">
-            <img src="https://media.api-sports.io/football/teams/${m[1]}.png">
-            <div>${m[0]}</div>
+            <img src="https://media.api-sports.io/football/teams/${m.h[1]}.png">
+            <div>${m.h[0]}</div>
           </div>
           <div class="vs">VS</div>
           <div class="team">
-            <img src="https://media.api-sports.io/football/teams/${m[3]}.png">
-            <div>${m[2]}</div>
+            <img src="https://media.api-sports.io/football/teams/${m.a[1]}.png">
+            <div>${m.a[0]}</div>
           </div>
         </div>
       </div>
@@ -231,7 +234,7 @@ leagues.forEach(l=>{
   };
 });
 
-/* init ลีกแรกตามที่เรียง */
+/* init */
 renderLeague(leagues[0].dataset.id);
 </script>
 
