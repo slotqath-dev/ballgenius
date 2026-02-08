@@ -16,7 +16,6 @@
   --white:#fff;
   --muted:#aaa;
 }
-
 *{box-sizing:border-box;font-family:sans-serif}
 
 body{
@@ -62,74 +61,42 @@ header span{color:var(--red)}
 /* CONTENT */
 .content{padding:14px;padding-bottom:90px}
 
-/* HOT MATCH */
-.hot{
-  background:linear-gradient(180deg,#2a0000,#120000);
-  border:2px solid var(--red);
+/* MATCH */
+.match{
+  background:var(--card);
   border-radius:22px;
-  padding:14px;
-  margin-bottom:16px;
+  padding:16px;
+  border:1px solid #222;
 }
-.hot-title{
+.league-name{
   color:var(--gold);
   font-weight:800;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
-.hot-teams{
+.teams{
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
-.hot-team{
+.team{
   width:40%;
   text-align:center;
 }
-.hot-team img{
-  width:56px;height:56px;
+.team img{
+  width:48px;height:48px;
   background:#fff;
-  padding:6px;
-  border-radius:14px;
+  padding:5px;
+  border-radius:12px;
 }
-.hot-vs{
+.vs{
   font-size:22px;
   font-weight:900;
   color:var(--red);
 }
-.hot-time{
-  margin-top:8px;
+.time{
+  margin-top:10px;
   text-align:center;
   font-size:13px;
-  color:var(--muted);
-}
-
-/* MATCH LIST */
-.list{
-  background:var(--card);
-  border-radius:20px;
-  padding:10px;
-}
-.item{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:10px;
-  border-bottom:1px solid #222;
-}
-.item:last-child{border-bottom:none}
-.teams{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:14px;
-}
-.teams img{
-  width:22px;height:22px;
-  background:#fff;
-  padding:3px;
-  border-radius:6px;
-}
-.time{
-  font-size:12px;
   color:var(--muted);
 }
 
@@ -168,27 +135,21 @@ header span{color:var(--red)}
 </div>
 
 <div class="content">
-
-  <!-- HOT MATCH -->
-  <div class="hot">
-    <div class="hot-title" id="leagueName">🔥 พรีเมียร์ลีก (คู่เด่น)</div>
-    <div class="hot-teams">
-      <div class="hot-team">
-        <img id="hotHomeLogo">
-        <div id="hotHomeName"></div>
+  <div class="match">
+    <div class="league-name" id="leagueName"></div>
+    <div class="teams">
+      <div class="team">
+        <img id="homeLogo">
+        <div id="homeName"></div>
       </div>
-      <div class="hot-vs">VS</div>
-      <div class="hot-team">
-        <img id="hotAwayLogo">
-        <div id="hotAwayName"></div>
+      <div class="vs">VS</div>
+      <div class="team">
+        <img id="awayLogo">
+        <div id="awayName"></div>
       </div>
     </div>
-    <div class="hot-time" id="hotTime"></div>
+    <div class="time" id="matchTime"></div>
   </div>
-
-  <!-- MATCH LIST -->
-  <div class="list" id="matchList"></div>
-
 </div>
 
 <div class="bottom">
@@ -202,79 +163,8 @@ header span{color:var(--red)}
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* DATA */
+/* ลีกละ 1 คู่ */
 const DATA = {
-  39:{
-    name:"พรีเมียร์ลีก",
-    hot:{h:["Man Utd",33],a:["Liverpool",40],t:"23:30"},
-    matches:[
-      {h:["Arsenal",42],a:["Chelsea",49],t:"21:00"},
-      {h:["Spurs",47],a:["Newcastle",34],t:"22:00"}
-    ]
-  },
-  140:{
-    name:"ลาลีกา",
-    hot:{h:["Real Madrid",541],a:["Barcelona",529],t:"02:00"},
-    matches:[
-      {h:["Atletico",530],a:["Sevilla",536],t:"23:30"}
-    ]
-  },
-  78:{
-    name:"บุนเดสลีกา",
-    hot:{h:["Bayern",157],a:["Dortmund",165],t:"00:30"},
-    matches:[
-      {h:["Leipzig",173],a:["Leverkusen",168],t:"21:30"}
-    ]
-  },
-  135:{
-    name:"กัลโช่",
-    hot:{h:["Juventus",496],a:["AC Milan",489],t:"01:45"},
-    matches:[
-      {h:["Inter",505],a:["Roma",497],t:"23:00"}
-    ]
-  },
-  61:{
-    name:"ลีกเอิง",
-    hot:{h:["PSG",85],a:["Marseille",81],t:"03:00"},
-    matches:[
-      {h:["Lyon",80],a:["Monaco",91],t:"22:00"}
-    ]
-  }
-};
-
-function render(id){
-  const d = DATA[id];
-  leagueName.innerText = "🔥 " + d.name + " (คู่เด่น)";
-  hotHomeName.innerText = d.hot.h[0];
-  hotAwayName.innerText = d.hot.a[0];
-  hotTime.innerText = "เวลาแข่ง " + d.hot.t;
-  hotHomeLogo.src = `https://media.api-sports.io/football/teams/${d.hot.h[1]}.png`;
-  hotAwayLogo.src = `https://media.api-sports.io/football/teams/${d.hot.a[1]}.png`;
-
-  matchList.innerHTML = "";
-  d.matches.forEach(m=>{
-    matchList.innerHTML += `
-      <div class="item">
-        <div class="teams">
-          <img src="https://media.api-sports.io/football/teams/${m.h[1]}.png">
-          ${m.h[0]} VS ${m.a[0]}
-          <img src="https://media.api-sports.io/football/teams/${m.a[1]}.png">
-        </div>
-        <div class="time">${m.t}</div>
-      </div>`;
-  });
-}
-
-render(39);
-
-document.querySelectorAll('.league').forEach(l=>{
-  l.onclick=()=>{
-    document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
-    l.classList.add('active');
-    render(l.dataset.id);
-  }
-});
-</script>
-
-</body>
-</html>
+  39:{name:"พรีเมียร์ลีก",h:["Man Utd",33],a:["Liverpool",40],t:"21:00"},
+  140:{name:"ลาลีกา",h:["Real Madrid",541],a:["Barcelona",529],t:"02:00"},
+  78:{name:"บุนเดสลีกา
