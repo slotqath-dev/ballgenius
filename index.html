@@ -21,26 +21,15 @@ body{
   margin:0;
   background:#000;
   color:var(--white);
-  min-height:100vh;
-  padding-bottom:90px;
 }
-
-/* HEADER */
 header{
   padding:14px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:#000;
+  background:linear-gradient(180deg,#300,#000);
   border-bottom:2px solid var(--red);
-}
-.logo{
   font-weight:900;
   font-size:22px;
 }
-.logo span:first-child{color:var(--red)}
-
-/* LEAGUES */
+header span{color:var(--red)}
 .leagues{
   display:flex;
   gap:12px;
@@ -48,9 +37,7 @@ header{
   overflow-x:auto;
 }
 .league{
-  width:64px;
-  height:64px;
-  flex:0 0 auto;
+  width:64px;height:64px;
   background:var(--card);
   border-radius:16px;
   border:2px solid transparent;
@@ -59,31 +46,29 @@ header{
   justify-content:center;
   cursor:pointer;
 }
-.league.active{
-  border-color:var(--accent);
-}
+.league.active{border-color:var(--accent)}
 .league img{
-  width:100%;
-  height:100%;
+  width:100%;height:100%;
   object-fit:contain;
   background:#fff;
   padding:6px;
   border-radius:12px;
 }
-
-/* CONTENT */
-.content{
-  padding:14px;
-}
+.content{padding:14px;padding-bottom:80px}
 .match{
   background:var(--card);
-  border-radius:18px;
-  padding:14px;
-  margin-bottom:12px;
+  border-radius:16px;
+  padding:12px;
+  margin-bottom:10px;
 }
-.match .time{
-  font-size:13px;
+.league-name{
   color:var(--accent);
+  font-size:13px;
+  margin-bottom:6px;
+}
+.datetime{
+  font-size:12px;
+  color:var(--muted);
   margin-bottom:8px;
 }
 .teams{
@@ -96,46 +81,32 @@ header{
   text-align:center;
 }
 .team img{
-  width:46px;
-  height:46px;
+  width:42px;height:42px;
   background:#fff;
   padding:4px;
   border-radius:10px;
 }
-.score{
-  font-size:18px;
-  color:var(--muted);
+.vs{
+  font-weight:900;
+  color:var(--red);
 }
-
-/* BOTTOM */
 .bottom{
   position:fixed;
   bottom:0;left:0;right:0;
   background:#000;
   border-top:2px solid var(--red);
-  display:flex;
-}
-.tab{
-  flex:1;
-  padding:10px 0;
   text-align:center;
+  padding:10px;
   font-size:12px;
   color:var(--muted);
-}
-.tab.active{
-  color:var(--red);
-  font-weight:700;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo"><span>QA</span> BallGenius</div>
-</header>
+<header><span>QA</span> BallGenius</header>
 
-<!-- ลีก (เรียงตามที่คุณวาง) -->
 <div class="leagues">
   <div class="league active" data-id="39"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league" data-id="140"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
@@ -148,14 +119,10 @@ header{
 </div>
 
 <div class="content" id="matches">
-  <div class="match">กรุณาใส่ API KEY</div>
+  กำลังโหลดข้อมูล...
 </div>
 
-<div class="bottom">
-  <div class="tab active">โปรแกรมวันนี้</div>
-  <div class="tab">สด</div>
-  <div class="tab">อื่นๆ</div>
-</div>
+<div class="bottom">โปรแกรมแข่งขันจริง (API-Football)</div>
 
 <script>
 Telegram.WebApp.ready();
@@ -163,67 +130,70 @@ Telegram.WebApp.expand();
 
 /* ====== CONFIG ====== */
 const API_KEY = "PUT_YOUR_API_KEY_HERE";
+const TZ = "Asia/Bangkok";
 
 /* ====== DATE TODAY ====== */
 const today = new Date().toISOString().split("T")[0];
 
-/* ====== LEAGUE CLICK ====== */
-const leagues = document.querySelectorAll(".league");
-leagues.forEach(l=>{
-  l.onclick=()=>{
-    leagues.forEach(x=>x.classList.remove("active"));
-    l.classList.add("active");
-    loadMatches(l.dataset.id);
+const matchesEl = document.getElementById("matches");
+
+async function loadMatches(leagueId){
+  matchesEl.innerHTML = "กำลังโหลดข้อมูล...";
+  try{
+    const res = await fetch(
+      `https://v3.football.api-sports.io/fixtures?league=${leagueId}&date=${today}&timezone=${TZ}`,
+      { headers:{ "x-apisports-key": API_KEY } }
+    );
+    const data = await res.json();
+    renderMatches(data.response);
+  }catch(e){
+    matchesEl.innerHTML = "โหลดข้อมูลไม่สำเร็จ";
   }
-});
+}
 
-/* ====== LOAD MATCHES ====== */
-function loadMatches(leagueId){
-  const box = document.getElementById("matches");
-  box.innerHTML = "<div class='match'>กำลังโหลด...</div>";
-
-  if(!API_KEY || API_KEY.includes("PUT")){
-    box.innerHTML = "<div class='match'>ยังไม่ได้ใส่ API KEY</div>";
+function renderMatches(list){
+  if(!list.length){
+    matchesEl.innerHTML = "วันนี้ไม่มีการแข่งขัน";
     return;
   }
+  matchesEl.innerHTML = "";
+  list.forEach(m=>{
+    const dt = new Date(m.fixture.date);
+    const time = dt.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});
+    const date = dt.toLocaleDateString("th-TH");
 
-  fetch(`https://v3.football.api-sports.io/fixtures?league=${leagueId}&date=${today}`,{
-    headers:{ "x-apisports-key": API_KEY }
-  })
-  .then(r=>r.json())
-  .then(d=>{
-    box.innerHTML = "";
-    if(!d.response || d.response.length===0){
-      box.innerHTML = "<div class='match'>ไม่มีการแข่งขันวันนี้</div>";
-      return;
-    }
-
-    d.response.forEach(m=>{
-      const time = new Date(m.fixture.date)
-        .toLocaleString("th-TH",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"short"});
-
-      box.innerHTML += `
-        <div class="match">
-          <div class="time">${time}</div>
-          <div class="teams">
-            <div class="team">
-              <img src="${m.teams.home.logo}">
-              <div>${m.teams.home.name}</div>
-            </div>
-            <div class="score">VS</div>
-            <div class="team">
-              <img src="${m.teams.away.logo}">
-              <div>${m.teams.away.name}</div>
-            </div>
+    matchesEl.innerHTML += `
+      <div class="match">
+        <div class="league-name">${m.league.name}</div>
+        <div class="datetime">${date} • ${time}</div>
+        <div class="teams">
+          <div class="team">
+            <img src="${m.teams.home.logo}">
+            <div>${m.teams.home.name}</div>
+          </div>
+          <div class="vs">VS</div>
+          <div class="team">
+            <img src="${m.teams.away.logo}">
+            <div>${m.teams.away.name}</div>
           </div>
         </div>
-      `;
-    });
+      </div>
+    `;
   });
 }
 
+/* ====== LEAGUE CLICK ====== */
+const leagues = document.querySelectorAll(".league");
+leagues.forEach(l=>{
+  l.onclick = ()=>{
+    leagues.forEach(x=>x.classList.remove("active"));
+    l.classList.add("active");
+    loadMatches(l.dataset.id);
+  };
+});
+
 /* init */
-loadMatches(document.querySelector(".league.active").dataset.id);
+loadMatches(39);
 </script>
 
 </body>
