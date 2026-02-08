@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
+
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 *{box-sizing:border-box;font-family:sans-serif}
 body{
   margin:0;
-  background:linear-gradient(180deg,#12001f,#000);
+  background:linear-gradient(180deg,#2a0040,#12001f,#000);
   color:#fff;
-  min-height:100vh;
 }
 
 /* HEADER */
@@ -20,136 +20,125 @@ header{
   padding:14px;
   font-size:22px;
   font-weight:900;
-  border-bottom:2px solid #e60000;
+  text-align:center;
+  background:#1b002b;
 }
-header span{color:#e60000}
+
+/* HOT MATCH */
+.hot{
+  margin:16px;
+  padding:16px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#5b1cff,#ff2f92);
+}
+.hot-title{
+  font-size:12px;
+  margin-bottom:10px;
+  opacity:.9;
+}
+.match{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.team{
+  width:40%;
+  text-align:center;
+}
+.team img{
+  width:56px;
+  height:56px;
+  background:#fff;
+  border-radius:14px;
+  padding:6px;
+}
+.vs{
+  font-size:22px;
+  font-weight:900;
+}
+.watch{
+  margin-top:14px;
+  padding:12px;
+  border-radius:14px;
+  background:#ff2f92;
+  text-align:center;
+  font-weight:800;
+  cursor:pointer;
+}
 
 /* LEAGUES */
 .leagues{
   display:flex;
-  gap:12px;
-  padding:12px;
+  gap:10px;
+  padding:10px;
   overflow-x:auto;
 }
 .league{
-  width:60px;height:60px;
+  flex:0 0 auto;
+  width:60px;
+  height:60px;
   border-radius:16px;
-  background:#161616;
+  background:#111;
   display:flex;
   align-items:center;
   justify-content:center;
   border:2px solid transparent;
   cursor:pointer;
 }
-.league.active{border-color:#ffd200}
+.league.active{border-color:#ff2f92}
 .league img{
-  width:42px;height:42px;
+  width:100%;
+  height:100%;
+  padding:8px;
   background:#fff;
-  padding:6px;
   border-radius:12px;
 }
 
-/* CONTENT */
-.content{padding:14px;padding-bottom:90px}
-
-/* HOT CARD */
-.hot-card{
-  background:linear-gradient(180deg,#3a145f,#1a0b2e);
-  border-radius:22px;
-  padding:16px;
-  margin-bottom:18px;
+/* LIST */
+.list{
+  padding:12px;
 }
-.hot-top{
-  display:flex;
-  justify-content:space-between;
-  font-size:13px;
-  margin-bottom:14px;
-}
-.badge{
-  background:#ff7a00;
-  padding:4px 10px;
-  border-radius:20px;
-  font-weight:700;
-}
-.hot-match{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:14px;
-}
-.team{
-  width:34%;
-  text-align:center;
-  font-size:13px;
-}
-.team img{
-  width:48px;height:48px;
-  background:#fff;
-  padding:6px;
-  border-radius:14px;
-  margin-bottom:6px;
-}
-.score{
-  width:32%;
-  text-align:center;
-  font-weight:900;
-}
-.score div{font-size:22px}
-.score span{font-size:12px;color:#ccc}
-.btn-live{
-  background:#ff2d87;
-  padding:13px;
-  text-align:center;
-  border-radius:14px;
-  font-weight:700;
-}
-
-/* NORMAL MATCH */
-.match{
-  background:#161616;
+.card{
+  background:#111;
   border-radius:16px;
   padding:12px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
   margin-bottom:10px;
-}
-.match .left{
   display:flex;
-  gap:10px;
   align-items:center;
+  justify-content:space-between;
 }
-.match img{
-  width:32px;height:32px;
-  background:#fff;
-  padding:4px;
-  border-radius:8px;
+.card .names{
+  font-size:14px;
 }
-.time{color:#aaa;font-size:13px}
-
-/* BOTTOM */
-.bottom{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  display:flex;
-  background:#000;
-  border-top:2px solid #e60000;
-}
-.tab{
-  flex:1;
-  padding:10px 0;
-  text-align:center;
+.time{
   font-size:12px;
-  color:#aaa;
+  opacity:.7;
 }
-.tab.active{color:#e60000;font-weight:700}
 </style>
 </head>
 
 <body>
 
-<header><span>QA</span> BallGenius</header>
+<header>⚽ QA BallGenius</header>
 
+<!-- HOT MATCH -->
+<div class="hot">
+  <div class="hot-title">🔥 HOT ลาลีกา · 22:00</div>
+  <div class="match">
+    <div class="team">
+      <img id="hotHomeLogo">
+      <div id="hotHomeName"></div>
+    </div>
+    <div class="vs">VS</div>
+    <div class="team">
+      <img id="hotAwayLogo">
+      <div id="hotAwayName"></div>
+    </div>
+  </div>
+  <div class="watch" onclick="watch()">คลิกเพื่อรับชมถ่ายทอดสด</div>
+</div>
+
+<!-- LEAGUES -->
 <div class="leagues">
   <div class="league active" data-id="39"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league" data-id="140"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
@@ -158,46 +147,53 @@ header span{color:#e60000}
   <div class="league" data-id="61"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
 </div>
 
-<div class="content" id="content"></div>
-
-<div class="bottom">
-  <div class="tab active">ยอดนิยม</div>
-  <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
-</div>
+<!-- LIST -->
+<div class="list" id="list"></div>
 
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* MOCK DATA ทุกลีก ลีกละ 1 คู่ */
+/* DATA */
 const data = {
-  39:{
-    hot:true,
-    league:"พรีเมียร์ลีก",
-    time:"22:00",
-    home:["Man Utd",33],
-    away:["Liverpool",40]
-  },
-  140:{
-    hot:false,
-    league:"ลาลีกา",
-    time:"21:00",
-    home:["Barcelona",529],
-    away:["Real Madrid",541]
-  },
-  78:{
-    hot:false,
-    league:"บุนเดสลีกา",
-    time:"20:30",
-    home:["Bayern",157],
-    away:["Dortmund",165]
-  },
-  135:{
-    hot:false,
-    league:"กัลโช่",
-    time:"01:45",
-    home:["Juventus",496],
-    away:["AC Milan",489]
-  },
+  39:{league:"พรีเมียร์ลีก",time:"21:00",home:["Man Utd",33],away:["Liverpool",40]},
+  140:{league:"ลาลีกา",time:"22:00",home:["Barcelona",529],away:["Real Madrid",541]},
+  78:{league:"บุนเดสลีกา",time:"20:30",home:["Bayern",157],away:["Dortmund",165]},
+  135:{league:"กัลโช่",time:"01:45",home:["Juventus",496],away:["AC Milan",489]},
+  61:{league:"ลีกเอิง",time:"23:00",home:["PSG",85],away:["Marseille",81]}
+};
+
+function render(id){
+  const d=data[id];
+
+  hotHomeName.innerText=d.home[0];
+  hotAwayName.innerText=d.away[0];
+  hotHomeLogo.src=`https://media.api-sports.io/football/teams/${d.home[1]}.png`;
+  hotAwayLogo.src=`https://media.api-sports.io/football/teams/${d.away[1]}.png`;
+  document.querySelector('.hot-title').innerText=`🔥 HOT ${d.league} · ${d.time}`;
+
+  list.innerHTML=`
+    <div class="card">
+      <div class="names">${d.home[0]} VS ${d.away[0]}</div>
+      <div class="time">${d.time}</div>
+    </div>
+  `;
+}
+
+document.querySelectorAll('.league').forEach(l=>{
+  l.onclick=()=>{
+    document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
+    l.classList.add('active');
+    render(l.dataset.id);
+  }
+});
+
+function watch(){
+  Telegram.WebApp.openTelegramLink("https://t.me/");
+}
+
+render(39);
+</script>
+
+</body>
+</html>
