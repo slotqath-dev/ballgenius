@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
 
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 <style>
 :root{
   --bg:#0b0218;
@@ -30,7 +32,6 @@ header{
   padding:14px;
   font-size:22px;
   font-weight:900;
-  border-bottom:2px solid #000;
 }
 
 /* LEAGUES */
@@ -116,7 +117,6 @@ header{
 
 <header>QA BallGenius</header>
 
-<!-- LEAGUES -->
 <div class="leagues">
   <div class="league active" data-league="39"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league" data-league="140"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
@@ -125,55 +125,56 @@ header{
   <div class="league" data-league="61"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
 </div>
 
-<!-- CONTENT -->
 <div class="content" id="content"></div>
 
 <script>
-/* 🔹 ข้อมูลจำลอง (แทน API) */
+Telegram.WebApp.ready();
+Telegram.WebApp.expand();
+
+/* 🔹 ข้อมูลจำลอง (พร้อมลิงก์ Telegram) */
 const DATA = {
   39:{
     name:"อังกฤษ | พรีเมียร์ลีก",
     matches:[
-      {hot:true,time:"วันนี้ 21:00",home:["Brighton",51],away:["Crystal Palace",52]},
-      {hot:false,time:"วันนี้ 23:30",home:["Man United",33],away:["Chelsea",49]}
+      {hot:true,time:"วันนี้ 21:00",home:["Brighton",51],away:["Crystal Palace",52],tg:"https://t.me/your_channel"},
+      {hot:false,time:"วันนี้ 23:30",home:["Man United",33],away:["Chelsea",49],tg:"https://t.me/your_channel"}
     ]
   },
   140:{
     name:"สเปน | ลาลีกา",
     matches:[
-      {hot:true,time:"วันนี้ 22:00",home:["Barcelona",529],away:["Real Madrid",541]},
-      {hot:false,time:"คืนนี้ 01:00",home:["Valencia",532],away:["Sevilla",536]}
+      {hot:true,time:"วันนี้ 22:00",home:["Barcelona",529],away:["Real Madrid",541],tg:"https://t.me/your_channel"}
     ]
   },
   78:{
     name:"เยอรมัน | บุนเดสลีกา",
     matches:[
-      {hot:true,time:"วันนี้ 20:30",home:["Bayern",157],away:["Dortmund",165]}
+      {hot:true,time:"วันนี้ 20:30",home:["Bayern",157],away:["Dortmund",165],tg:"https://t.me/your_channel"}
     ]
   },
   135:{
     name:"อิตาลี | กัลโช่",
     matches:[
-      {hot:false,time:"คืนนี้ 02:45",home:["Juventus",496],away:["AC Milan",489]}
+      {hot:false,time:"คืนนี้ 02:45",home:["Juventus",496],away:["AC Milan",489],tg:"https://t.me/your_channel"}
     ]
   },
   61:{
     name:"ฝรั่งเศส | ลีกเอิง",
     matches:[
-      {hot:true,time:"วันนี้ 03:00",home:["PSG",85],away:["Marseille",81]}
+      {hot:true,time:"วันนี้ 03:00",home:["PSG",85],away:["Marseille",81],tg:"https://t.me/your_channel"}
     ]
   }
 };
 
-function render(leagueId){
+function render(id){
   const box=document.getElementById("content");
   box.innerHTML="";
-  DATA[leagueId].matches.forEach(m=>{
+  DATA[id].matches.forEach(m=>{
     box.innerHTML+=`
     <div class="card">
       <div class="card-top">
         ${m.hot?`<div class="badge">🔥 HOT</div>`:`<div></div>`}
-        <div>${DATA[leagueId].name}</div>
+        <div>${DATA[id].name}</div>
         <div class="time">${m.time}</div>
       </div>
 
@@ -189,15 +190,17 @@ function render(leagueId){
         </div>
       </div>
 
-      <div class="btn">คลิกเพื่อรับชมถ่ายทอดสด</div>
+      <div class="btn" onclick="openTG('${m.tg}')">คลิกเพื่อรับชมถ่ายทอดสด</div>
     </div>`;
   });
 }
 
-/* INIT */
+function openTG(link){
+  Telegram.WebApp.openTelegramLink(link);
+}
+
 render(39);
 
-/* CLICK LEAGUE */
 document.querySelectorAll(".league").forEach(l=>{
   l.onclick=()=>{
     document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
