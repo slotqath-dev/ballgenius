@@ -19,8 +19,6 @@
   --accent:#ffd200;
   --hot1:#3b145f;
   --hot2:#1b0030;
-  --tab:#2a0f3f;
-  --tabActive:#ff2b8a;
 }
 .light{
   --bg:#f2f2f2;
@@ -29,8 +27,6 @@
   --muted:#555;
   --hot1:#ffffff;
   --hot2:#f0f0f0;
-  --tab:#ddd;
-  --tabActive:#ff2b8a;
 }
 
 body{
@@ -38,7 +34,6 @@ body{
   background:linear-gradient(180deg,#220033,var(--bg));
   color:var(--text);
   min-height:100vh;
-  padding-bottom:90px;
 }
 
 /* HEADER */
@@ -55,15 +50,14 @@ header span{color:var(--red)}
 
 /* THEME TOGGLE */
 .theme-btn{
-  width:40px;
-  height:40px;
+  width:38px;
+  height:38px;
   border-radius:50%;
   background:var(--card);
   display:flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
-  font-size:18px;
 }
 
 /* LEAGUE BAR */
@@ -96,12 +90,12 @@ header span{color:var(--red)}
 }
 
 /* CONTENT */
-.content{padding:14px}
+.content{padding:14px;padding-bottom:90px}
 
 /* HOT CARD */
 .hot-card{
   background:linear-gradient(180deg,var(--hot1),var(--hot2));
-  border-radius:22px;
+  border-radius:24px;
   padding:16px;
 }
 .hot-head{
@@ -118,33 +112,41 @@ header span{color:var(--red)}
   font-weight:700;
   margin-right:6px;
 }
+
+/* MATCH (ล็อกสัดส่วน) */
 .match{
-  display:flex;
+  display:grid;
+  grid-template-columns:1fr 80px 1fr;
   align-items:center;
-  justify-content:space-between;
+  gap:10px;
   margin-bottom:18px;
 }
 .team{
-  width:40%;
   text-align:center;
 }
 .team img{
-  width:54px;
-  height:54px;
+  width:60px;
+  height:60px;
+  object-fit:contain;
   background:#fff;
-  padding:6px;
-  border-radius:14px;
+  padding:8px;
+  border-radius:16px;
 }
 .team-name{
   margin-top:6px;
   font-size:13px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  font-weight:600;
 }
 .vs{
-  font-size:22px;
+  background:#2a0f3f;
+  border-radius:16px;
+  padding:10px 0;
+  text-align:center;
   font-weight:900;
+}
+.vs div:nth-child(2){
+  font-size:12px;
+  opacity:.7;
 }
 
 /* BUTTON */
@@ -154,38 +156,28 @@ header span{color:var(--red)}
   text-align:center;
   background:linear-gradient(90deg,#ff2b8a,#ff005c);
   padding:14px;
-  border-radius:16px;
+  border-radius:18px;
   font-weight:900;
   text-decoration:none;
   color:#fff;
 }
 
-/* ===== BOTTOM MENU ===== */
+/* BOTTOM MENU */
 .bottom{
   position:fixed;
-  bottom:12px;
-  left:12px;
-  right:12px;
-  background:linear-gradient(180deg,#3b145f,#1b0030);
-  border-radius:22px;
+  bottom:0;left:0;right:0;
   display:flex;
-  padding:8px;
-  gap:6px;
+  background:var(--bg);
+  border-top:2px solid var(--red);
 }
 .tab{
   flex:1;
   text-align:center;
-  padding:12px 0;
+  padding:10px 0;
   font-size:12px;
-  border-radius:16px;
-  color:var(--muted);
-  cursor:pointer;
+  opacity:.6;
 }
-.tab.active{
-  background:var(--tabActive);
-  color:#fff;
-  font-weight:700;
-}
+.tab.active{opacity:1;color:var(--red)}
 </style>
 </head>
 
@@ -202,7 +194,7 @@ header span{color:var(--red)}
   <div class="hot-card" id="hotCard"></div>
 </div>
 
-<div class="bottom" id="bottomMenu">
+<div class="bottom">
   <div class="tab active">ยอดนิยม</div>
   <div class="tab">สด</div>
   <div class="tab">โปรแกรม</div>
@@ -213,21 +205,19 @@ header span{color:var(--red)}
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* LEAGUES */
+/* DATA */
 const LEAGUES=[
-{id:39,name:"อังกฤษ | พรีเมียร์ลีก",time:"21:00",home:["Liverpool",40],away:["Man City",50]},
-{id:140,name:"สเปน | ลาลีกา",time:"22:00",home:["Barcelona",529],away:["Real Madrid",541]},
-{id:78,name:"เยอรมัน | บุนเดสลีกา",time:"20:30",home:["Bayern",157],away:["Dortmund",165]},
-{id:135,name:"อิตาลี | กัลโช่",time:"01:45",home:["Juventus",496],away:["AC Milan",489]},
-{id:61,name:"ฝรั่งเศส | ลีกเอิง",time:"02:00",home:["PSG",85],away:["Marseille",81]},
-{id:2,name:"UCL",time:"02:00",home:["Man City",50],away:["PSG",85]},
-{id:3,name:"Europa",time:"00:45",home:["Roma",497],away:["Leverkusen",168]},
-{id:1,name:"World Cup",time:"19:00",home:["Brazil",6],away:["Argentina",7]}
+ {id:39,name:"อังกฤษ | พรีเมียร์ลีก",time:"21:00",home:["Liverpool",40],away:["Man City",50]},
+ {id:140,name:"สเปน | ลาลีกา",time:"22:00",home:["Barcelona",529],away:["Real Madrid",541]},
+ {id:78,name:"เยอรมัน | บุนเดสลีกา",time:"20:30",home:["Bayern",157],away:["Dortmund",165]},
+ {id:135,name:"อิตาลี | กัลโช่",time:"01:45",home:["Juventus",496],away:["AC Milan",489]},
+ {id:61,name:"ฝรั่งเศส | ลีกเอิง",time:"02:00",home:["PSG",85],away:["Marseille",81]},
+ {id:2,name:"UCL",time:"02:00",home:["Man City",50],away:["PSG",85]},
+ {id:3,name:"Europa",time:"00:45",home:["Roma",497],away:["Leverkusen",168]},
+ {id:1,name:"World Cup",time:"19:00",home:["Brazil",6],away:["Argentina",7]}
 ];
 
 const bar=document.getElementById("leagueBar");
-const hotCard=document.getElementById("hotCard");
-
 LEAGUES.forEach((l,i)=>{
   const d=document.createElement("div");
   d.className="league"+(i===0?" active":"");
@@ -246,18 +236,26 @@ function render(l){
       <div><span class="hot-badge">🔥 HOT</span>${l.name}</div>
       <div>🕒 ${l.time}</div>
     </div>
+
     <div class="match">
       <div class="team">
         <img src="https://media.api-sports.io/football/teams/${l.home[1]}.png">
         <div class="team-name">${l.home[0]}</div>
       </div>
-      <div class="vs">0 VS 0</div>
+
+      <div class="vs">
+        <div>0</div>
+        <div>VS</div>
+        <div>0</div>
+      </div>
+
       <div class="team">
         <img src="https://media.api-sports.io/football/teams/${l.away[1]}.png">
         <div class="team-name">${l.away[0]}</div>
       </div>
     </div>
-    <a class="watch" href="https://t.me/YOUR_CHANNEL" target="_blank">
+
+    <a class="watch" href="#">
       คลิกเพื่อรับชมถ่ายทอดสด
     </a>
   `;
@@ -265,19 +263,10 @@ function render(l){
 render(LEAGUES[0]);
 
 /* THEME */
-const btn=document.getElementById("themeBtn");
-btn.onclick=()=>{
+themeBtn.onclick=()=>{
   document.body.classList.toggle("light");
-  btn.textContent=document.body.classList.contains("light")?"☀️":"🌙";
+  themeBtn.textContent=document.body.classList.contains("light")?"☀️":"🌙";
 };
-
-/* BOTTOM TAB */
-document.querySelectorAll(".tab").forEach(tab=>{
-  tab.onclick=()=>{
-    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-    tab.classList.add("active");
-  };
-});
 </script>
 
 </body>
