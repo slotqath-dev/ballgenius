@@ -37,18 +37,27 @@ body{
   margin:0;
   color:var(--white);
 
+  /* ✅ พื้นหลังสมส่วน Telegram */
   background:
     linear-gradient(var(--overlay),var(--overlay)),
+    linear-gradient(180deg,var(--bg-color),#000),
     var(--bg-img);
-  background-color:var(--bg-color);
 
-  background-size:cover;
-  background-position:center;
+  background-size:
+    cover,
+    cover,
+    100% auto;
+
+  background-position:
+    center,
+    center,
+    center top;
+
   background-repeat:no-repeat;
 
   min-height:100vh;
 
-  /* Telegram Safe Area */
+  /* Safe Area Telegram */
   padding-top:env(safe-area-inset-top);
   padding-bottom:env(safe-area-inset-bottom);
 }
