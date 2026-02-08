@@ -5,168 +5,194 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
 <style>
 :root{
-  --card:#161616;
+  --bg:#000;
+  --card:#141414;
+  --gold:#ffd200;
   --red:#e60000;
-  --white:#ffffff;
-  --muted:#aaaaaa;
-  --accent:#ffd200;
-
-  --bg-color:#000;
-  --bg-img:url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1200&q=80");
-  --overlay:rgba(0,0,0,.88);
+  --text:#fff;
+  --muted:#aaa;
 }
 *{box-sizing:border-box;font-family:sans-serif}
 body{
-  margin:0;color:var(--white);
-  background:
-    linear-gradient(var(--overlay),var(--overlay)),
-    linear-gradient(180deg,var(--bg-color),#000),
-    var(--bg-img);
-  background-size:cover,cover,100% auto;
-  background-position:center,center,center top;
-  min-height:100vh;
-  padding-bottom:90px;
+  margin:0;
+  background:#000;
+  color:var(--text);
 }
-
-/* HEADER */
 header{
   padding:14px;
-  display:flex;
-  align-items:center;
   background:linear-gradient(180deg,#300,#000);
   border-bottom:2px solid var(--red);
+  font-size:22px;
+  font-weight:900;
 }
-.logo{font-weight:900;font-size:24px}
-.logo span{color:var(--red)}
-
-/* LEAGUES */
-.leagues{display:flex;gap:12px;padding:12px;overflow-x:auto}
+.leagues{
+  display:flex;
+  gap:12px;
+  padding:12px;
+  overflow-x:auto;
+}
 .league{
-  width:64px;height:64px;flex:0 0 auto;
+  width:64px;height:64px;
   background:var(--card);
-  border-radius:16px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   border:2px solid transparent;
-  display:flex;align-items:center;justify-content:center;
   cursor:pointer;
 }
-.league.active{border-color:var(--accent)}
+.league.active{border-color:var(--gold)}
 .league img{
   width:100%;height:100%;
   object-fit:contain;
-  background:#fff;padding:6px;border-radius:12px
+  background:#fff;
+  padding:6px;
+  border-radius:10px;
 }
-
-/* CONTENT */
 .content{padding:14px}
-.match{background:var(--card);border-radius:18px;padding:14px}
-.league-name{color:var(--accent);font-size:13px;margin-bottom:6px}
-.match-time{font-size:12px;color:var(--muted);margin-bottom:10px}
-.teams{display:flex;justify-content:space-between;align-items:center}
-.team{width:40%;text-align:center}
-.team img{width:48px;height:48px;background:#fff;padding:4px;border-radius:10px}
-.score{font-size:22px;font-weight:900;color:var(--red)}
-
-/* BOTTOM */
-.bottom{
-  position:fixed;bottom:0;left:0;right:0;
-  background:linear-gradient(180deg,#200,#000);
-  border-top:2px solid var(--red);
-  display:flex;
+.match{
+  background:var(--card);
+  border-radius:18px;
+  padding:14px;
+  margin-bottom:12px;
 }
-.tab{flex:1;padding:10px 0;text-align:center;font-size:12px;color:var(--muted)}
-.tab.active{color:var(--red);font-weight:700}
+.league-name{
+  color:var(--gold);
+  font-size:13px;
+  margin-bottom:6px;
+}
+.time{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+.teams{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.team{text-align:center;width:40%}
+.team img{
+  width:46px;height:46px;
+  background:#fff;
+  padding:4px;
+  border-radius:10px;
+}
+.vs{
+  color:var(--red);
+  font-weight:900;
+  font-size:20px;
+}
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo"><span>QA</span> BallGenius</div>
-</header>
+<header>QA BallGenius</header>
 
 <div class="leagues" id="leagueBar"></div>
-
-<div class="content">
-  <div class="match">
-    <div class="league-name" id="leagueName"></div>
-    <div class="match-time" id="matchTime"></div>
-    <div class="teams">
-      <div class="team">
-        <img id="homeLogo">
-        <div id="homeName"></div>
-      </div>
-      <div class="score">VS</div>
-      <div class="team">
-        <img id="awayLogo">
-        <div id="awayName"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="bottom">
-  <div class="tab active">ยอดนิยม</div>
-  <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
-</div>
+<div class="content" id="matches"></div>
 
 <script>
-Telegram.WebApp.ready();
-Telegram.WebApp.expand();
+/* ===============================
+   🔧 CONFIG
+================================ */
+const USE_API = false; 
+// false = ใช้ mock (ไม่พังแน่นอน)
+// true  = ใช้ API-Football (ต้องมี backend)
 
-/* ===== สวิตช์ ===== */
-const USE_API = false; // true = API-Football (ต้องมี Backend)
+const BACKEND_URL = "https://YOUR-BACKEND-URL"; 
+// ใส่ตอนคุณมี backend แล้ว
 
-/* ===== DEMO DATA (แทน API ฟรี) ===== */
-const DATA = {
-  39:{name:"พรีเมียร์ลีก",time:"วันนี้ 23:30",
-    home:["Man United","https://media.api-sports.io/football/teams/33.png"],
-    away:["Man City","https://media.api-sports.io/football/teams/50.png"]},
-  140:{name:"ลาลีกา",time:"วันนี้ 02:00",
-    home:["Barcelona","https://media.api-sports.io/football/teams/529.png"],
-    away:["Real Madrid","https://media.api-sports.io/football/teams/541.png"]},
-  78:{name:"บุนเดสลีกา",time:"วันนี้ 01:30",
-    home:["Bayern","https://media.api-sports.io/football/teams/157.png"],
-    away:["Dortmund","https://media.api-sports.io/football/teams/165.png"]},
-  135:{name:"กัลโช่",time:"วันนี้ 00:45",
-    home:["Juventus","https://media.api-sports.io/football/teams/496.png"],
-    away:["AC Milan","https://media.api-sports.io/football/teams/489.png"]},
-  61:{name:"ลีกเอิง",time:"วันนี้ 03:00",
-    home:["PSG","https://media.api-sports.io/football/teams/85.png"],
-    away:["Marseille","https://media.api-sports.io/football/teams/81.png"]}
+/* ===============================
+   🌍 LEAGUES (ทั่วโลก)
+================================ */
+const LEAGUES = [
+ {id:39,name:"Premier League"},
+ {id:140,name:"La Liga"},
+ {id:78,name:"Bundesliga"},
+ {id:135,name:"Serie A"},
+ {id:61,name:"Ligue 1"},
+ {id:2,name:"Champions League"},
+ {id:3,name:"Europa League"},
+ {id:1,name:"World Cup"}
+];
+
+/* ===============================
+   🧪 MOCK DATA (ใช้แทน API)
+================================ */
+const MOCK = {
+  39:[{
+    league:"Premier League",
+    time:"10 Feb 2026 • 02:00",
+    home:{name:"Man United",logo:33},
+    away:{name:"Man City",logo:50}
+  }],
+  140:[{
+    league:"La Liga",
+    time:"11 Feb 2026 • 03:00",
+    home:{name:"Barcelona",logo:529},
+    away:{name:"Real Madrid",logo:541}
+  }]
 };
 
-/* ===== สร้างแถบลีก ===== */
-const leagueBar=document.getElementById("leagueBar");
-Object.keys(DATA).forEach((id,i)=>{
+/* ===============================
+   UI
+================================ */
+const bar=document.getElementById("leagueBar");
+const box=document.getElementById("matches");
+
+LEAGUES.forEach((l,i)=>{
   const d=document.createElement("div");
-  d.className="league"+(i==0?" active":"");
-  d.innerHTML=`<img src="https://media.api-sports.io/football/leagues/${id}.png">`;
-  d.onclick=()=>selectLeague(id,d);
-  leagueBar.appendChild(d);
+  d.className="league"+(i===0?" active":"");
+  d.innerHTML=`<img src="https://media.api-sports.io/football/leagues/${l.id}.png">`;
+  d.onclick=()=>loadLeague(l.id,d);
+  bar.appendChild(d);
 });
 
-function selectLeague(id,el){
+function loadLeague(id,el){
   document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
-  render(DATA[id]);
+  box.innerHTML="";
+
+  if(!USE_API){
+    render(MOCK[id]||[]);
+    return;
+  }
+
+  fetch(`${BACKEND_URL}?league=${id}`)
+    .then(r=>r.json())
+    .then(d=>render(d));
 }
 
-function render(d){
-  leagueName.innerText="🔥 "+d.name;
-  matchTime.innerText=d.time;
-  homeName.innerText=d.home[0];
-  awayName.innerText=d.away[0];
-  homeLogo.src=d.home[1];
-  awayLogo.src=d.away[1];
+function render(list){
+  if(!list.length){
+    box.innerHTML="<div class='match'>ไม่มีโปรแกรม</div>";
+    return;
+  }
+  list.forEach(m=>{
+    box.innerHTML+=`
+    <div class="match">
+      <div class="league-name">${m.league}</div>
+      <div class="time">${m.time}</div>
+      <div class="teams">
+        <div class="team">
+          <img src="https://media.api-sports.io/football/teams/${m.home.logo}.png">
+          <div>${m.home.name}</div>
+        </div>
+        <div class="vs">VS</div>
+        <div class="team">
+          <img src="https://media.api-sports.io/football/teams/${m.away.logo}.png">
+          <div>${m.away.name}</div>
+        </div>
+      </div>
+    </div>`;
+  });
 }
 
-render(DATA[39]);
+loadLeague(39,document.querySelector(".league"));
 </script>
 
 </body>
