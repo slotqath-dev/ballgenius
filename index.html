@@ -16,6 +16,7 @@
   --accent:#ffd200;
   --bg:#000;
 }
+
 *{box-sizing:border-box;font-family:sans-serif}
 
 body{
@@ -28,12 +29,14 @@ body{
 header{
   padding:14px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
   background:linear-gradient(180deg,#300,#000);
   border-bottom:2px solid var(--red);
 }
-.logo{font-size:22px;font-weight:900}
+.logo{
+  font-size:22px;
+  font-weight:900;
+}
 .logo span{color:var(--red)}
 
 /* LEAGUES */
@@ -44,7 +47,8 @@ header{
   overflow-x:auto;
 }
 .league{
-  width:64px;height:64px;
+  width:64px;
+  height:64px;
   flex:0 0 auto;
   background:var(--card);
   border-radius:16px;
@@ -53,7 +57,7 @@ header{
   align-items:center;
   justify-content:center;
   cursor:pointer;
-  transition:.2s;
+  transition:.25s;
 }
 .league img{
   width:100%;
@@ -66,22 +70,25 @@ header{
 .league.active{
   border-color:var(--accent);
   box-shadow:
-    0 0 10px rgba(255,210,0,.9),
-    0 0 24px rgba(255,210,0,.7);
-  transform:scale(1.12);
+    0 0 12px rgba(255,210,0,.9),
+    0 0 30px rgba(255,210,0,.8);
+  transform:scale(1.15);
 }
 
 /* CONTENT */
-.content{padding:14px;padding-bottom:80px}
+.content{
+  padding:14px;
+  padding-bottom:90px;
+}
 .match{
   background:var(--card);
   border-radius:18px;
-  padding:14px;
+  padding:16px;
 }
 .league-name{
   color:var(--accent);
   font-size:14px;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 .teams{
   display:flex;
@@ -93,37 +100,20 @@ header{
   text-align:center;
 }
 .team img{
-  width:48px;height:48px;
+  width:54px;
+  height:54px;
   background:#fff;
-  padding:4px;
-  border-radius:10px;
+  padding:6px;
+  border-radius:12px;
 }
-.score{
+.team-name{
+  margin-top:6px;
+  font-size:14px;
+}
+.vs{
   font-size:20px;
   font-weight:900;
   color:var(--red);
-}
-
-/* ODDS */
-.odds{
-  margin-top:10px;
-  display:flex;
-  justify-content:space-between;
-  gap:6px;
-}
-.odds span{
-  flex:1;
-  text-align:center;
-  background:#111;
-  padding:6px;
-  border-radius:10px;
-  border:1px solid #333;
-  font-size:12px;
-}
-.odds .hot{
-  border-color:var(--accent);
-  color:var(--accent);
-  box-shadow:0 0 8px rgba(255,210,0,.8);
 }
 
 /* BOTTOM */
@@ -141,7 +131,10 @@ header{
   font-size:12px;
   color:var(--muted);
 }
-.tab.active{color:var(--red);font-weight:700}
+.tab.active{
+  color:var(--red);
+  font-weight:700;
+}
 </style>
 </head>
 
@@ -151,14 +144,19 @@ header{
   <div class="logo"><span>QA</span> BallGenius</div>
 </header>
 
+<!-- LEAGUES -->
 <div class="leagues">
   <div class="league active" data-id="39"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league" data-id="140"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
   <div class="league" data-id="78"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
   <div class="league" data-id="135"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
   <div class="league" data-id="61"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
+  <div class="league" data-id="2"><img src="https://media.api-sports.io/football/leagues/2.png"></div>
+  <div class="league" data-id="3"><img src="https://media.api-sports.io/football/leagues/3.png"></div>
+  <div class="league" data-id="1"><img src="https://media.api-sports.io/football/leagues/1.png"></div>
 </div>
 
+<!-- CONTENT -->
 <div class="content">
   <div class="match">
     <div class="league-name">🔥 พรีเมียร์ลีก</div>
@@ -166,23 +164,20 @@ header{
     <div class="teams">
       <div class="team">
         <img id="homeLogo">
-        <div id="homeName"></div>
+        <div class="team-name" id="homeName"></div>
       </div>
-      <div class="score">VS</div>
+
+      <div class="vs">VS</div>
+
       <div class="team">
         <img id="awayLogo">
-        <div id="awayName"></div>
+        <div class="team-name" id="awayName"></div>
       </div>
-    </div>
-
-    <div class="odds">
-      <span id="oddHome"></span>
-      <span id="oddDraw"></span>
-      <span id="oddAway"></span>
     </div>
   </div>
 </div>
 
+<!-- BOTTOM -->
 <div class="bottom">
   <div class="tab active">ยอดนิยม</div>
   <div class="tab">สด</div>
@@ -194,38 +189,35 @@ header{
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* ข้อมูลลีก + คู่เด่น + ค่าน้ำ (ฟรี / จำลอง) */
-const leagues={
-  39:{name:"พรีเมียร์ลีก",home:["แมนยู",33,1.85],draw:3.4,away:["แมนซิตี้",50,1.95]},
-  140:{name:"ลาลีกา",home:["บาร์เซโลนา",529,1.7],draw:3.6,away:["เรอัล มาดริด",541,2.1]},
-  78:{name:"บุนเดสลีกา",home:["บาเยิร์น",157,1.55],draw:3.8,away:["ดอร์ทมุนด์",165,2.4]},
-  135:{name:"กัลโช่",home:["ยูเวนตุส",496,1.9],draw:3.2,away:["เอซี มิลาน",489,2.0]},
-  61:{name:"ลีกเอิง",home:["PSG",85,1.4],draw:4.2,away:["มาร์กเซย",81,3.1]}
+/* ข้อมูลไฮไลต์ลีก (ไม่มีค่าน้ำ) */
+const leagues = {
+  39:{name:"พรีเมียร์ลีก",home:["แมนยู",33],away:["แมนซิตี้",50]},
+  140:{name:"ลาลีกา",home:["บาร์เซโลนา",529],away:["เรอัล มาดริด",541]},
+  78:{name:"บุนเดสลีกา",home:["บาเยิร์น มิวนิค",157],away:["ดอร์ทมุนด์",165]},
+  135:{name:"กัลโช่ เซเรียอา",home:["ยูเวนตุส",496],away:["เอซี มิลาน",489]},
+  61:{name:"ลีกเอิง",home:["PSG",85],away:["มาร์กเซย",81]},
+  2:{name:"UEFA Champions League",home:["เรอัล มาดริด",541],away:["บาเยิร์น",157]},
+  3:{name:"UEFA Europa League",home:["ลิเวอร์พูล",40],away:["โรม่า",497]},
+  1:{name:"FIFA World Cup",home:["บราซิล",6],away:["อาร์เจนตินา",7]}
 };
 
 function render(id){
-  const d=leagues[id];
-  document.querySelector('.league-name').innerText="🔥 "+d.name;
-  homeName.innerText=d.home[0];
-  awayName.innerText=d.away[0];
-  homeLogo.src=`https://media.api-sports.io/football/teams/${d.home[1]}.png`;
-  awayLogo.src=`https://media.api-sports.io/football/teams/${d.away[1]}.png`;
+  const d = leagues[id];
+  if(!d) return;
 
-  oddHome.innerText="เจ้าบ้าน "+d.home[2];
-  oddDraw.innerText="เสมอ "+d.draw;
-  oddAway.innerText="ทีมเยือน "+d.away[2];
-
-  document.querySelectorAll('.odds span').forEach(x=>x.classList.remove('hot'));
-  const min=Math.min(d.home[2],d.draw,d.away[2]);
-  if(d.home[2]===min) oddHome.classList.add('hot');
-  if(d.draw===min) oddDraw.classList.add('hot');
-  if(d.away[2]===min) oddAway.classList.add('hot');
+  document.querySelector('.league-name').innerText = "🔥 " + d.name;
+  homeName.innerText = d.home[0];
+  awayName.innerText = d.away[0];
+  homeLogo.src = `https://media.api-sports.io/football/teams/${d.home[1]}.png`;
+  awayLogo.src = `https://media.api-sports.io/football/teams/${d.away[1]}.png`;
 }
 
+/* ค่าเริ่มต้น */
 render(39);
 
+/* เลือกลีก + ไฮไลต์แรง */
 document.querySelectorAll('.league').forEach(l=>{
-  l.onclick=()=>{
+  l.onclick = ()=>{
     document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
     l.classList.add('active');
     render(l.dataset.id);
