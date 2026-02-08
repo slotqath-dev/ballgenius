@@ -23,7 +23,6 @@
   --card:#ffffff;
   --white:#000000;
   --muted:#555;
-
   --bg-color:#f4f4f4;
   --bg-img:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1200&q=80");
   --overlay:rgba(255,255,255,.88);
@@ -57,16 +56,31 @@ header{
 }
 .logo{font-weight:900;font-size:24px}
 .logo span:first-child{color:var(--red)}
-.logo span:last-child{color:#fff}
-
 .theme-btns button{
-  width:22px;height:22px;
-  border-radius:50%;
+  width:22px;height:22px;border-radius:50%;
   border:1px solid var(--muted);
-  background:transparent;
-  color:var(--white);
+  background:transparent;color:var(--white);
+  cursor:pointer;margin-left:6px;
+}
+
+/* LEAGUES */
+.leagues{
+  display:flex;gap:10px;
+  padding:10px;overflow-x:auto;
+}
+.league{
+  padding:8px 14px;
+  border-radius:14px;
+  background:var(--card);
+  color:var(--muted);
+  font-size:12px;
+  white-space:nowrap;
   cursor:pointer;
-  margin-left:6px;
+}
+.league.active{
+  background:var(--accent);
+  color:#000;
+  font-weight:700;
 }
 
 /* CONTENT */
@@ -87,64 +101,60 @@ header{
   justify-content:space-between;
   align-items:center;
 }
-.team{
-  width:40%;
-  text-align:center;
-  font-size:13px;
-}
+.team{width:40%;text-align:center}
 .team img{
-  width:42px;height:42px;
+  width:48px;height:48px;
   object-fit:contain;
   background:#fff;
   padding:4px;
   border-radius:10px;
 }
-.score{
-  font-size:18px;
-  font-weight:900;
-  color:var(--red);
-}
+.score{font-size:20px;font-weight:900;color:var(--red)}
 
 /* BOTTOM */
 .bottom{
-  position:fixed;
-  bottom:0;left:0;right:0;
+  position:fixed;bottom:0;left:0;right:0;
   background:linear-gradient(180deg,#200,#000);
   border-top:2px solid var(--red);
   display:flex;
 }
 .tab{
-  flex:1;
-  padding:10px 0;
-  text-align:center;
-  font-size:12px;
+  flex:1;padding:10px 0;
+  text-align:center;font-size:12px;
   color:var(--muted);
 }
-.tab.active{
-  color:var(--red);
-  font-weight:700;
-}
+.tab.active{color:var(--red);font-weight:700}
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="logo"><span>QA</span> <span>BallGenius</span></div>
+  <div class="logo"><span>QA</span> BallGenius</div>
   <div class="theme-btns">
     <button onclick="setDark()">🌙</button>
     <button onclick="setLight()">☀️</button>
   </div>
 </header>
 
+<div class="leagues">
+  <div class="league active" data-league="all">ALL</div>
+  <div class="league" data-league="England">ENG</div>
+  <div class="league" data-league="Spain">ESP</div>
+  <div class="league" data-league="Germany">GER</div>
+  <div class="league" data-league="Italy">ITA</div>
+  <div class="league" data-league="France">FRA</div>
+  <div class="league" data-league="Champions">UCL</div>
+</div>
+
 <div class="content" id="matches">
-  <div class="match">⏳ กำลังโหลดโปรแกรมวันนี้...</div>
+  <div class="match">⏳ กำลังโหลดโปรแกรมวันนี้…</div>
 </div>
 
 <div class="bottom">
-  <div class="tab active">โปรแกรมวันนี้</div>
+  <div class="tab active">ยอดนิยม</div>
   <div class="tab">สด</div>
-  <div class="tab">วิเคราะห์</div>
+  <div class="tab">โปรแกรม</div>
   <div class="tab">เพิ่มเติม</div>
 </div>
 
@@ -155,29 +165,41 @@ Telegram.WebApp.expand();
 function setDark(){document.body.classList.remove("light")}
 function setLight(){document.body.classList.add("light")}
 
-/* ===== API ฟรี (ScoreBat) ผ่าน CORS Proxy ===== */
 const API =
 "https://api.allorigins.win/raw?url=https://www.scorebat.com/video-api/v3/";
+
+let allMatches=[];
 
 fetch(API)
 .then(r=>r.json())
 .then(data=>{
-  const box = document.getElementById("matches");
-  box.innerHTML = "";
+  allMatches=data.response||[];
+  render("all");
+})
+.catch(()=>{
+  document.getElementById("matches").innerHTML=
+    `<div class="match">❌ โหลดข้อมูลไม่ได้</div>`;
+});
 
-  const today = new Date().toISOString().slice(0,10);
-  const matches = data.response.filter(m =>
-    m.date && m.date.startsWith(today)
-  );
+function render(filter){
+  const box=document.getElementById("matches");
+  box.innerHTML="";
+  const today=new Date().toISOString().slice(0,10);
 
-  if(matches.length===0){
-    box.innerHTML = `<div class="match">❌ วันนี้ไม่มีโปรแกรมแข่ง</div>`;
+  let list=allMatches.filter(m=>m.date&&m.date.startsWith(today));
+  if(filter!=="all"){
+    list=list.filter(m=>m.competition.toLowerCase()
+      .includes(filter.toLowerCase()));
+  }
+
+  if(list.length===0){
+    box.innerHTML=`<div class="match">❌ ไม่มีโปรแกรม</div>`;
     return;
   }
 
-  matches.slice(0,15).forEach(m=>{
-    const t = m.title.split(" - ");
-    box.innerHTML += `
+  list.slice(0,15).forEach(m=>{
+    const t=m.title.split(" - ");
+    box.innerHTML+=`
       <div class="match">
         <div class="league-name">${m.competition}</div>
         <div class="teams">
@@ -193,10 +215,15 @@ fetch(API)
         </div>
       </div>`;
   });
-})
-.catch(()=>{
-  document.getElementById("matches").innerHTML =
-    `<div class="match">⚠️ โหลดข้อมูลไม่ได้</div>`;
+}
+
+document.querySelectorAll(".league").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".league")
+      .forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");
+    render(btn.dataset.league);
+  };
 });
 </script>
 
