@@ -11,17 +11,18 @@
 *{box-sizing:border-box;font-family:sans-serif}
 body{
   margin:0;
-  background:#000;
+  background:linear-gradient(180deg,#1b0030,#000);
   color:#fff;
+  min-height:100vh;
 }
 
 /* HEADER */
 header{
   padding:14px;
-  text-align:center;
+  display:flex;
+  align-items:center;
   font-size:22px;
   font-weight:900;
-  background:#111;
   border-bottom:2px solid #e60000;
 }
 header span{color:#e60000}
@@ -34,11 +35,9 @@ header span{color:#e60000}
   overflow-x:auto;
 }
 .league{
-  width:64px;
-  height:64px;
-  flex:0 0 auto;
-  background:#161616;
+  width:64px;height:64px;
   border-radius:16px;
+  background:#161616;
   border:2px solid transparent;
   display:flex;
   align-items:center;
@@ -47,144 +46,197 @@ header span{color:#e60000}
 }
 .league.active{border-color:#ffd200}
 .league img{
-  width:100%;
-  height:100%;
+  width:100%;height:100%;
   object-fit:contain;
   background:#fff;
   padding:6px;
   border-radius:12px;
 }
 
-/* MATCH */
+/* HOT CARD */
 .content{padding:14px}
-.match{
-  background:#161616;
-  border-radius:18px;
+.hot-card{
+  background:linear-gradient(180deg,#3b145f,#1b0030);
+  border-radius:22px;
   padding:16px;
 }
-.league-name{
-  color:#ffd200;
-  font-size:14px;
-  margin-bottom:10px;
-}
-.time{
-  text-align:center;
+.hot-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   font-size:13px;
-  color:#aaa;
-  margin-bottom:12px;
+  margin-bottom:14px;
 }
-.teams{
+.hot-badge{
+  background:#ff5a1f;
+  padding:4px 10px;
+  border-radius:999px;
+  font-weight:700;
+}
+.hot-league{opacity:.9}
+.hot-time{opacity:.7}
+
+/* MATCH */
+.match{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  margin-bottom:18px;
 }
 .team{
   width:40%;
   text-align:center;
 }
 .team img{
-  width:42px;
-  height:42px;
-  object-fit:contain;
+  width:54px;height:54px;
   background:#fff;
-  padding:4px;
-  border-radius:10px;
+  padding:6px;
+  border-radius:14px;
 }
 .team-name{
   margin-top:6px;
-  font-size:14px;
+  font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 .vs{
-  font-size:20px;
+  font-size:22px;
   font-weight:900;
-  color:#e60000;
 }
+
+/* BUTTON */
+.watch{
+  display:block;
+  width:100%;
+  text-align:center;
+  background:linear-gradient(90deg,#ff2b8a,#ff005c);
+  padding:14px;
+  border-radius:16px;
+  font-weight:900;
+  text-decoration:none;
+  color:#fff;
+}
+
+/* BOTTOM */
+.bottom{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  display:flex;
+  background:#000;
+  border-top:2px solid #e60000;
+}
+.tab{
+  flex:1;
+  text-align:center;
+  padding:10px 0;
+  font-size:12px;
+  opacity:.6;
+}
+.tab.active{opacity:1;color:#e60000}
 </style>
 </head>
 
 <body>
 
-<header>
-  <span>QA</span> BallGenius
-</header>
+<header><span>QA</span>&nbsp;BallGenius</header>
 
-<!-- LEAGUES -->
-<div class="leagues">
-  <div class="league active" data-id="39"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
-  <div class="league" data-id="140"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
-  <div class="league" data-id="78"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
-  <div class="league" data-id="135"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
-  <div class="league" data-id="61"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
-  <div class="league" data-id="2"><img src="https://media.api-sports.io/football/leagues/2.png"></div>
-  <div class="league" data-id="3"><img src="https://media.api-sports.io/football/leagues/3.png"></div>
-  <div class="league" data-id="1"><img src="https://media.api-sports.io/football/leagues/1.png"></div>
+<div class="leagues" id="leagueBar"></div>
+
+<div class="content">
+  <div class="hot-card" id="hotCard"></div>
 </div>
 
-<!-- MATCH -->
-<div class="content">
-  <div class="match">
-    <div class="league-name" id="leagueName"></div>
-    <div class="time" id="matchTime"></div>
-
-    <div class="teams">
-      <div class="team">
-        <img id="homeLogo">
-        <div class="team-name" id="homeName"></div>
-      </div>
-
-      <div class="vs">VS</div>
-
-      <div class="team">
-        <img id="awayLogo">
-        <div class="team-name" id="awayName"></div>
-      </div>
-    </div>
-  </div>
+<div class="bottom">
+  <div class="tab active">ยอดนิยม</div>
+  <div class="tab">สด</div>
+  <div class="tab">โปรแกรม</div>
+  <div class="tab">เพิ่มเติม</div>
 </div>
 
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* MOCK DATA (แทน API) */
-const data = {
-  39:{league:"พรีเมียร์ลีก",time:"17 ก.พ. 2026 • 19:30",
-      home:["แมนยู",33],away:["แมนซิตี้",50]},
-  140:{league:"ลาลีกา",time:"17 ก.พ. 2026 • 22:00",
-      home:["บาร์เซโลนา",529],away:["เรอัล มาดริด",541]},
-  78:{league:"บุนเดสลีกา",time:"18 ก.พ. 2026 • 01:30",
-      home:["บาเยิร์น",157],away:["ดอร์ทมุนด์",165]},
-  135:{league:"กัลโช่ เซเรีย A",time:"18 ก.พ. 2026 • 02:45",
-      home:["ยูเวนตุส",496],away:["เอซี มิลาน",489]},
-  61:{league:"ลีกเอิง",time:"18 ก.พ. 2026 • 03:00",
-      home:["PSG",85],away:["มาร์กเซย",81]},
-  2:{league:"UCL",time:"19 ก.พ. 2026 • 03:00",
-      home:["ลิเวอร์พูล",40],away:["บาเยิร์น",157]},
-  3:{league:"ยูโรปา ลีก",time:"20 ก.พ. 2026 • 02:00",
-      home:["โรม่า",497],away:["เซบีย่า",536]},
-  1:{league:"ฟุตบอลโลก",time:"21 ก.พ. 2026 • 23:00",
-      home:["บราซิล",6],away:["อาร์เจนตินา",7]}
+/* 🔹 ข้อมูลจำลอง ลีกละ 1 คู่ (HOT) */
+const DATA = {
+  39:{
+    league:"อังกฤษ | พรีเมียร์ลีก",
+    time:"21:00",
+    home:{name:"Brighton",logo:51},
+    away:{name:"Crystal Palace",logo:52}
+  },
+  140:{
+    league:"สเปน | ลาลีกา",
+    time:"22:00",
+    home:{name:"Barcelona",logo:529},
+    away:{name:"Real Madrid",logo:541}
+  },
+  78:{
+    league:"เยอรมัน | บุนเดสลีกา",
+    time:"20:30",
+    home:{name:"Bayern",logo:157},
+    away:{name:"Dortmund",logo:165}
+  },
+  135:{
+    league:"อิตาลี | กัลโช่",
+    time:"01:45",
+    home:{name:"Juventus",logo:496},
+    away:{name:"AC Milan",logo:489}
+  },
+  61:{
+    league:"ฝรั่งเศส | ลีกเอิง",
+    time:"02:00",
+    home:{name:"PSG",logo:85},
+    away:{name:"Marseille",logo:81}
+  }
 };
 
+/* สร้างแถบลีก */
+const leagueBar = document.getElementById("leagueBar");
+Object.keys(DATA).forEach((id,i)=>{
+  const d = document.createElement("div");
+  d.className="league"+(i===0?" active":"");
+  d.innerHTML=`<img src="https://media.api-sports.io/football/leagues/${id}.png">`;
+  d.onclick=()=>{
+    document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
+    d.classList.add("active");
+    render(id);
+  };
+  leagueBar.appendChild(d);
+});
+
+/* render HOT CARD */
 function render(id){
-  const d = data[id];
-  leagueName.innerText = "🔥 คู่เด่น " + d.league;
-  matchTime.innerText = d.time;
-  homeName.innerText = d.home[0];
-  awayName.innerText = d.away[0];
-  homeLogo.src = `https://media.api-sports.io/football/teams/${d.home[1]}.png`;
-  awayLogo.src = `https://media.api-sports.io/football/teams/${d.away[1]}.png`;
+  const d = DATA[id];
+  hotCard.innerHTML=`
+    <div class="hot-head">
+      <div>
+        <span class="hot-badge">🔥 HOT</span>
+        <span class="hot-league"> ${d.league}</span>
+      </div>
+      <div class="hot-time">🕒 ${d.time}</div>
+    </div>
+
+    <div class="match">
+      <div class="team">
+        <img src="https://media.api-sports.io/football/teams/${d.home.logo}.png">
+        <div class="team-name">${d.home.name}</div>
+      </div>
+      <div class="vs">0 VS 0</div>
+      <div class="team">
+        <img src="https://media.api-sports.io/football/teams/${d.away.logo}.png">
+        <div class="team-name">${d.away.name}</div>
+      </div>
+    </div>
+
+    <a class="watch" href="https://t.me/YOUR_CHANNEL" target="_blank">
+      คลิกเพื่อรับชมถ่ายทอดสด
+    </a>
+  `;
 }
 
 render(39);
-
-document.querySelectorAll('.league').forEach(l=>{
-  l.onclick=()=>{
-    document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
-    l.classList.add('active');
-    render(l.dataset.id);
-  }
-});
 </script>
 
 </body>
