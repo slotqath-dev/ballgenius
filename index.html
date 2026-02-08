@@ -14,52 +14,22 @@
   --white:#ffffff;
   --muted:#aaaaaa;
   --accent:#ffd200;
-
-  /* DARK MODE */
-  --bg-color:#000;
-  --bg-img:url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1200&q=80");
-  --overlay:rgba(0,0,0,.88);
+  --bg:#000;
 }
 .light{
   --card:#ffffff;
-  --white:#000000;
+  --white:#000;
   --muted:#555;
-
-  /* LIGHT MODE */
-  --bg-color:#f4f4f4;
-  --bg-img:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1200&q=80");
-  --overlay:rgba(255,255,255,.88);
+  --bg:#f2f2f2;
 }
 
 *{box-sizing:border-box;font-family:sans-serif}
 
 body{
   margin:0;
+  background:var(--bg);
   color:var(--white);
-
-  /* ✅ พื้นหลังสมส่วน Telegram */
-  background:
-    linear-gradient(var(--overlay),var(--overlay)),
-    linear-gradient(180deg,var(--bg-color),#000),
-    var(--bg-img);
-
-  background-size:
-    cover,
-    cover,
-    100% auto;
-
-  background-position:
-    center,
-    center,
-    center top;
-
-  background-repeat:no-repeat;
-
   min-height:100vh;
-
-  /* Safe Area Telegram */
-  padding-top:env(safe-area-inset-top);
-  padding-bottom:env(safe-area-inset-bottom);
 }
 
 /* HEADER */
@@ -68,26 +38,22 @@ header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:linear-gradient(180deg,#300,#000);
+  background:#000;
   border-bottom:2px solid var(--red);
 }
 .logo{
+  font-size:22px;
   font-weight:900;
-  font-size:24px;
 }
 .logo span:first-child{color:var(--red)}
-.logo span:last-child{color:#fff}
 
 .theme-btns button{
-  width:22px;
-  height:22px;
-  border-radius:50%;
-  border:1px solid var(--muted);
   background:transparent;
+  border:1px solid var(--muted);
   color:var(--white);
-  font-size:12px;
+  border-radius:50%;
+  width:22px;height:22px;
   cursor:pointer;
-  margin-left:6px;
 }
 
 /* LEAGUES */
@@ -98,43 +64,41 @@ header{
   overflow-x:auto;
 }
 .league{
-  width:64px;
-  height:64px;
-  flex:0 0 auto;
+  width:64px;height:64px;
   background:var(--card);
   border-radius:16px;
-  border:2px solid transparent;
   display:flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
+  border:2px solid transparent;
 }
 .league.active{
   border-color:var(--accent);
 }
 .league img{
-  width:100%;
-  height:100%;
+  width:100%;height:100%;
   object-fit:contain;
-  background:#fff;
   padding:6px;
+  background:#fff;
   border-radius:12px;
 }
 
 /* CONTENT */
 .content{
   padding:14px;
-  padding-bottom:90px;
+  padding-bottom:80px;
 }
 .match{
   background:var(--card);
   border-radius:18px;
   padding:14px;
+  margin-bottom:12px;
 }
-.match .league-name{
-  color:var(--accent);
+.league-name{
   font-size:13px;
-  margin-bottom:8px;
+  color:var(--accent);
+  margin-bottom:10px;
 }
 .teams{
   display:flex;
@@ -144,26 +108,24 @@ header{
 .team{
   width:40%;
   text-align:center;
+  font-size:13px;
 }
 .team img{
-  width:48px;
-  height:48px;
-  object-fit:contain;
+  width:42px;height:42px;
   background:#fff;
   padding:4px;
   border-radius:10px;
 }
-.score{
-  font-size:22px;
-  font-weight:900;
-  color:var(--red);
+.vs{
+  font-size:12px;
+  color:var(--muted);
 }
 
 /* BOTTOM */
 .bottom{
   position:fixed;
   bottom:0;left:0;right:0;
-  background:linear-gradient(180deg,#200,#000);
+  background:#000;
   border-top:2px solid var(--red);
   display:flex;
 }
@@ -184,68 +146,103 @@ header{
 <body>
 
 <header>
-  <div class="logo">
-    <span>QA</span> <span>BallGenius</span>
-  </div>
+  <div class="logo"><span>QA</span> BallGenius</div>
   <div class="theme-btns">
     <button onclick="setDark()">🌙</button>
     <button onclick="setLight()">☀️</button>
   </div>
 </header>
 
+<!-- LEAGUES -->
 <div class="leagues">
-  <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/2.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/3.png"></div>
-  <div class="league"><img src="https://media.api-sports.io/football/leagues/1.png"></div>
+  <div class="league active" data-league="39"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
+  <div class="league" data-league="140"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
+  <div class="league" data-league="78"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
+  <div class="league" data-league="135"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
+  <div class="league" data-league="61"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
+  <div class="league" data-league="2"><img src="https://media.api-sports.io/football/leagues/2.png"></div>
+  <div class="league" data-league="3"><img src="https://media.api-sports.io/football/leagues/3.png"></div>
+  <div class="league" data-league="1"><img src="https://media.api-sports.io/football/leagues/1.png"></div>
 </div>
 
-<div class="content">
-  <div class="match">
-    <div class="league-name">🔥 HOT โปรแกรมวันนี้</div>
-    <div class="teams">
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/33.png">
-        <div>แมนยู</div>
-      </div>
-      <div class="score">0 : 0</div>
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/50.png">
-        <div>แมนซิตี้</div>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- MATCH LIST -->
+<div class="content" id="matches"></div>
 
 <div class="bottom">
-  <div class="tab active">ยอดนิยม</div>
+  <div class="tab active">วันนี้เตะ</div>
   <div class="tab">สด</div>
   <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
+  <div class="tab">อื่นๆ</div>
 </div>
 
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-document.querySelectorAll('.league').forEach(l=>{
+/* MOCK DATA (ฟรี / จำกัด) */
+const data = {
+  39:[
+    {home:"แมนยู",hlogo:33,away:"แมนซิตี้",alogo:50},
+    {home:"ลิเวอร์พูล",hlogo:40,away:"เชลซี",alogo:49}
+  ],
+  140:[
+    {home:"เรอัล มาดริด",hlogo:541,away:"บาร์ซ่า",alogo:529}
+  ],
+  78:[
+    {home:"ดอร์ทมุนด์",hlogo:165,away:"บาเยิร์น",alogo:157}
+  ],
+  135:[
+    {home:"อินเตอร์",hlogo:505,away:"ยูเวนตุส",alogo:496}
+  ],
+  61:[
+    {home:"เปแอสเช",hlogo:85,away:"มาร์กเซย",alogo:81}
+  ],
+  2:[
+    {home:"เบนฟิก้า",hlogo:211,away:"ปอร์โต้",alogo:212}
+  ],
+  3:[
+    {home:"อาแจ็กซ์",hlogo:194,away:"พีเอสวี",alogo:197}
+  ],
+  1:[
+    {home:"อาร์เจนตินา",hlogo:26,away:"บราซิล",alogo:6}
+  ]
+};
+
+function render(league){
+  const box=document.getElementById("matches");
+  box.innerHTML="";
+  (data[league]||[]).forEach(m=>{
+    box.innerHTML+=`
+    <div class="match">
+      <div class="league-name">วันนี้เตะจริง</div>
+      <div class="teams">
+        <div class="team">
+          <img src="https://media.api-sports.io/football/teams/${m.hlogo}.png">
+          <div>${m.home}</div>
+        </div>
+        <div class="vs">VS</div>
+        <div class="team">
+          <img src="https://media.api-sports.io/football/teams/${m.alogo}.png">
+          <div>${m.away}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+}
+
+render(39);
+
+document.querySelectorAll(".league").forEach(l=>{
   l.onclick=()=>{
-    document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
-    l.classList.add('active');
+    document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
+    l.classList.add("active");
+    render(l.dataset.league);
   }
 });
 
-function setDark(){
-  document.body.classList.remove('light');
-}
-function setLight(){
-  document.body.classList.add('light');
-}
+function setDark(){document.body.classList.remove("light")}
+function setLight(){document.body.classList.add("light")}
 </script>
 
 </body>
-</html> เพิ่มจากโค้ดนี้ ทุกลีก ได้ไหมครับ 
+</html>
