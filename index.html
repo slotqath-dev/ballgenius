@@ -14,59 +14,66 @@
   --white:#ffffff;
   --muted:#aaaaaa;
   --accent:#ffd200;
+  --bg:#000;
 }
 *{box-sizing:border-box;font-family:sans-serif}
-
 body{
   margin:0;
   background:#000;
   color:var(--white);
-  overflow-x:hidden;
+  min-height:100vh;
+  padding-bottom:90px;
 }
 
 /* HEADER */
 header{
   padding:14px;
   display:flex;
+  justify-content:space-between;
   align-items:center;
-  background:linear-gradient(180deg,#300,#000);
+  background:#000;
   border-bottom:2px solid var(--red);
 }
-.logo{font-weight:900;font-size:22px}
-.logo span{color:var(--red)}
+.logo{
+  font-weight:900;
+  font-size:22px;
+}
+.logo span:first-child{color:var(--red)}
 
 /* LEAGUES */
 .leagues{
   display:flex;
-  gap:10px;
+  gap:12px;
   padding:12px;
   overflow-x:auto;
 }
 .league{
-  width:56px;height:56px;
-  background:var(--card);
-  border-radius:14px;
-  border:2px solid transparent;
+  width:64px;
+  height:64px;
   flex:0 0 auto;
+  background:var(--card);
+  border-radius:16px;
+  border:2px solid transparent;
   display:flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
 }
-.league.active{border-color:var(--accent)}
+.league.active{
+  border-color:var(--accent);
+}
 .league img{
   width:100%;
   height:100%;
   object-fit:contain;
   background:#fff;
   padding:6px;
-  border-radius:10px;
+  border-radius:12px;
 }
 
 /* CONTENT */
 .content{
   padding:14px;
-  padding-bottom:90px;
 }
 .match{
   background:var(--card);
@@ -74,18 +81,18 @@ header{
   padding:14px;
   margin-bottom:12px;
 }
-.match-time{
+.match .time{
+  font-size:13px;
   color:var(--accent);
-  font-size:12px;
   margin-bottom:8px;
 }
 .teams{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
 }
 .team{
-  width:42%;
+  width:40%;
   text-align:center;
 }
 .team img{
@@ -95,17 +102,8 @@ header{
   padding:4px;
   border-radius:10px;
 }
-.team div{
-  font-size:12px;
-  margin-top:4px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.vs{
-  width:16%;
-  text-align:center;
-  font-size:12px;
+.score{
+  font-size:18px;
   color:var(--muted);
 }
 
@@ -113,7 +111,7 @@ header{
 .bottom{
   position:fixed;
   bottom:0;left:0;right:0;
-  background:linear-gradient(180deg,#200,#000);
+  background:#000;
   border-top:2px solid var(--red);
   display:flex;
 }
@@ -124,7 +122,10 @@ header{
   font-size:12px;
   color:var(--muted);
 }
-.tab.active{color:var(--red);font-weight:700}
+.tab.active{
+  color:var(--red);
+  font-weight:700;
+}
 </style>
 </head>
 
@@ -134,7 +135,7 @@ header{
   <div class="logo"><span>QA</span> BallGenius</div>
 </header>
 
-<!-- ลำดับลีก = ยึดตามนี้ -->
+<!-- ลีก (เรียงตามที่คุณวาง) -->
 <div class="leagues">
   <div class="league active" data-id="39"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league" data-id="140"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
@@ -146,96 +147,83 @@ header{
   <div class="league" data-id="1"><img src="https://media.api-sports.io/football/leagues/1.png"></div>
 </div>
 
-<div class="content" id="matches"></div>
+<div class="content" id="matches">
+  <div class="match">กรุณาใส่ API KEY</div>
+</div>
 
 <div class="bottom">
-  <div class="tab active">วันนี้</div>
+  <div class="tab active">โปรแกรมวันนี้</div>
   <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
+  <div class="tab">อื่นๆ</div>
 </div>
 
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* แปลงวันเวลาเป็นภาษาไทย */
-function formatThaiDateTime(date){
-  return date.toLocaleDateString("th-TH",{
-    weekday:"short",
-    day:"numeric",
-    month:"short"
-  }) + " · " + date.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});
-}
+/* ====== CONFIG ====== */
+const API_KEY = "PUT_YOUR_API_KEY_HERE";
 
-/* MOCK DATA (โครงสร้างเหมือน API) */
-const DATA = {
-  39:{name:"พรีเมียร์ลีก",matches:[
-    {h:["แมนยู",33],a:["แมนซิตี้",50],time:"2026-02-08T23:30"},
-    {h:["ลิเวอร์พูล",40],a:["เชลซี",49],time:"2026-02-09T02:00"}
-  ]},
-  140:{name:"ลาลีกา",matches:[
-    {h:["บาร์เซโลนา",529],a:["เรอัล มาดริด",541],time:"2026-02-08T03:00"}
-  ]},
-  78:{name:"บุนเดสลีกา",matches:[
-    {h:["บาเยิร์น",157],a:["ดอร์ทมุนด์",165],time:"2026-02-08T21:30"}
-  ]},
-  135:{name:"กัลโช่",matches:[
-    {h:["ยูเวนตุส",496],a:["เอซี มิลาน",489],time:"2026-02-09T01:45"}
-  ]},
-  61:{name:"ลีกเอิง",matches:[
-    {h:["PSG",85],a:["มาร์กเซย",81],time:"2026-02-08T22:00"}
-  ]},
-  2:{name:"UCL",matches:[
-    {h:["ทีม A",1],a:["ทีม B",2],time:"2026-02-10T02:00"}
-  ]},
-  3:{name:"UEL",matches:[
-    {h:["ทีม C",3],a:["ทีม D",4],time:"2026-02-11T00:45"}
-  ]},
-  1:{name:"FIFA",matches:[
-    {h:["ทีมชาติ A",5],a:["ทีมชาติ B",6],time:"2026-02-12T19:00"}
-  ]}
-};
+/* ====== DATE TODAY ====== */
+const today = new Date().toISOString().split("T")[0];
 
-const matchesEl = document.getElementById("matches");
+/* ====== LEAGUE CLICK ====== */
 const leagues = document.querySelectorAll(".league");
-
-function renderLeague(id){
-  const d = DATA[id];
-  if(!d) return;
-
-  matchesEl.innerHTML = "";
-  d.matches.forEach(m=>{
-    const dt = formatThaiDateTime(new Date(m.time));
-    matchesEl.innerHTML += `
-      <div class="match">
-        <div class="match-time">${dt} · ${d.name}</div>
-        <div class="teams">
-          <div class="team">
-            <img src="https://media.api-sports.io/football/teams/${m.h[1]}.png">
-            <div>${m.h[0]}</div>
-          </div>
-          <div class="vs">VS</div>
-          <div class="team">
-            <img src="https://media.api-sports.io/football/teams/${m.a[1]}.png">
-            <div>${m.a[0]}</div>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-}
-
 leagues.forEach(l=>{
   l.onclick=()=>{
     leagues.forEach(x=>x.classList.remove("active"));
     l.classList.add("active");
-    renderLeague(l.dataset.id);
-  };
+    loadMatches(l.dataset.id);
+  }
 });
 
+/* ====== LOAD MATCHES ====== */
+function loadMatches(leagueId){
+  const box = document.getElementById("matches");
+  box.innerHTML = "<div class='match'>กำลังโหลด...</div>";
+
+  if(!API_KEY || API_KEY.includes("PUT")){
+    box.innerHTML = "<div class='match'>ยังไม่ได้ใส่ API KEY</div>";
+    return;
+  }
+
+  fetch(`https://v3.football.api-sports.io/fixtures?league=${leagueId}&date=${today}`,{
+    headers:{ "x-apisports-key": API_KEY }
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    box.innerHTML = "";
+    if(!d.response || d.response.length===0){
+      box.innerHTML = "<div class='match'>ไม่มีการแข่งขันวันนี้</div>";
+      return;
+    }
+
+    d.response.forEach(m=>{
+      const time = new Date(m.fixture.date)
+        .toLocaleString("th-TH",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"short"});
+
+      box.innerHTML += `
+        <div class="match">
+          <div class="time">${time}</div>
+          <div class="teams">
+            <div class="team">
+              <img src="${m.teams.home.logo}">
+              <div>${m.teams.home.name}</div>
+            </div>
+            <div class="score">VS</div>
+            <div class="team">
+              <img src="${m.teams.away.logo}">
+              <div>${m.teams.away.name}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  });
+}
+
 /* init */
-renderLeague(leagues[0].dataset.id);
+loadMatches(document.querySelector(".league.active").dataset.id);
 </script>
 
 </body>
