@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
-
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
@@ -19,8 +18,6 @@ body{
 /* HEADER */
 header{
   padding:14px;
-  display:flex;
-  align-items:center;
   font-size:22px;
   font-weight:900;
   border-bottom:2px solid #e60000;
@@ -53,8 +50,10 @@ header span{color:#e60000}
   border-radius:12px;
 }
 
-/* HOT CARD */
+/* CONTENT */
 .content{padding:14px}
+
+/* HOT CARD */
 .hot-card{
   background:linear-gradient(180deg,#3b145f,#1b0030);
   border-radius:22px;
@@ -73,10 +72,6 @@ header span{color:#e60000}
   border-radius:999px;
   font-weight:700;
 }
-.hot-league{opacity:.9}
-.hot-time{opacity:.7}
-
-/* MATCH */
 .match{
   display:flex;
   align-items:center;
@@ -100,10 +95,7 @@ header span{color:#e60000}
   overflow:hidden;
   text-overflow:ellipsis;
 }
-.vs{
-  font-size:22px;
-  font-weight:900;
-}
+.vs{font-size:22px;font-weight:900}
 
 /* BUTTON */
 .watch{
@@ -139,7 +131,7 @@ header span{color:#e60000}
 
 <body>
 
-<header><span>QA</span>&nbsp;BallGenius</header>
+<header><span>QA</span> BallGenius</header>
 
 <div class="leagues" id="leagueBar"></div>
 
@@ -158,44 +150,22 @@ header span{color:#e60000}
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* 🔹 ข้อมูลจำลอง ลีกละ 1 คู่ (HOT) */
+/* 🔥 ลีกครบ + ลีกละ 1 คู่เด่น */
 const DATA = {
-  39:{
-    league:"อังกฤษ | พรีเมียร์ลีก",
-    time:"21:00",
-    home:{name:"Brighton",logo:51},
-    away:{name:"Crystal Palace",logo:52}
-  },
-  140:{
-    league:"สเปน | ลาลีกา",
-    time:"22:00",
-    home:{name:"Barcelona",logo:529},
-    away:{name:"Real Madrid",logo:541}
-  },
-  78:{
-    league:"เยอรมัน | บุนเดสลีกา",
-    time:"20:30",
-    home:{name:"Bayern",logo:157},
-    away:{name:"Dortmund",logo:165}
-  },
-  135:{
-    league:"อิตาลี | กัลโช่",
-    time:"01:45",
-    home:{name:"Juventus",logo:496},
-    away:{name:"AC Milan",logo:489}
-  },
-  61:{
-    league:"ฝรั่งเศส | ลีกเอิง",
-    time:"02:00",
-    home:{name:"PSG",logo:85},
-    away:{name:"Marseille",logo:81}
-  }
+  39:{league:"อังกฤษ | พรีเมียร์ลีก",time:"21:00",home:["Liverpool",40],away:["Man City",50]},
+  140:{league:"สเปน | ลาลีกา",time:"22:00",home:["Barcelona",529],away:["Real Madrid",541]},
+  78:{league:"เยอรมัน | บุนเดสลีกา",time:"20:30",home:["Bayern",157],away:["Dortmund",165]},
+  135:{league:"อิตาลี | กัลโช่",time:"01:45",home:["Juventus",496],away:["AC Milan",489]},
+  61:{league:"ฝรั่งเศส | ลีกเอิง",time:"02:00",home:["PSG",85],away:["Marseille",81]},
+  2:{league:"ยูฟ่า | แชมเปียนส์ลีก",time:"02:00",home:["Man City",50],away:["PSG",85]},
+  3:{league:"ยูฟ่า | ยูโรปาลีก",time:"00:45",home:["Roma",497],away:["Leverkusen",168]},
+  1:{league:"ทีมชาติ | ฟุตบอลโลก",time:"19:00",home:["Brazil",6],away:["Argentina",7]}
 };
 
 /* สร้างแถบลีก */
-const leagueBar = document.getElementById("leagueBar");
+const bar=document.getElementById("leagueBar");
 Object.keys(DATA).forEach((id,i)=>{
-  const d = document.createElement("div");
+  const d=document.createElement("div");
   d.className="league"+(i===0?" active":"");
   d.innerHTML=`<img src="https://media.api-sports.io/football/leagues/${id}.png">`;
   d.onclick=()=>{
@@ -203,30 +173,29 @@ Object.keys(DATA).forEach((id,i)=>{
     d.classList.add("active");
     render(id);
   };
-  leagueBar.appendChild(d);
+  bar.appendChild(d);
 });
 
-/* render HOT CARD */
 function render(id){
-  const d = DATA[id];
+  const d=DATA[id];
   hotCard.innerHTML=`
     <div class="hot-head">
       <div>
         <span class="hot-badge">🔥 HOT</span>
-        <span class="hot-league"> ${d.league}</span>
+        ${d.league}
       </div>
-      <div class="hot-time">🕒 ${d.time}</div>
+      <div>🕒 ${d.time}</div>
     </div>
 
     <div class="match">
       <div class="team">
-        <img src="https://media.api-sports.io/football/teams/${d.home.logo}.png">
-        <div class="team-name">${d.home.name}</div>
+        <img src="https://media.api-sports.io/football/teams/${d.home[1]}.png">
+        <div class="team-name">${d.home[0]}</div>
       </div>
       <div class="vs">0 VS 0</div>
       <div class="team">
-        <img src="https://media.api-sports.io/football/teams/${d.away.logo}.png">
-        <div class="team-name">${d.away.name}</div>
+        <img src="https://media.api-sports.io/football/teams/${d.away[1]}.png">
+        <div class="team-name">${d.away[0]}</div>
       </div>
     </div>
 
