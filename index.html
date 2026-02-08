@@ -122,7 +122,7 @@ header span{color:var(--red)}
 }
 .team-name{margin-top:6px;font-size:13px}
 
-/* ✅ 0 VS 0 แนวนอน */
+/* 0 VS 0 แนวนอน */
 .vs{
   display:flex;
   align-items:center;
@@ -133,10 +133,7 @@ header span{color:var(--red)}
   border-radius:14px;
   font-weight:900;
 }
-.vs span{
-  font-size:12px;
-  opacity:.7;
-}
+.vs span{font-size:12px;opacity:.7}
 
 /* BUTTON */
 .watch{
@@ -194,15 +191,21 @@ header span{color:var(--red)}
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* DATA */
+/* ===== ALL LEAGUES (ครบ) ===== */
 const LEAGUES=[
  {id:39,name:"อังกฤษ | พรีเมียร์ลีก",time:"21:00",home:["Liverpool",40],away:["Man City",50]},
  {id:140,name:"สเปน | ลาลีกา",time:"22:00",home:["Barcelona",529],away:["Real Madrid",541]},
  {id:78,name:"เยอรมัน | บุนเดสลีกา",time:"20:30",home:["Bayern",157],away:["Dortmund",165]},
- {id:135,name:"อิตาลี | กัลโช่",time:"01:45",home:["Juventus",496],away:["AC Milan",489]}
+ {id:135,name:"อิตาลี | กัลโช่",time:"01:45",home:["Juventus",496],away:["AC Milan",489]},
+ {id:61,name:"ฝรั่งเศส | ลีกเอิง",time:"02:00",home:["PSG",85],away:["Marseille",81]},
+ {id:2,name:"UEFA Champions League",time:"02:00",home:["Man City",50],away:["PSG",85]},
+ {id:3,name:"UEFA Europa League",time:"00:45",home:["Roma",497],away:["Leverkusen",168]},
+ {id:1,name:"World Cup",time:"19:00",home:["Brazil",6],away:["Argentina",7]}
 ];
 
 const bar=document.getElementById("leagueBar");
+const hotCard=document.getElementById("hotCard");
+
 LEAGUES.forEach((l,i)=>{
   const d=document.createElement("div");
   d.className="league"+(i===0?" active":"");
