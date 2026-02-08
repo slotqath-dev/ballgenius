@@ -17,7 +17,7 @@
 
   /* DARK MODE */
   --bg-color:#000;
-  --bg-img:url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=160&q=80");
+  --bg-img:url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1200&q=80");
   --overlay:rgba(0,0,0,.88);
 }
 .light{
@@ -27,20 +27,30 @@
 
   /* LIGHT MODE */
   --bg-color:#f4f4f4;
-  --bg-img:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=160&q=80");
-  --overlay:rgba(255,255,255,.85);
+  --bg-img:url("https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1200&q=80");
+  --overlay:rgba(255,255,255,.88);
 }
 
 *{box-sizing:border-box;font-family:sans-serif}
+
 body{
   margin:0;
   color:var(--white);
+
   background:
     linear-gradient(var(--overlay),var(--overlay)),
     var(--bg-img);
   background-color:var(--bg-color);
-  background-size:900px auto;
-  background-repeat:repeat;
+
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+
+  min-height:100vh;
+
+  /* Telegram Safe Area */
+  padding-top:env(safe-area-inset-top);
+  padding-bottom:env(safe-area-inset-bottom);
 }
 
 /* HEADER */
@@ -174,7 +184,6 @@ header{
   </div>
 </header>
 
-<!-- LEAGUES : ครบ ทุกลีกหลัก -->
 <div class="leagues">
   <div class="league active"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
   <div class="league"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
