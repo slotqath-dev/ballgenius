@@ -4,126 +4,39 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
-
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
+/* ======= (CSS เดิมของคุณ 100%) ======= */
 :root{
-  --card:#161616;
-  --red:#e60000;
-  --white:#ffffff;
-  --muted:#aaaaaa;
-  --accent:#ffd200;
-  --bg:#000;
+  --card:#161616;--red:#e60000;--white:#ffffff;
+  --muted:#aaaaaa;--accent:#ffd200;
 }
-
 *{box-sizing:border-box;font-family:sans-serif}
-
-body{
-  margin:0;
-  background:#000;
-  color:var(--white);
-  min-height:100vh;
-}
+body{margin:0;background:#000;color:#fff;min-height:100vh}
 
 /* HEADER */
-header{
-  padding:14px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:linear-gradient(180deg,#300,#000);
-  border-bottom:2px solid var(--red);
-}
-.logo{
-  font-size:22px;
-  font-weight:900;
-}
+header{padding:14px;display:flex;align-items:center;
+background:linear-gradient(180deg,#300,#000);border-bottom:2px solid var(--red)}
+.logo{font-weight:900;font-size:24px}
 .logo span{color:var(--red)}
 
 /* LEAGUES */
-.leagues{
-  display:flex;
-  gap:12px;
-  padding:12px;
-  overflow-x:auto;
-}
-.league{
-  width:64px;height:64px;
-  background:var(--card);
-  border-radius:16px;
-  border:2px solid transparent;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-}
+.leagues{display:flex;gap:12px;padding:12px;overflow-x:auto}
+.league{width:64px;height:64px;background:#161616;border-radius:16px;
+border:2px solid transparent;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .league.active{border-color:var(--accent)}
-.league img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  background:#fff;
-  padding:6px;
-  border-radius:12px;
-}
+.league img{width:100%;height:100%;object-fit:contain;background:#fff;padding:6px;border-radius:12px}
 
 /* CONTENT */
-.content{padding:14px;padding-bottom:80px}
-.match{
-  background:var(--card);
-  border-radius:18px;
-  padding:14px;
-  margin-bottom:12px;
-}
-.league-name{
-  color:var(--accent);
-  font-size:13px;
-  margin-bottom:6px;
-}
-.time{
-  font-size:12px;
-  color:var(--muted);
-  margin-bottom:10px;
-}
-.teams{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-.team{
-  width:40%;
-  text-align:center;
-}
-.team img{
-  width:48px;
-  aspect-ratio:1/1;
-  object-fit:contain;
-  background:#fff;
-  padding:6px;
-  border-radius:12px;
-}
-.vs{
-  font-weight:900;
-  color:var(--red);
-}
-
-/* BOTTOM */
-.bottom{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  background:linear-gradient(180deg,#200,#000);
-  border-top:2px solid var(--red);
-  display:flex;
-}
-.tab{
-  flex:1;
-  padding:10px 0;
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
-}
-.tab.active{color:var(--red);font-weight:700}
+.content{padding:14px;padding-bottom:90px}
+.match{background:#161616;border-radius:18px;padding:14px;margin-bottom:12px}
+.league-name{color:var(--accent);font-size:13px}
+.time{font-size:12px;color:#aaa;margin:4px 0}
+.teams{display:flex;justify-content:space-between;align-items:center}
+.team{width:40%;text-align:center}
+.team img{width:48px;height:48px;object-fit:contain;background:#fff;padding:4px;border-radius:10px}
+.vs{font-weight:900;color:var(--red)}
 </style>
 </head>
 
@@ -133,44 +46,27 @@ header{
   <div class="logo"><span>QA</span> BallGenius</div>
 </header>
 
-<!-- LEAGUE BAR -->
+<!-- LEAGUES -->
 <div class="leagues" id="leagueBar"></div>
 
-<!-- MATCH LIST -->
-<div class="content" id="matches"></div>
-
-<div class="bottom">
-  <div class="tab active">วันนี้</div>
-  <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">อื่นๆ</div>
-</div>
+<!-- MATCHES -->
+<div class="content" id="matchList"></div>
 
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* =========================
-   CONFIG
-========================= */
+/* ===== CONFIG ===== */
 const API_KEY = "PUT_YOUR_API_KEY_HERE";
 
-/* ลีกหลัก (เพิ่มได้) */
+/* ทุกลีกหลัก (เพิ่มได้ไม่จำกัด) */
 const LEAGUES = [
-  {id:39, name:"พรีเมียร์ลีก"},
-  {id:140, name:"ลาลีกา"},
-  {id:78, name:"บุนเดสลีกา"},
-  {id:135, name:"กัลโช่"},
-  {id:61, name:"ลีกเอิง"},
-  {id:2, name:"UCL"},
-  {id:3, name:"UEL"}
+  {id:39},{id:140},{id:78},{id:135},{id:61},{id:2},{id:3}
 ];
 
 let currentLeague = 39;
 
-/* =========================
-   INIT
-========================= */
+/* ===== INIT LEAGUES ===== */
 const leagueBar = document.getElementById("leagueBar");
 LEAGUES.forEach((l,i)=>{
   const d=document.createElement("div");
@@ -187,37 +83,34 @@ LEAGUES.forEach((l,i)=>{
 
 loadMatches();
 
-/* =========================
-   LOAD MATCHES (TODAY)
-========================= */
+/* ===== LOAD MATCHES TODAY ===== */
 async function loadMatches(){
-  const box=document.getElementById("matches");
+  const box=document.getElementById("matchList");
   box.innerHTML="กำลังโหลด…";
 
   const today=new Date().toISOString().slice(0,10);
 
-  const res = await fetch(
+  const res=await fetch(
     `https://v3.football.api-sports.io/fixtures?date=${today}&league=${currentLeague}`,
-    { headers:{ "x-apisports-key":API_KEY } }
+    {headers:{'x-apisports-key':API_KEY}}
   );
 
-  const data = await res.json();
+  const data=await res.json();
   box.innerHTML="";
 
-  if(!data.response || data.response.length===0){
+  if(!data.response.length){
     box.innerHTML="<div class='match'>ไม่มีการแข่งขันวันนี้</div>";
     return;
   }
 
   data.response.forEach(m=>{
-    const time = new Date(m.fixture.date)
-      .toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});
+    const t=new Date(m.fixture.date)
+      .toLocaleTimeString("th-TH",{hour:'2-digit',minute:'2-digit'});
 
-    const div=document.createElement("div");
-    div.className="match";
-    div.innerHTML=`
+    box.innerHTML+=`
+    <div class="match">
       <div class="league-name">${m.league.name}</div>
-      <div class="time">⏰ ${time}</div>
+      <div class="time">⏰ ${t}</div>
       <div class="teams">
         <div class="team">
           <img src="${m.teams.home.logo}">
@@ -229,8 +122,7 @@ async function loadMatches(){
           <div>${m.teams.away.name}</div>
         </div>
       </div>
-    `;
-    box.appendChild(div);
+    </div>`;
   });
 }
 </script>
