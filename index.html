@@ -19,6 +19,8 @@
   --accent:#ffd200;
   --hot1:#3b145f;
   --hot2:#1b0030;
+  --tab:#2a0f3f;
+  --tabActive:#ff2b8a;
 }
 .light{
   --bg:#f2f2f2;
@@ -27,6 +29,8 @@
   --muted:#555;
   --hot1:#ffffff;
   --hot2:#f0f0f0;
+  --tab:#ddd;
+  --tabActive:#ff2b8a;
 }
 
 body{
@@ -34,6 +38,7 @@ body{
   background:linear-gradient(180deg,#220033,var(--bg));
   color:var(--text);
   min-height:100vh;
+  padding-bottom:90px;
 }
 
 /* HEADER */
@@ -155,22 +160,32 @@ header span{color:var(--red)}
   color:#fff;
 }
 
-/* BOTTOM */
+/* ===== BOTTOM MENU ===== */
 .bottom{
   position:fixed;
-  bottom:0;left:0;right:0;
+  bottom:12px;
+  left:12px;
+  right:12px;
+  background:linear-gradient(180deg,#3b145f,#1b0030);
+  border-radius:22px;
   display:flex;
-  background:var(--bg);
-  border-top:2px solid var(--red);
+  padding:8px;
+  gap:6px;
 }
 .tab{
   flex:1;
   text-align:center;
-  padding:10px 0;
+  padding:12px 0;
   font-size:12px;
-  opacity:.6;
+  border-radius:16px;
+  color:var(--muted);
+  cursor:pointer;
 }
-.tab.active{opacity:1;color:var(--red)}
+.tab.active{
+  background:var(--tabActive);
+  color:#fff;
+  font-weight:700;
+}
 </style>
 </head>
 
@@ -187,7 +202,7 @@ header span{color:var(--red)}
   <div class="hot-card" id="hotCard"></div>
 </div>
 
-<div class="bottom">
+<div class="bottom" id="bottomMenu">
   <div class="tab active">ยอดนิยม</div>
   <div class="tab">สด</div>
   <div class="tab">โปรแกรม</div>
@@ -199,18 +214,19 @@ Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
 /* LEAGUES */
-const LEAGUES = [
-  {id:39,name:"อังกฤษ | พรีเมียร์ลีก",time:"21:00",home:["Liverpool",40],away:["Man City",50]},
-  {id:140,name:"สเปน | ลาลีกา",time:"22:00",home:["Barcelona",529],away:["Real Madrid",541]},
-  {id:78,name:"เยอรมัน | บุนเดสลีกา",time:"20:30",home:["Bayern",157],away:["Dortmund",165]},
-  {id:135,name:"อิตาลี | กัลโช่",time:"01:45",home:["Juventus",496],away:["AC Milan",489]},
-  {id:61,name:"ฝรั่งเศส | ลีกเอิง",time:"02:00",home:["PSG",85],away:["Marseille",81]},
-  {id:2,name:"UCL",time:"02:00",home:["Man City",50],away:["PSG",85]},
-  {id:3,name:"Europa",time:"00:45",home:["Roma",497],away:["Leverkusen",168]},
-  {id:1,name:"World Cup",time:"19:00",home:["Brazil",6],away:["Argentina",7]}
+const LEAGUES=[
+{id:39,name:"อังกฤษ | พรีเมียร์ลีก",time:"21:00",home:["Liverpool",40],away:["Man City",50]},
+{id:140,name:"สเปน | ลาลีกา",time:"22:00",home:["Barcelona",529],away:["Real Madrid",541]},
+{id:78,name:"เยอรมัน | บุนเดสลีกา",time:"20:30",home:["Bayern",157],away:["Dortmund",165]},
+{id:135,name:"อิตาลี | กัลโช่",time:"01:45",home:["Juventus",496],away:["AC Milan",489]},
+{id:61,name:"ฝรั่งเศส | ลีกเอิง",time:"02:00",home:["PSG",85],away:["Marseille",81]},
+{id:2,name:"UCL",time:"02:00",home:["Man City",50],away:["PSG",85]},
+{id:3,name:"Europa",time:"00:45",home:["Roma",497],away:["Leverkusen",168]},
+{id:1,name:"World Cup",time:"19:00",home:["Brazil",6],away:["Argentina",7]}
 ];
 
 const bar=document.getElementById("leagueBar");
+const hotCard=document.getElementById("hotCard");
 
 LEAGUES.forEach((l,i)=>{
   const d=document.createElement("div");
@@ -230,7 +246,6 @@ function render(l){
       <div><span class="hot-badge">🔥 HOT</span>${l.name}</div>
       <div>🕒 ${l.time}</div>
     </div>
-
     <div class="match">
       <div class="team">
         <img src="https://media.api-sports.io/football/teams/${l.home[1]}.png">
@@ -242,7 +257,6 @@ function render(l){
         <div class="team-name">${l.away[0]}</div>
       </div>
     </div>
-
     <a class="watch" href="https://t.me/YOUR_CHANNEL" target="_blank">
       คลิกเพื่อรับชมถ่ายทอดสด
     </a>
@@ -250,12 +264,20 @@ function render(l){
 }
 render(LEAGUES[0]);
 
-/* THEME TOGGLE */
+/* THEME */
 const btn=document.getElementById("themeBtn");
 btn.onclick=()=>{
   document.body.classList.toggle("light");
   btn.textContent=document.body.classList.contains("light")?"☀️":"🌙";
 };
+
+/* BOTTOM TAB */
+document.querySelectorAll(".tab").forEach(tab=>{
+  tab.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    tab.classList.add("active");
+  };
+});
 </script>
 
 </body>
