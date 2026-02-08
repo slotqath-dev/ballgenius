@@ -16,7 +16,6 @@
   --text:#fff;
   --muted:#888;
   --red:#e60000;
-  --red-dark:#8b0000;
   --hot1:#2a0000;
   --hot2:#120000;
 }
@@ -34,9 +33,6 @@ header{
   font-size:22px;
   font-weight:900;
   border-bottom:2px solid var(--red);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
 }
 header span{color:var(--red)}
 
@@ -50,7 +46,6 @@ header span{color:var(--red)}
 .league{
   width:64px;
   height:64px;
-  flex:0 0 auto;
   background:var(--card);
   border-radius:16px;
   border:2px solid #1f1f1f;
@@ -58,6 +53,7 @@ header span{color:var(--red)}
   align-items:center;
   justify-content:center;
   cursor:pointer;
+  flex:0 0 auto;
 }
 .league.active{border-color:var(--red)}
 .league img{
@@ -82,7 +78,6 @@ header span{color:var(--red)}
 .hot-head{
   display:flex;
   justify-content:space-between;
-  align-items:center;
   font-size:13px;
   margin-bottom:14px;
 }
@@ -94,22 +89,22 @@ header span{color:var(--red)}
   margin-right:6px;
 }
 
-/* MATCH */
+/* MATCH (ล็อกสัดส่วนแล้ว) */
 .match{
   display:grid;
-  grid-template-columns:1fr 80px 1fr;
+  grid-template-columns:1fr auto 1fr;
   align-items:center;
-  gap:10px;
+  gap:12px;
   margin-bottom:18px;
 }
 .team{text-align:center}
 .team img{
   width:60px;
   height:60px;
-  object-fit:contain;
   background:#fff;
   padding:8px;
   border-radius:16px;
+  object-fit:contain;
 }
 .team-name{
   margin-top:6px;
@@ -117,30 +112,24 @@ header span{color:var(--red)}
   font-weight:600;
 }
 
-/* VS FIX (สมส่วนแล้ว) */
+/* 0 VS 0 (ไม่แตก ไม่เพี้ยน) */
 .vs{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-}
-.score-box{
-  width:44px;
-  height:36px;
-  background:#1a0000;
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  background:linear-gradient(180deg,#2a0000,#120000);
+  border-radius:14px;
+  padding:10px 14px;
+  min-width:72px;
+  text-align:center;
   font-weight:900;
   box-shadow:0 0 0 1px #2a0000 inset;
 }
-.vs-text{
+.vs span{
+  display:block;
   font-size:12px;
   opacity:.7;
+  margin:2px 0;
 }
 
-/* WATCH BUTTON */
+/* BUTTON */
 .watch{
   display:block;
   width:100%;
@@ -149,8 +138,8 @@ header span{color:var(--red)}
   padding:14px;
   border-radius:18px;
   font-weight:900;
-  text-decoration:none;
   color:#fff;
+  text-decoration:none;
 }
 
 /* BOTTOM MENU */
@@ -174,9 +163,7 @@ header span{color:var(--red)}
 
 <body>
 
-<header>
-  <div><span>QA</span> BallGenius</div>
-</header>
+<header><span>QA</span> BallGenius</header>
 
 <div class="leagues" id="leagueBar"></div>
 
@@ -207,7 +194,6 @@ const LEAGUES=[
 ];
 
 const bar=document.getElementById("leagueBar");
-
 LEAGUES.forEach((l,i)=>{
   const d=document.createElement("div");
   d.className="league"+(i===0?" active":"");
@@ -234,9 +220,9 @@ function render(l){
       </div>
 
       <div class="vs">
-        <div class="score-box">0</div>
-        <div class="vs-text">VS</div>
-        <div class="score-box">0</div>
+        0
+        <span>VS</span>
+        0
       </div>
 
       <div class="team">
@@ -245,12 +231,9 @@ function render(l){
       </div>
     </div>
 
-    <a class="watch" href="#">
-      คลิกเพื่อรับชมถ่ายทอดสด
-    </a>
+    <a class="watch" href="#">คลิกเพื่อรับชมถ่ายทอดสด</a>
   `;
 }
-
 render(LEAGUES[0]);
 </script>
 
