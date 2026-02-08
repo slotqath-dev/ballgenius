@@ -8,10 +8,31 @@
 
 <style>
 *{box-sizing:border-box;font-family:sans-serif}
+
+/* ===== THEME ===== */
+:root{
+  --bg:#000;
+  --card:#161616;
+  --text:#fff;
+  --muted:#aaa;
+  --red:#e60000;
+  --accent:#ffd200;
+  --hot1:#3b145f;
+  --hot2:#1b0030;
+}
+.light{
+  --bg:#f2f2f2;
+  --card:#ffffff;
+  --text:#000;
+  --muted:#555;
+  --hot1:#ffffff;
+  --hot2:#f0f0f0;
+}
+
 body{
   margin:0;
-  background:linear-gradient(180deg,#220033,#000);
-  color:#fff;
+  background:linear-gradient(180deg,#220033,var(--bg));
+  color:var(--text);
   min-height:100vh;
 }
 
@@ -20,9 +41,25 @@ header{
   padding:14px;
   font-size:22px;
   font-weight:900;
-  border-bottom:2px solid #e60000;
+  border-bottom:2px solid var(--red);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
-header span{color:#e60000}
+header span{color:var(--red)}
+
+/* THEME TOGGLE */
+.theme-btn{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:var(--card);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:18px;
+}
 
 /* LEAGUE BAR */
 .leagues{
@@ -35,7 +72,7 @@ header span{color:#e60000}
   width:64px;
   height:64px;
   flex:0 0 auto;
-  background:#161616;
+  background:var(--card);
   border-radius:16px;
   border:2px solid transparent;
   display:flex;
@@ -43,7 +80,7 @@ header span{color:#e60000}
   justify-content:center;
   cursor:pointer;
 }
-.league.active{border-color:#ffd200}
+.league.active{border-color:var(--accent)}
 .league img{
   width:100%;
   height:100%;
@@ -58,7 +95,7 @@ header span{color:#e60000}
 
 /* HOT CARD */
 .hot-card{
-  background:linear-gradient(180deg,#3b145f,#1b0030);
+  background:linear-gradient(180deg,var(--hot1),var(--hot2));
   border-radius:22px;
   padding:16px;
 }
@@ -123,8 +160,8 @@ header span{color:#e60000}
   position:fixed;
   bottom:0;left:0;right:0;
   display:flex;
-  background:#000;
-  border-top:2px solid #e60000;
+  background:var(--bg);
+  border-top:2px solid var(--red);
 }
 .tab{
   flex:1;
@@ -133,13 +170,16 @@ header span{color:#e60000}
   font-size:12px;
   opacity:.6;
 }
-.tab.active{opacity:1;color:#e60000}
+.tab.active{opacity:1;color:var(--red)}
 </style>
 </head>
 
 <body>
 
-<header><span>QA</span> BallGenius</header>
+<header>
+  <div><span>QA</span> BallGenius</div>
+  <div class="theme-btn" id="themeBtn">🌙</div>
+</header>
 
 <div class="leagues" id="leagueBar"></div>
 
@@ -158,16 +198,16 @@ header span{color:#e60000}
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* 🔒 เรียงลีก + ขนาด ล็อกตามต้นฉบับ */
+/* LEAGUES */
 const LEAGUES = [
-  {id:39,  name:"อังกฤษ | พรีเมียร์ลีก", time:"21:00", home:["Liverpool",40], away:["Man City",50]},
-  {id:140, name:"สเปน | ลาลีกา", time:"22:00", home:["Barcelona",529], away:["Real Madrid",541]},
-  {id:78,  name:"เยอรมัน | บุนเดสลีกา", time:"20:30", home:["Bayern",157], away:["Dortmund",165]},
-  {id:135, name:"อิตาลี | กัลโช่", time:"01:45", home:["Juventus",496], away:["AC Milan",489]},
-  {id:61,  name:"ฝรั่งเศส | ลีกเอิง", time:"02:00", home:["PSG",85], away:["Marseille",81]},
-  {id:2,   name:"ยูฟ่า | แชมเปียนส์ลีก", time:"02:00", home:["Man City",50], away:["PSG",85]},
-  {id:3,   name:"ยูฟ่า | ยูโรปาลีก", time:"00:45", home:["Roma",497], away:["Leverkusen",168]},
-  {id:1,   name:"ทีมชาติ | ฟุตบอลโลก", time:"19:00", home:["Brazil",6], away:["Argentina",7]}
+  {id:39,name:"อังกฤษ | พรีเมียร์ลีก",time:"21:00",home:["Liverpool",40],away:["Man City",50]},
+  {id:140,name:"สเปน | ลาลีกา",time:"22:00",home:["Barcelona",529],away:["Real Madrid",541]},
+  {id:78,name:"เยอรมัน | บุนเดสลีกา",time:"20:30",home:["Bayern",157],away:["Dortmund",165]},
+  {id:135,name:"อิตาลี | กัลโช่",time:"01:45",home:["Juventus",496],away:["AC Milan",489]},
+  {id:61,name:"ฝรั่งเศส | ลีกเอิง",time:"02:00",home:["PSG",85],away:["Marseille",81]},
+  {id:2,name:"UCL",time:"02:00",home:["Man City",50],away:["PSG",85]},
+  {id:3,name:"Europa",time:"00:45",home:["Roma",497],away:["Leverkusen",168]},
+  {id:1,name:"World Cup",time:"19:00",home:["Brazil",6],away:["Argentina",7]}
 ];
 
 const bar=document.getElementById("leagueBar");
@@ -187,9 +227,7 @@ LEAGUES.forEach((l,i)=>{
 function render(l){
   hotCard.innerHTML=`
     <div class="hot-head">
-      <div>
-        <span class="hot-badge">🔥 HOT</span>${l.name}
-      </div>
+      <div><span class="hot-badge">🔥 HOT</span>${l.name}</div>
       <div>🕒 ${l.time}</div>
     </div>
 
@@ -198,9 +236,7 @@ function render(l){
         <img src="https://media.api-sports.io/football/teams/${l.home[1]}.png">
         <div class="team-name">${l.home[0]}</div>
       </div>
-
       <div class="vs">0 VS 0</div>
-
       <div class="team">
         <img src="https://media.api-sports.io/football/teams/${l.away[1]}.png">
         <div class="team-name">${l.away[0]}</div>
@@ -212,8 +248,14 @@ function render(l){
     </a>
   `;
 }
-
 render(LEAGUES[0]);
+
+/* THEME TOGGLE */
+const btn=document.getElementById("themeBtn");
+btn.onclick=()=>{
+  document.body.classList.toggle("light");
+  btn.textContent=document.body.classList.contains("light")?"☀️":"🌙";
+};
 </script>
 
 </body>
