@@ -14,23 +14,27 @@
   --white:#ffffff;
   --muted:#aaaaaa;
   --accent:#ffd200;
+  --bg:#000;
 }
 *{box-sizing:border-box;font-family:sans-serif}
+
 body{
   margin:0;
-  background:linear-gradient(180deg,#000,#050505);
+  background:#000;
   color:var(--white);
-  min-height:100vh;
   overflow-x:hidden;
 }
 
 /* HEADER */
 header{
   padding:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   background:linear-gradient(180deg,#300,#000);
   border-bottom:2px solid var(--red);
 }
-.logo{font-size:22px;font-weight:900}
+.logo{font-weight:900;font-size:22px}
 .logo span{color:var(--red)}
 
 /* LEAGUES */
@@ -41,18 +45,19 @@ header{
   overflow-x:auto;
 }
 .league{
-  width:56px;
-  height:56px;
-  flex:0 0 auto;
+  width:56px;height:56px;
   background:var(--card);
   border-radius:14px;
+  border:2px solid transparent;
+  flex:0 0 auto;
   display:flex;
   align-items:center;
   justify-content:center;
-  border:2px solid transparent;
   cursor:pointer;
 }
-.league.active{border-color:var(--accent)}
+.league.active{
+  border-color:var(--accent);
+}
 .league img{
   width:100%;
   height:100%;
@@ -67,16 +72,16 @@ header{
   padding:14px;
   padding-bottom:90px;
 }
-.section-title{
-  color:var(--accent);
-  font-size:14px;
-  margin-bottom:10px;
-}
 .match{
   background:var(--card);
   border-radius:18px;
   padding:14px;
   margin-bottom:12px;
+}
+.league-name{
+  color:var(--accent);
+  font-size:13px;
+  margin-bottom:10px;
 }
 .teams{
   display:flex;
@@ -88,14 +93,15 @@ header{
   text-align:center;
 }
 .team img{
-  width:44px;
-  height:44px;
+  width:46px;
+  height:46px;
   background:#fff;
   padding:4px;
   border-radius:10px;
 }
-.team-name{
+.team div{
   font-size:12px;
+  margin-top:4px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
@@ -103,8 +109,8 @@ header{
 .vs{
   width:16%;
   text-align:center;
-  color:var(--muted);
   font-size:12px;
+  color:var(--muted);
 }
 
 /* BOTTOM */
@@ -117,12 +123,15 @@ header{
 }
 .tab{
   flex:1;
-  text-align:center;
   padding:10px 0;
+  text-align:center;
   font-size:12px;
   color:var(--muted);
 }
-.tab.active{color:var(--red);font-weight:700}
+.tab.active{
+  color:var(--red);
+  font-weight:700;
+}
 </style>
 </head>
 
@@ -132,15 +141,22 @@ header{
   <div class="logo"><span>QA</span> BallGenius</div>
 </header>
 
-<div class="leagues" id="leagueBar"></div>
-
-<div class="content">
-  <div class="section-title">วันนี้เตะจริง</div>
-  <div id="matches"></div>
+<!-- 🔥 ลำดับลีก = ตาม HTML นี้เท่านั้น -->
+<div class="leagues">
+  <div class="league active" data-id="39"><img src="https://media.api-sports.io/football/leagues/39.png"></div>
+  <div class="league" data-id="140"><img src="https://media.api-sports.io/football/leagues/140.png"></div>
+  <div class="league" data-id="78"><img src="https://media.api-sports.io/football/leagues/78.png"></div>
+  <div class="league" data-id="135"><img src="https://media.api-sports.io/football/leagues/135.png"></div>
+  <div class="league" data-id="61"><img src="https://media.api-sports.io/football/leagues/61.png"></div>
+  <div class="league" data-id="2"><img src="https://media.api-sports.io/football/leagues/2.png"></div>
+  <div class="league" data-id="3"><img src="https://media.api-sports.io/football/leagues/3.png"></div>
+  <div class="league" data-id="1"><img src="https://media.api-sports.io/football/leagues/1.png"></div>
 </div>
 
+<div class="content" id="matches"></div>
+
 <div class="bottom">
-  <div class="tab active">ยอดนิยม</div>
+  <div class="tab active">วันนี้เตะ</div>
   <div class="tab">สด</div>
   <div class="tab">โปรแกรม</div>
   <div class="tab">เพิ่มเติม</div>
@@ -150,76 +166,73 @@ header{
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* DATA */
-const leagues = {
-  39:{logo:39,matches:[
-    {h:"แมนยู",hl:33,a:"แมนซิตี้",al:50},
-    {h:"ลิเวอร์พูล",hl:40,a:"เชลซี",al:49}
+/* MOCK วันนี้เตะจริง (เปลี่ยนเป็น API ทีหลังได้) */
+const DATA = {
+  39:{name:"พรีเมียร์ลีก",matches:[
+    ["แมนยู",33,"แมนซิตี้",50],
+    ["ลิเวอร์พูล",40,"เชลซี",49]
   ]},
-  140:{logo:140,matches:[
-    {h:"บาร์เซโลนา",hl:529,a:"เรอัล มาดริด",al:541}
+  140:{name:"ลาลีกา",matches:[
+    ["บาร์เซโลนา",529,"เรอัล มาดริด",541]
   ]},
-  78:{logo:78,matches:[
-    {h:"บาเยิร์น",hl:157,a:"ดอร์ทมุนด์",al:165}
+  78:{name:"บุนเดสลีกา",matches:[
+    ["บาเยิร์น",157,"ดอร์ทมุนด์",165]
   ]},
-  135:{logo:135,matches:[
-    {h:"ยูเวนตุส",hl:496,a:"มิลาน",al:489}
+  135:{name:"กัลโช่",matches:[
+    ["ยูเวนตุส",496,"เอซี มิลาน",489]
   ]},
-  61:{logo:61,matches:[
-    {h:"PSG",hl:85,a:"มาร์กเซย",al:81}
+  61:{name:"ลีกเอิง",matches:[
+    ["PSG",85,"มาร์กเซย",81]
   ]},
-  2:{logo:2,matches:[]},
-  3:{logo:3,matches:[]},
-  1:{logo:1,matches:[]}
+  2:{name:"UCL",matches:[
+    ["ทีม A",1,"ทีม B",2]
+  ]},
+  3:{name:"UEL",matches:[
+    ["ทีม C",3,"ทีม D",4]
+  ]},
+  1:{name:"FIFA",matches:[
+    ["ทีมชาติ A",5,"ทีมชาติ B",6]
+  ]}
 };
 
-const leagueBar = document.getElementById("leagueBar");
-const matchesBox = document.getElementById("matches");
+const matchesEl = document.getElementById("matches");
+const leagues = document.querySelectorAll(".league");
 
-/* RENDER LEAGUES */
-Object.keys(leagues).forEach(id=>{
-  const el = document.createElement("div");
-  el.className = "league";
-  el.dataset.id = id;
-  el.innerHTML = `<img src="https://media.api-sports.io/football/leagues/${leagues[id].logo}.png">`;
-  el.onclick = ()=>selectLeague(id);
-  leagueBar.appendChild(el);
-});
+function renderLeague(id){
+  const d = DATA[id];
+  if(!d) return;
 
-/* SELECT LEAGUE (แก้มั่วตรงนี้) */
-function selectLeague(id){
-  document.querySelectorAll(".league").forEach(x=>{
-    x.classList.toggle("active", x.dataset.id === id);
-  });
-
-  matchesBox.innerHTML="";
-  const m = leagues[id].matches;
-
-  if(!m.length){
-    matchesBox.innerHTML = `<div class="match">ไม่มีโปรแกรมวันนี้</div>`;
-    return;
-  }
-
-  m.forEach(x=>{
-    matchesBox.innerHTML += `
+  matchesEl.innerHTML = "";
+  d.matches.forEach(m=>{
+    matchesEl.innerHTML += `
       <div class="match">
+        <div class="league-name">วันนี้เตะจริง · ${d.name}</div>
         <div class="teams">
           <div class="team">
-            <img src="https://media.api-sports.io/football/teams/${x.hl}.png">
-            <div class="team-name">${x.h}</div>
+            <img src="https://media.api-sports.io/football/teams/${m[1]}.png">
+            <div>${m[0]}</div>
           </div>
           <div class="vs">VS</div>
           <div class="team">
-            <img src="https://media.api-sports.io/football/teams/${x.al}.png">
-            <div class="team-name">${x.a}</div>
+            <img src="https://media.api-sports.io/football/teams/${m[3]}.png">
+            <div>${m[2]}</div>
           </div>
         </div>
-      </div>`;
+      </div>
+    `;
   });
 }
 
-/* INIT ถูกตัว 100% */
-selectLeague("39");
+leagues.forEach(l=>{
+  l.onclick=()=>{
+    leagues.forEach(x=>x.classList.remove("active"));
+    l.classList.add("active");
+    renderLeague(l.dataset.id);
+  };
+});
+
+/* init ลีกแรกตามที่เรียง */
+renderLeague(leagues[0].dataset.id);
 </script>
 
 </body>
