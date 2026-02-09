@@ -8,8 +8,6 @@
 
 <style>
 *{box-sizing:border-box;font-family:sans-serif}
-
-/* THEME */
 :root{
   --bg:#000;
   --card:#0f0f0f;
@@ -17,7 +15,6 @@
   --muted:#888;
   --red:#e60000;
 }
-
 body{
   margin:0;
   background:linear-gradient(180deg,#120000,#000);
@@ -34,7 +31,7 @@ header{
 }
 header span{color:var(--red)}
 
-/* LEAGUES */
+/* LEAGUE BAR */
 .leagues{
   display:flex;
   gap:12px;
@@ -43,12 +40,14 @@ header span{color:var(--red)}
 }
 .league{
   width:64px;height:64px;
+  flex:0 0 auto;
   background:#0f0f0f;
   border-radius:18px;
   border:2px solid #1f1f1f;
   display:flex;
   align-items:center;
   justify-content:center;
+  cursor:pointer;
 }
 .league.active{border-color:var(--red)}
 .logo-box{
@@ -59,7 +58,7 @@ header span{color:var(--red)}
   align-items:center;
   justify-content:center;
 }
-.logo-box img{width:30px}
+.logo-box img{width:30px;height:30px}
 
 /* CONTENT */
 .content{padding:14px;padding-bottom:120px}
@@ -67,20 +66,22 @@ header span{color:var(--red)}
 /* HOT CARD */
 .hot-card{
   background:#120000;
-  border-radius:22px;
+  border-radius:24px;
   padding:16px;
   margin-bottom:22px;
 }
 .hot-head{
   display:flex;
   justify-content:space-between;
+  align-items:center;
+  font-size:13px;
   margin-bottom:14px;
 }
 .hot-badge{
   background:var(--red);
   padding:4px 10px;
   border-radius:999px;
-  font-weight:700;
+  font-weight:800;
 }
 
 /* MATCH */
@@ -98,7 +99,7 @@ header span{color:var(--red)}
   padding:8px;
   border-radius:16px;
 }
-.team-name{margin-top:6px;font-size:13px}
+.team-name{margin-top:6px;font-size:13px;font-weight:600}
 
 .vs{
   display:flex;
@@ -108,6 +109,7 @@ header span{color:var(--red)}
   background:#1a0000;
   border-radius:16px;
   padding:10px;
+  font-weight:900;
 }
 .vs span{
   width:28px;height:28px;
@@ -116,7 +118,6 @@ header span{color:var(--red)}
   display:flex;
   align-items:center;
   justify-content:center;
-  font-weight:900;
 }
 
 .watch{
@@ -130,7 +131,7 @@ header span{color:var(--red)}
   color:#fff;
 }
 
-/* ===== HIGHLIGHTS ===== */
+/* HIGHLIGHTS */
 .section-head{
   display:flex;
   justify-content:space-between;
@@ -146,7 +147,6 @@ header span{color:var(--red)}
   gap:14px;
   overflow-x:auto;
 }
-
 .highlight{
   min-width:220px;
   background:#0f0f0f;
@@ -177,7 +177,7 @@ header span{color:var(--red)}
   font-weight:600;
 }
 
-/* BOTTOM */
+/* BOTTOM TAB */
 .bottom{
   position:fixed;
   bottom:0;left:0;right:0;
@@ -205,7 +205,6 @@ header span{color:var(--red)}
 <div class="content">
   <div class="hot-card" id="hotCard"></div>
 
-  <!-- HIGHLIGHTS -->
   <div class="section-head">
     <div><span>■</span> ไฮไลท์ยอดนิยม</div>
     <small>ดูทั้งหมด ></small>
@@ -215,19 +214,17 @@ header span{color:var(--red)}
     <div class="highlight">
       <img src="https://picsum.photos/400/300?1">
       <div class="play">▶</div>
-      <div class="h-title">ไฮไลท์ฟุตบอล พรีเมียร์ลีก</div>
+      <div class="h-title">พรีเมียร์ลีก Match Highlights</div>
     </div>
-
     <div class="highlight">
       <img src="https://picsum.photos/400/300?2">
       <div class="play">▶</div>
-      <div class="h-title">Match Highlights สุดมันส์</div>
+      <div class="h-title">ลาลีกา เกมเดือด</div>
     </div>
-
     <div class="highlight">
       <img src="https://picsum.photos/400/300?3">
       <div class="play">▶</div>
-      <div class="h-title">จังหวะเด็ด ประจำวัน</div>
+      <div class="h-title">จังหวะเด็ดประจำวัน</div>
     </div>
   </div>
 </div>
@@ -243,13 +240,20 @@ header span{color:var(--red)}
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
+/* ===== LEAGUES ครบ ไม่หาย ===== */
 const LEAGUES=[
- {id:39,name:"พรีเมียร์ลีก",time:"21:00",home:["Liverpool",40],away:["Man City",50]},
- {id:140,name:"ลาลีกา",time:"22:00",home:["Barcelona",529],away:["Real Madrid",541]},
- {id:78,name:"บุนเดสลีกา",time:"20:30",home:["Bayern",157],away:["Dortmund",165]}
+ {id:39,name:"อังกฤษ | พรีเมียร์ลีก",time:"21:00",home:["Liverpool",40],away:["Man City",50]},
+ {id:140,name:"สเปน | ลาลีกา",time:"22:00",home:["Barcelona",529],away:["Real Madrid",541]},
+ {id:78,name:"เยอรมัน | บุนเดสลีกา",time:"20:30",home:["Bayern",157],away:["Dortmund",165]},
+ {id:135,name:"อิตาลี | กัลโช่",time:"01:45",home:["Juventus",496],away:["AC Milan",489]},
+ {id:61,name:"ฝรั่งเศส | ลีกเอิง",time:"02:00",home:["PSG",85],away:["Marseille",81]},
+ {id:2,name:"UEFA Champions League",time:"02:00",home:["Man City",50],away:["PSG",85]},
+ {id:3,name:"UEFA Europa League",time:"00:45",home:["Roma",497],away:["Leverkusen",168]},
+ {id:1,name:"World Cup",time:"19:00",home:["Brazil",6],away:["Argentina",7]}
 ];
 
 const bar=document.getElementById("leagueBar");
+const hotCard=document.getElementById("hotCard");
 
 LEAGUES.forEach((l,i)=>{
   const d=document.createElement("div");
@@ -268,8 +272,8 @@ LEAGUES.forEach((l,i)=>{
 function render(l){
   hotCard.innerHTML=`
     <div class="hot-head">
-      <div><span class="hot-badge">HOT</span> ${l.name}</div>
-      <div>${l.time}</div>
+      <div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
+      <div>🕒 ${l.time}</div>
     </div>
 
     <div class="match">
