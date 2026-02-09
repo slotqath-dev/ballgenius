@@ -9,25 +9,13 @@
 <style>
 *{box-sizing:border-box;font-family:sans-serif}
 :root{
-  --bg:#000;
-  --card:#0f0f0f;
-  --text:#fff;
-  --muted:#888;
   --red:#e60000;
   --gold:#f5c542;
 }
-
-/* 🔓 ปลดล็อกการเลื่อน */
-html,body{
-  height:100%;
-  overflow-y:auto;
-}
-
 body{
   margin:0;
   background:linear-gradient(180deg,#120000,#000);
   color:#fff;
-  -webkit-overflow-scrolling:touch;
 }
 
 /* HEADER */
@@ -69,11 +57,7 @@ header span{color:var(--red)}
 .logo-box img{width:30px;height:30px}
 
 /* CONTENT */
-/* 🔓 เพิ่ม padding-bottom ให้เลื่อนพ้น bottom bar */
-.content{
-  padding:14px;
-  padding-bottom:200px;
-}
+.content{padding:14px;padding-bottom:120px}
 
 /* HOT CARD */
 .hot-card{
@@ -112,22 +96,13 @@ header span{color:var(--red)}
 }
 .team-name{margin-top:6px;font-size:13px;font-weight:600}
 .vs{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
   background:#1a0000;
   border-radius:16px;
   padding:10px;
   font-weight:900;
-}
-.vs span{
-  width:28px;height:28px;
-  background:#300;
-  border-radius:8px;
   display:flex;
-  align-items:center;
   justify-content:center;
+  gap:8px;
 }
 
 /* SECTION */
@@ -136,42 +111,6 @@ header span{color:var(--red)}
   font-weight:900;
 }
 .section-head span{color:var(--red)}
-
-/* HIGHLIGHTS */
-.highlight-list{
-  display:flex;
-  gap:14px;
-  overflow-x:auto;
-  padding-bottom:6px;
-}
-.highlight{
-  min-width:220px;
-  background:#0f0f0f;
-  border-radius:18px;
-  overflow:hidden;
-  position:relative;
-}
-.highlight img{
-  width:100%;
-  height:130px;
-  object-fit:cover;
-}
-.play{
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:46px;height:46px;
-  background:rgba(230,0,0,.9);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.h-title{
-  padding:10px;
-  font-size:13px;
-  font-weight:600;
-}
 
 /* TABLE */
 .table-tabs{
@@ -207,7 +146,6 @@ header span{color:var(--red)}
 .table-head{
   font-size:12px;
   color:#aaa;
-  margin-bottom:6px;
 }
 .row{
   padding:8px 0;
@@ -228,24 +166,6 @@ header span{color:var(--red)}
   padding:2px;
 }
 .pts{text-align:right;font-weight:900}
-
-/* BOTTOM */
-.bottom{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  display:flex;
-  background:#000;
-  border-top:2px solid var(--red);
-  z-index:99;
-}
-.tab{
-  flex:1;
-  text-align:center;
-  padding:10px 0;
-  font-size:12px;
-  opacity:.6;
-}
-.tab.active{opacity:1;color:var(--red)}
 </style>
 </head>
 
@@ -256,40 +176,115 @@ header span{color:var(--red)}
 <div class="leagues" id="leagueBar"></div>
 
 <div class="content">
-
   <div class="hot-card" id="hotCard"></div>
-
-  <div class="section-head"><span>■</span> ไฮไลท์ยอดนิยม</div>
-  <div class="highlight-list">
-    <div class="highlight">
-      <img src="https://picsum.photos/400/300?1">
-      <div class="play">▶</div>
-      <div class="h-title">Match Highlights</div>
-    </div>
-    <div class="highlight">
-      <img src="https://picsum.photos/400/300?2">
-      <div class="play">▶</div>
-      <div class="h-title">เกมเดือด</div>
-    </div>
-  </div>
 
   <div class="section-head"><span>■</span> ตารางคะแนน</div>
   <div class="table-tabs" id="tableTabs"></div>
   <div class="table-box" id="tableBox"></div>
-
-</div>
-
-<div class="bottom">
-  <div class="tab active">ยอดนิยม</div>
-  <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
 </div>
 
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
-Telegram.WebApp.enableClosingConfirmation();
+
+/* DATA */
+const LEAGUES=[
+ {id:39,name:"พรีเมียร์ลีก",time:"21:00",
+  home:["Liverpool",40],away:["Man City",50],
+  standings:[
+   ["Arsenal",42,56],["Man City",50,50],
+   ["Aston Villa",66,47],["Man United",33,44],
+   ["Chelsea",49,43],["Liverpool",40,39]
+ ]},
+ {id:140,name:"ลาลีกา",time:"22:00",
+  home:["Barcelona",529],away:["Real Madrid",541],
+  standings:[
+   ["Real Madrid",541,58],["Barcelona",529,55],
+   ["Girona",547,52],["Atletico Madrid",530,49]
+ ]},
+ {id:78,name:"บุนเดสลีกา",time:"20:30",
+  home:["Bayern",157],away:["Dortmund",165],
+  standings:[
+   ["Bayern",157,57],["Leverkusen",168,55],
+   ["Dortmund",165,49],["RB Leipzig",173,46]
+ ]},
+ {id:135,name:"กัลโช่",time:"01:45",
+  home:["Juventus",496],away:["AC Milan",489],
+  standings:[
+   ["Inter",505,59],["Juventus",496,53],
+   ["AC Milan",489,52],["Roma",497,48]
+ ]},
+ {id:61,name:"ลีกเอิง",time:"02:00",
+  home:["PSG",85],away:["Marseille",81],
+  standings:[
+   ["PSG",85,60],["Nice",79,49],
+   ["Monaco",91,48],["Marseille",81,44]
+ ]}
+];
+
+const leagueBar=document.getElementById("leagueBar");
+const tableTabs=document.getElementById("tableTabs");
+const hotCard=document.getElementById("hotCard");
+const tableBox=document.getElementById("tableBox");
+
+/* CREATE UI */
+LEAGUES.forEach((l,i)=>{
+  leagueBar.innerHTML+=`
+   <div class="league" onclick="selectLeague(${i})">
+    <div class="logo-box">
+     <img src="https://media.api-sports.io/football/leagues/${l.id}.png">
+    </div>
+   </div>`;
+  tableTabs.innerHTML+=`
+   <div class="table-tab" onclick="selectLeague(${i})">${l.name}</div>`;
+});
+
+/* MAIN SELECT */
+function selectLeague(i){
+ document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
+ document.querySelectorAll(".table-tab").forEach(x=>x.classList.remove("active"));
+
+ document.querySelectorAll(".league")[i].classList.add("active");
+ document.querySelectorAll(".table-tab")[i].classList.add("active");
+
+ renderHot(LEAGUES[i]);
+ renderTable(LEAGUES[i]);
+}
+
+function renderHot(l){
+ hotCard.innerHTML=`
+ <div class="hot-head">
+  <div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
+  <div>🕒 ${l.time}</div>
+ </div>
+ <div class="match">
+  <div class="team">
+   <img src="https://media.api-sports.io/football/teams/${l.home[1]}.png">
+   <div class="team-name">${l.home[0]}</div>
+  </div>
+  <div class="vs">VS</div>
+  <div class="team">
+   <img src="https://media.api-sports.io/football/teams/${l.away[1]}.png">
+   <div class="team-name">${l.away[0]}</div>
+  </div>
+ </div>`;
+}
+
+function renderTable(l){
+ tableBox.innerHTML=`
+ <div class="table-head"><div>#</div><div>ทีม</div><div>แต้ม</div></div>
+ ${l.standings.map((t,i)=>`
+  <div class="row">
+   <div class="pos">${i+1}</div>
+   <div class="team-row">
+    <img src="https://media.api-sports.io/football/teams/${t[1]}.png">${t[0]}
+   </div>
+   <div class="pts">${t[2]}</div>
+  </div>`).join("")}`;
+}
+
+/* INIT */
+selectLeague(0);
 </script>
 
 </body>
