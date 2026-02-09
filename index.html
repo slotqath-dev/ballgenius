@@ -9,10 +9,6 @@
 <style>
 *{box-sizing:border-box;font-family:sans-serif}
 :root{
-  --bg:#000;
-  --card:#0f0f0f;
-  --text:#fff;
-  --muted:#888;
   --red:#e60000;
   --gold:#f5c542;
 }
@@ -91,7 +87,6 @@ header span{color:var(--red)}
   grid-template-columns:1fr 110px 1fr;
   align-items:center;
   gap:10px;
-  margin-bottom:14px;
 }
 .team{text-align:center}
 .team img{
@@ -101,7 +96,6 @@ header span{color:var(--red)}
   border-radius:16px;
 }
 .team-name{margin-top:6px;font-size:13px;font-weight:600}
-
 .vs{
   display:flex;
   align-items:center;
@@ -120,28 +114,24 @@ header span{color:var(--red)}
   align-items:center;
   justify-content:center;
 }
-
 .watch{
   display:block;
+  margin-top:14px;
   text-align:center;
   background:linear-gradient(90deg,#ff2b2b,#b00000);
   padding:14px;
   border-radius:18px;
   font-weight:900;
-  text-decoration:none;
   color:#fff;
+  text-decoration:none;
 }
 
-/* SECTION HEAD */
+/* SECTION */
 .section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:18px 0 10px;
-  font-weight:800;
+  margin:22px 0 10px;
+  font-weight:900;
 }
 .section-head span{color:var(--red)}
-.section-head small{color:#aaa}
 
 /* HIGHLIGHTS */
 .highlight-list{
@@ -183,27 +173,19 @@ header span{color:var(--red)}
   background:#120000;
   border-radius:22px;
   padding:14px;
-  margin-top:22px;
 }
-.table-head{
-  display:grid;
-  grid-template-columns:40px 1fr 40px;
-  font-size:12px;
-  color:#bbb;
-  margin-bottom:8px;
-}
-.row{
+.table-head,.row{
   display:grid;
   grid-template-columns:40px 1fr 40px;
   align-items:center;
+}
+.table-head{font-size:12px;color:#bbb}
+.row{
   padding:8px 0;
   border-bottom:1px solid #2a0000;
 }
 .row:last-child{border-bottom:none}
-.pos{
-  color:var(--gold);
-  font-weight:900;
-}
+.pos{color:var(--gold);font-weight:900}
 .team-row{
   display:flex;
   align-items:center;
@@ -216,179 +198,116 @@ header span{color:var(--red)}
   border-radius:6px;
   padding:2px;
 }
-.pts{
-  text-align:right;
-  font-weight:900;
-}
-
-/* BOTTOM */
-.bottom{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  display:flex;
-  background:#000;
-  border-top:2px solid var(--red);
-}
-.tab{
-  flex:1;
-  text-align:center;
-  padding:10px 0;
-  font-size:12px;
-  opacity:.6;
-}
-.tab.active{opacity:1;color:var(--red)}
+.pts{text-align:right;font-weight:900}
 </style>
 </head>
 
 <body>
 
 <header><span>QA</span> BallGenius</header>
-
 <div class="leagues" id="leagueBar"></div>
 
 <div class="content">
-
   <div class="hot-card" id="hotCard"></div>
 
-  <div class="section-head">
-    <div><span>■</span> ไฮไลท์ยอดนิยม</div>
-    <small>ดูทั้งหมด ></small>
-  </div>
+  <div class="section-head"><span>■</span> ไฮไลท์</div>
+  <div class="highlight-list" id="highlightList"></div>
 
-  <div class="highlight-list">
-    <div class="highlight">
-      <img src="https://picsum.photos/400/300?1">
-      <div class="play">▶</div>
-      <div class="h-title">Match Highlights</div>
-    </div>
-    <div class="highlight">
-      <img src="https://picsum.photos/400/300?2">
-      <div class="play">▶</div>
-      <div class="h-title">เกมเดือด</div>
-    </div>
-  </div>
-
-  <!-- ตารางคะแนน -->
-  <div class="section-head">
-    <div><span>■</span> ตารางคะแนน</div>
-  </div>
+  <div class="section-head"><span>■</span> ตารางคะแนน</div>
   <div class="table-box" id="tableBox"></div>
-
-</div>
-
-<div class="bottom">
-  <div class="tab active">ยอดนิยม</div>
-  <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
 </div>
 
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* ===== LEAGUES + ตารางคะแนน ===== */
+/* ===== DATA ===== */
 const LEAGUES=[
- {id:39,name:"พรีเมียร์ลีก",time:"21:00",
-  home:["Liverpool",40],away:["Man City",50],
-  table:[
-    ["Arsenal",42,56],
-    ["Man City",50,50],
-    ["Aston Villa",66,47],
-    ["Man United",33,44],
-    ["Chelsea",49,43]
-  ]
- },
- {id:140,name:"ลาลีกา",time:"22:00",
-  home:["Barcelona",529],away:["Real Madrid",541],
-  table:[
-    ["Real Madrid",541,58],
-    ["Barcelona",529,55],
-    ["Girona",547,52],
-    ["Atletico",530,49]
-  ]
- },
- {id:78,name:"บุนเดสลีกา",time:"20:30",
-  home:["Bayern",157],away:["Dortmund",165],
-  table:[
-    ["Bayern",157,57],
-    ["Leverkusen",168,55],
-    ["Dortmund",165,49]
-  ]
- },
- {id:135,name:"กัลโช่",time:"01:45",
-  home:["Juventus",496],away:["AC Milan",489],
-  table:[
-    ["Inter",505,59],
-    ["Juventus",496,53],
-    ["AC Milan",489,52]
-  ]
- },
- {id:61,name:"ลีกเอิง",time:"02:00",
-  home:["PSG",85],away:["Marseille",81],
-  table:[
-    ["PSG",85,60],
-    ["Nice",79,49],
-    ["Monaco",91,48]
-  ]
- }
+{
+ id:39,name:"พรีเมียร์ลีก",time:"21:00",
+ home:["Liverpool",40],away:["Man City",50],
+ highlights:[
+  ["https://picsum.photos/400/300?pl1","คู่เดือดประจำสัปดาห์"],
+  ["https://picsum.photos/400/300?pl2","จังหวะยิงสุดสวย"]
+ ],
+ table:[
+  ["Arsenal",42,56],["Man City",50,50],["Liverpool",40,39]
+ ]
+},
+{
+ id:140,name:"ลาลีกา",time:"22:00",
+ home:["Barcelona",529],away:["Real Madrid",541],
+ highlights:[
+  ["https://picsum.photos/400/300?ll1","เอลกลาซิโก้"],
+  ["https://picsum.photos/400/300?ll2","ประตูชัยท้ายเกม"]
+ ],
+ table:[
+  ["Real Madrid",541,58],["Barcelona",529,55]
+ ]
+}
 ];
 
 const bar=document.getElementById("leagueBar");
 const hotCard=document.getElementById("hotCard");
 const tableBox=document.getElementById("tableBox");
+const highlightList=document.getElementById("highlightList");
 
+/* TOP BAR */
 LEAGUES.forEach((l,i)=>{
-  const d=document.createElement("div");
-  d.className="league"+(i===0?" active":"");
-  d.innerHTML=`<div class="logo-box">
-    <img src="https://media.api-sports.io/football/leagues/${l.id}.png">
-  </div>`;
-  d.onclick=()=>{
-    document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
-    d.classList.add("active");
-    render(l);
-  };
-  bar.appendChild(d);
+ const d=document.createElement("div");
+ d.className="league"+(i===0?" active":"");
+ d.innerHTML=`<div class="logo-box">
+  <img src="https://media.api-sports.io/football/leagues/${l.id}.png">
+ </div>`;
+ d.onclick=()=>{
+  document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
+  d.classList.add("active");
+  render(l);
+ };
+ bar.appendChild(d);
 });
 
 function render(l){
-  hotCard.innerHTML=`
-    <div class="hot-head">
-      <div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
-      <div>🕒 ${l.time}</div>
-    </div>
+ hotCard.innerHTML=`
+  <div class="hot-head">
+   <div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
+   <div>🕒 ${l.time}</div>
+  </div>
+  <div class="match">
+   <div class="team">
+    <img src="https://media.api-sports.io/football/teams/${l.home[1]}.png">
+    <div class="team-name">${l.home[0]}</div>
+   </div>
+   <div class="vs"><span>0</span>VS<span>0</span></div>
+   <div class="team">
+    <img src="https://media.api-sports.io/football/teams/${l.away[1]}.png">
+    <div class="team-name">${l.away[0]}</div>
+   </div>
+  </div>
+  <a class="watch">ดูถ่ายทอดสด</a>
+ `;
 
-    <div class="match">
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/${l.home[1]}.png">
-        <div class="team-name">${l.home[0]}</div>
-      </div>
-      <div class="vs"><span>0</span>VS<span>0</span></div>
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/${l.away[1]}.png">
-        <div class="team-name">${l.away[0]}</div>
-      </div>
-    </div>
+ highlightList.innerHTML=l.highlights.map(h=>`
+  <div class="highlight">
+   <img src="${h[0]}">
+   <div class="play">▶</div>
+   <div class="h-title">${h[1]}</div>
+  </div>
+ `).join("");
 
-    <a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
-  `;
-
-  tableBox.innerHTML=`
-    <div class="table-head">
-      <div>#</div><div>ทีม</div><div>แต้ม</div>
+ tableBox.innerHTML=`
+  <div class="table-head"><div>#</div><div>ทีม</div><div>แต้ม</div></div>
+  ${l.table.map((t,i)=>`
+   <div class="row">
+    <div class="pos">${i+1}</div>
+    <div class="team-row">
+     <img src="https://media.api-sports.io/football/teams/${t[1]}.png">
+     ${t[0]}
     </div>
-    ${l.table.map((t,i)=>`
-      <div class="row">
-        <div class="pos">${i+1}</div>
-        <div class="team-row">
-          <img src="https://media.api-sports.io/football/teams/${t[1]}.png">
-          ${t[0]}
-        </div>
-        <div class="pts">${t[2]}</div>
-      </div>
-    `).join("")}
-  `;
+    <div class="pts">${t[2]}</div>
+   </div>
+  `).join("")}
+ `;
 }
 
 render(LEAGUES[0]);
