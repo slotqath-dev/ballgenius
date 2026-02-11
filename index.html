@@ -10,146 +10,135 @@
 *{box-sizing:border-box;font-family:sans-serif}
 :root{--red:#e60000;--gold:#f5c542;}
 body{margin:0;background:linear-gradient(180deg,#120000,#000);color:#fff;}
-
-header{
-padding:14px;
-font-size:22px;
-font-weight:900;
-border-bottom:2px solid var(--red);
-}
+header{padding:14px;font-size:22px;font-weight:900;border-bottom:2px solid var(--red);}
 header span{color:var(--red);}
 
-.leagues{
-display:flex;
-gap:12px;
-padding:12px;
-overflow-x:auto;
-}
-.league{
-width:64px;height:64px;
-flex:0 0 auto;
-background:#0f0f0f;
-border-radius:18px;
-border:2px solid #1f1f1f;
-display:flex;align-items:center;justify-content:center;
-cursor:pointer;
-}
+.leagues{display:flex;gap:12px;padding:12px;overflow-x:auto;}
+.league{width:64px;height:64px;flex:0 0 auto;background:#0f0f0f;border-radius:18px;border:2px solid #1f1f1f;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .league.active{border-color:var(--red);}
-.logo-box{
-width:46px;height:46px;
-background:#fff;border-radius:14px;
-display:flex;align-items:center;justify-content:center;
-}
+.logo-box{width:46px;height:46px;background:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;}
 .logo-box img{width:30px;height:30px;object-fit:contain;}
 
-.content{padding:14px;padding-bottom:120px;}
+.content{padding:14px;padding-bottom:140px;}
 
-.section-head{
-margin:18px 0 10px;
-font-weight:800;
-}
+.hot-card{background:#120000;border-radius:24px;padding:16px;margin-bottom:22px;}
+.hot-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:14px;}
+.hot-badge{background:var(--red);padding:4px 10px;border-radius:999px;font-weight:800;}
+
+.match{display:grid;grid-template-columns:1fr 110px 1fr;align-items:center;gap:10px;margin-bottom:14px;}
+.team{text-align:center;}
+.team img{width:60px;height:60px;background:#fff;padding:8px;border-radius:16px;}
+.team-name{margin-top:6px;font-size:13px;font-weight:600;}
+
+.vs{display:flex;align-items:center;justify-content:center;gap:8px;background:#1a0000;border-radius:16px;padding:10px;font-weight:900;}
+.vs span{width:28px;height:28px;background:#300;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+
+.watch{display:block;text-align:center;background:linear-gradient(90deg,#ff2b2b,#b00000);padding:14px;border-radius:18px;font-weight:900;text-decoration:none;color:#fff;}
+
+.section-head{margin:18px 0 10px;font-weight:800;}
 .section-head span{color:var(--red);}
 
-.table-box{
-background:#120000;
-border-radius:22px;
-padding:14px;
-overflow-x:auto;
-}
+.highlight-list{display:flex;gap:14px;overflow-x:auto;}
+.highlight{min-width:220px;background:#0f0f0f;border-radius:18px;overflow:hidden;position:relative;}
+.highlight img{width:100%;height:140px;object-fit:cover;}
+.play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;background:rgba(230,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.h-title{padding:10px;font-size:13px;font-weight:600;}
+
+.table-box{background:#120000;border-radius:22px;padding:14px;margin-top:22px;overflow-x:auto;}
 
 .table-head,.row{
 display:grid;
-grid-template-columns:
-40px 140px
-50px 50px 50px 50px 60px;
+grid-template-columns:35px 120px 45px 45px 45px 45px 55px;
 align-items:center;
 font-size:12px;
 }
 
-.table-head{
-color:#bbb;
-margin-bottom:8px;
-font-weight:700;
-}
+.table-head{color:#bbb;margin-bottom:8px;font-weight:700;}
 
-.row{
-padding:8px 0;
-border-bottom:1px solid #2a0000;
-}
+.row{padding:8px 0;border-bottom:1px solid #2a0000;}
 .row:last-child{border-bottom:none;}
 
 .pos{color:var(--gold);font-weight:900;}
 
-.team-row{
-display:flex;align-items:center;gap:6px;
-font-size:12px;
-}
-.team-row img{
-width:20px;height:20px;
-background:#fff;border-radius:6px;padding:2px;
-}
+.team-row{display:flex;align-items:center;gap:6px;font-size:12px;}
+.team-row img{width:20px;height:20px;background:#fff;border-radius:6px;padding:2px;}
 
 .stat{text-align:center;}
 .pts{text-align:center;font-weight:900;}
 
-.bottom{
-position:fixed;bottom:0;left:0;right:0;
-display:flex;background:#000;
-border-top:2px solid var(--red);
-}
-.tab{
-flex:1;text-align:center;
-padding:10px 0;font-size:12px;
-opacity:.6;
-}
-.tab.active{opacity:1;color:var(--red);}
 </style>
 </head>
 
 <body>
 
 <header><span>QA</span> BallGenius</header>
-
 <div class="leagues" id="leagueBar"></div>
 
 <div class="content">
+  <div class="hot-card" id="hotCard"></div>
 
-<div class="section-head">
-<span>■</span> ตารางคะแนน (20 ทีม)
-</div>
+  <div class="section-head">
+    <span>■</span> ไฮไลท์ยอดนิยม
+  </div>
+  <div class="highlight-list" id="highlightList"></div>
 
-<div class="table-box" id="tableBox"></div>
-
+  <div class="section-head">
+    <span>■</span> ตารางคะแนน (20 ทีม)
+  </div>
+  <div class="table-box" id="tableBox"></div>
 </div>
 
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-function generateTeams(baseId){
-let arr=[];
-for(let i=1;i<=20;i++){
-arr.push([`Team ${i}`, baseId+i]);
+function generateTeams(original){
+let arr=[...original];
+while(arr.length<20){
+let n=arr.length+1;
+arr.push([`Team ${n}`,1000+n]);
 }
 return arr;
 }
 
-const LEAGUES=[
-{id:39,name:"พรีเมียร์ลีก"},
-{id:140,name:"ลาลีกา"},
-{id:78,name:"บุนเดสลีกา"},
-{id:135,name:"กัลโช่"},
-{id:61,name:"ลีกเอิง"},
-{id:94,name:"โปรตุเกส"},
-{id:88,name:"เอเรดิวิซี"},
-{id:203,name:"ซาอุโปรลีก"}
+const LEAGUES = [
+{ id:39,name:"พรีเมียร์ลีก",teams:generateTeams([
+["Liverpool",40],["Arsenal",42],["Man City",50],
+["Tottenham",47],["Chelsea",49],["Man United",33]
+])},
+{ id:140,name:"ลาลีกา",teams:generateTeams([
+["Real Madrid",541],["Barcelona",529],["Girona",547],
+["Atletico",530],["Betis",543],["Sociedad",548]
+])},
+{ id:78,name:"บุนเดสลีกา",teams:generateTeams([
+["Bayern",157],["Leverkusen",168],["Dortmund",165],
+["Leipzig",173],["Stuttgart",172],["Frankfurt",169]
+])},
+{ id:135,name:"กัลโช่",teams:generateTeams([
+["Inter",505],["Juventus",496],["Milan",489],
+["Roma",497],["Napoli",492],["Atalanta",499]
+])},
+{ id:61,name:"ลีกเอิง",teams:generateTeams([
+["PSG",85],["Marseille",81],["Monaco",91],
+["Lille",79],["Lyon",80],["Nice",84]
+])},
+{ id:94,name:"โปรตุเกส",teams:generateTeams([
+["Benfica",211],["Porto",212],["Sporting",228],
+["Braga",217],["Boavista",219],["Guimaraes",222]
+])},
+{ id:88,name:"เอเรดิวิซี",teams:generateTeams([
+["Ajax",194],["PSV",197],["Feyenoord",193],
+["AZ",195],["Twente",198],["Utrecht",201]
+])},
+{ id:203,name:"ซาอุโปรลีก",teams:generateTeams([
+["Al Hilal",2938],["Al Nassr",2939],["Al Ittihad",2940],
+["Al Ahli",2942],["Al Shabab",2941],["Al Ettifaq",2945]
+])}
 ];
 
-LEAGUES.forEach((l,i)=>{
-l.teams=generateTeams(l.id*100);
-});
-
 const leagueBar=document.getElementById("leagueBar");
+const hotCard=document.getElementById("hotCard");
+const highlightList=document.getElementById("highlightList");
 const tableBox=document.getElementById("tableBox");
 
 LEAGUES.forEach((l,i)=>{
@@ -168,6 +157,36 @@ leagueBar.appendChild(div);
 
 function render(l){
 
+const home=l.teams[0];
+const away=l.teams[1];
+
+hotCard.innerHTML=`
+<div class="hot-head">
+<div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
+<div>🕒 21:00</div>
+</div>
+<div class="match">
+<div class="team">
+<img src="https://media.api-sports.io/football/teams/${home[1]}.png">
+<div class="team-name">${home[0]}</div>
+</div>
+<div class="vs"><span>0</span>VS<span>0</span></div>
+<div class="team">
+<img src="https://media.api-sports.io/football/teams/${away[1]}.png">
+<div class="team-name">${away[0]}</div>
+</div>
+</div>
+<a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
+`;
+
+highlightList.innerHTML=l.teams.slice(0,5).map((t,i)=>`
+<div class="highlight">
+<img src="https://picsum.photos/400/300?random=${l.id+i}">
+<div class="play">▶</div>
+<div class="h-title">${t[0]} ไฮไลท์ล่าสุด</div>
+</div>
+`).join("");
+
 tableBox.innerHTML=`
 <div class="table-head">
 <div>#</div>
@@ -179,13 +198,11 @@ tableBox.innerHTML=`
 <div class="pts">คะแนน</div>
 </div>
 ${l.teams.map((t,i)=>{
-
-let played=20+i;
-let win=10-i%5;
-let draw=5-i%3;
+let played=20;
+let win=12-(i%5);
+let draw=4-(i%3<1?0:1);
 let lose=played-win-draw;
 let pts=(win*3)+draw;
-
 return `
 <div class="row">
 <div class="pos">${i+1}</div>
@@ -198,8 +215,7 @@ ${t[0]}
 <div class="stat">${draw}</div>
 <div class="stat">${lose}</div>
 <div class="pts">${pts}</div>
-</div>
-`;
+</div>`;
 }).join("")}
 `;
 }
