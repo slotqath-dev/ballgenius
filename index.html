@@ -13,29 +13,62 @@ body{margin:0;background:linear-gradient(180deg,#120000,#000);color:#fff;}
 header{padding:14px;font-size:22px;font-weight:900;border-bottom:2px solid var(--red);}
 header span{color:var(--red);}
 
-.leagues{display:flex;gap:12px;padding:12px;overflow-x:auto}
-.league{width:64px;height:64px;flex:0 0 auto;background:#0f0f0f;border-radius:18px;border:2px solid #1f1f1f;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.league.active{border-color:var(--red);}
-.logo-box{width:46px;height:46px;background:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;}
-.logo-box img{width:30px;height:30px;object-fit:contain;}
+/* ลีก */
+.leagues{
+display:flex;
+gap:12px;
+padding:12px;
+overflow-x:auto;
+}
+.league{
+width:64px;
+height:64px;
+flex:0 0 auto;
+background:#111;
+border-radius:18px;
+border:2px solid #222;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+font-size:11px;
+font-weight:800;
+text-align:center;
+padding:6px;
+}
+.league.active{border-color:var(--red);background:#1a0000;}
 
+/* เนื้อหา */
 .content{padding:14px;padding-bottom:140px;}
+
 .hot-card{background:#120000;border-radius:24px;padding:16px;margin-bottom:22px;}
-.hot-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:14px;}
+.hot-head{display:flex;justify-content:space-between;font-size:13px;margin-bottom:14px;}
 .hot-badge{background:var(--red);padding:4px 10px;border-radius:999px;font-weight:800;}
 .match{display:grid;grid-template-columns:1fr 110px 1fr;align-items:center;gap:10px;margin-bottom:14px;}
 .team{text-align:center;}
 .team img{width:60px;height:60px;background:#fff;padding:8px;border-radius:16px;}
 .team-name{margin-top:6px;font-size:13px;font-weight:600;}
 .vs{display:flex;align-items:center;justify-content:center;gap:8px;background:#1a0000;border-radius:16px;padding:10px;font-weight:900;}
-.vs span{width:28px;height:28px;background:#300;border-radius:8px;display:flex;align-items:center;justify-content:center;}
 .watch{display:block;text-align:center;background:linear-gradient(90deg,#ff2b2b,#b00000);padding:14px;border-radius:18px;font-weight:900;text-decoration:none;color:#fff;}
 
 .section-head{margin:18px 0 10px;font-weight:800;}
 .section-head span{color:var(--red);}
 
+/* ไฮไลท์ */
+.highlight-list{display:flex;gap:14px;overflow-x:auto;}
+.highlight{min-width:220px;background:#0f0f0f;border-radius:18px;overflow:hidden;position:relative;}
+.highlight img{width:100%;height:140px;object-fit:cover;}
+.play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;background:rgba(230,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.h-title{padding:10px;font-size:13px;font-weight:600;}
+
+/* ตารางคะแนน */
 .table-box{background:#120000;border-radius:22px;padding:14px;margin-top:22px;}
-.table-head,.row{display:grid;grid-template-columns:30px 140px 45px 45px 45px 45px 55px;align-items:center;font-size:12px;}
+.table-head,.row{
+display:grid;
+grid-template-columns:30px 120px 45px 45px 45px 45px 55px;
+align-items:center;
+font-size:12px;
+}
 .table-head{color:#bbb;margin-bottom:8px;font-weight:700;}
 .row{padding:8px 0;border-bottom:1px solid #2a0000;}
 .row:last-child{border-bottom:none;}
@@ -55,6 +88,9 @@ header span{color:var(--red);}
 <div class="content">
   <div class="hot-card" id="hotCard"></div>
 
+  <div class="section-head"><span>■</span> ไฮไลท์ยอดนิยม</div>
+  <div class="highlight-list" id="highlightList"></div>
+
   <div class="section-head"><span>■</span> ตารางคะแนน</div>
   <div class="table-box" id="tableBox"></div>
 </div>
@@ -63,49 +99,34 @@ header span{color:var(--red);}
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* ===== ทีมจริง ไม่มี generate20Teams แล้ว ===== */
 const LEAGUES = [
-{
-id:39,
-name:"พรีเมียร์ลีก",
-teams:[
-["Arsenal",42],["Aston Villa",66],["Bournemouth",35],["Brentford",55],
-["Brighton",51],["Burnley",44],["Chelsea",49],["Crystal Palace",52],
-["Everton",45],["Fulham",36],["Liverpool",40],["Luton",1359],
-["Man City",50],["Man United",33],["Newcastle",34],["Nottingham",65],
-["Sheffield Utd",62],["Tottenham",47],["West Ham",48],["Wolves",39]
-]
-},
-{
-id:140,
-name:"ลาลีกา",
-teams:[
-["Real Madrid",541],["Barcelona",529],["Atletico Madrid",530],
-["Sevilla",536],["Valencia",532],["Villarreal",533]
-]
-},
-{
-id:78,
-name:"บุนเดสลีกา",
-teams:[
-["Bayern Munich",157],["Dortmund",165],["Leverkusen",168],
-["RB Leipzig",173],["Stuttgart",172]
-]
-}
+{ name:"พรีเมียร์ลีก", short:"EPL",
+teams:[["Liverpool",40],["Arsenal",42],["Man City",50],["Tottenham",47],["Chelsea",49],["Man United",33]]},
+{ name:"ลาลีกา", short:"LL",
+teams:[["Real Madrid",541],["Barcelona",529],["Atletico",530],["Girona",547]]},
+{ name:"บุนเดสลีกา", short:"BL",
+teams:[["Bayern",157],["Dortmund",165],["Leverkusen",168]]},
+{ name:"กัลโช่", short:"SA",
+teams:[["Inter",505],["Juventus",496],["Milan",489]]},
+{ name:"ลีกเอิง", short:"L1",
+teams:[["PSG",85],["Marseille",81],["Monaco",91]]},
+{ name:"โปรตุเกส", short:"POR",
+teams:[["Benfica",211],["Porto",212]]},
+{ name:"เอเรดิวิซี", short:"NED",
+teams:[["Ajax",194],["PSV",197]]},
+{ name:"ซาอุโปรลีก", short:"SPL",
+teams:[["Al Hilal",2938],["Al Nassr",2939]]}
 ];
 
 const leagueBar=document.getElementById("leagueBar");
 const hotCard=document.getElementById("hotCard");
+const highlightList=document.getElementById("highlightList");
 const tableBox=document.getElementById("tableBox");
 
-/* ===== สร้างแถบลีก ===== */
 LEAGUES.forEach((l,i)=>{
 const div=document.createElement("div");
 div.className="league"+(i===0?" active":"");
-div.innerHTML=`<div class="logo-box">
-<img src="https://media.api-sports.io/football/leagues/${l.id}.png"
-onerror="this.src='https://via.placeholder.com/30'">
-</div>`;
+div.innerHTML=l.short;
 div.onclick=()=>{
 document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
 div.classList.add("active");
@@ -114,7 +135,6 @@ render(l);
 leagueBar.appendChild(div);
 });
 
-/* ===== Render ===== */
 function render(l){
 
 const home=l.teams[0];
@@ -127,29 +147,25 @@ hotCard.innerHTML=`
 </div>
 <div class="match">
 <div class="team">
-<img src="https://media.api-sports.io/football/teams/${home[1]}.png"
-onerror="this.src='https://via.placeholder.com/60'">
+<img src="https://media.api-sports.io/football/teams/${home[1]}.png">
 <div class="team-name">${home[0]}</div>
 </div>
-<div class="vs"><span>0</span>VS<span>0</span></div>
+<div class="vs">VS</div>
 <div class="team">
-<img src="https://media.api-sports.io/football/teams/${away[1]}.png"
-onerror="this.src='https://via.placeholder.com/60'">
+<img src="https://media.api-sports.io/football/teams/${away[1]}.png">
 <div class="team-name">${away[0]}</div>
 </div>
 </div>
+<a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
 `;
 
-let tableData = l.teams.map((t,i)=>{
-let played=20;
-let win=10-(i%5);
-let draw=3;
-let lose=played-win-draw;
-let pts=win*3+draw;
-return {name:t[0],id:t[1],played,win,draw,lose,pts};
-});
-
-tableData.sort((a,b)=>b.pts-a.pts);
+highlightList.innerHTML=l.teams.map((t,i)=>`
+<div class="highlight">
+<img src="https://picsum.photos/400/300?random=${i}">
+<div class="play">▶</div>
+<div class="h-title">${t[0]} ไฮไลท์ล่าสุด</div>
+</div>
+`).join("");
 
 tableBox.innerHTML=`
 <div class="table-head">
@@ -157,19 +173,18 @@ tableBox.innerHTML=`
 <div class="stat">ชนะ</div><div class="stat">เสมอ</div>
 <div class="stat">แพ้</div><div class="pts">คะแนน</div>
 </div>
-${tableData.map((t,i)=>`
+${l.teams.map((t,i)=>`
 <div class="row">
 <div class="pos">${i+1}</div>
 <div class="team-row">
-<img src="https://media.api-sports.io/football/teams/${t.id}.png"
-onerror="this.src='https://via.placeholder.com/20'">
-${t.name}
+<img src="https://media.api-sports.io/football/teams/${t[1]}.png">
+${t[0]}
 </div>
-<div class="stat">${t.played}</div>
-<div class="stat">${t.win}</div>
-<div class="stat">${t.draw}</div>
-<div class="stat">${t.lose}</div>
-<div class="pts">${t.pts}</div>
+<div class="stat">20</div>
+<div class="stat">12</div>
+<div class="stat">4</div>
+<div class="stat">4</div>
+<div class="pts">${40-i}</div>
 </div>
 `).join("")}
 `;
