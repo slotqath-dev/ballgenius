@@ -12,7 +12,7 @@
 
 html,body{
 margin:0;
-overflow-x:hidden;
+overflow-x:hidden; /* 🔥 กันเลื่อน */
 background:linear-gradient(180deg,#120000,#000);
 color:#fff;
 }
@@ -27,16 +27,17 @@ header span{color:var(--red);}
 
 .leagues{
 display:flex;
-flex-wrap:wrap;
-gap:10px;
+gap:12px;
 padding:12px;
-justify-content:center;
+overflow-x:auto;
 }
 
 .league{
-width:60px;height:60px;
+width:64px;
+height:64px;
+flex:0 0 auto;
 background:#0f0f0f;
-border-radius:16px;
+border-radius:18px;
 border:2px solid #1f1f1f;
 display:flex;
 align-items:center;
@@ -46,55 +47,69 @@ cursor:pointer;
 .league.active{border-color:var(--red);}
 
 .logo-box{
-width:42px;height:42px;
+width:46px;
+height:46px;
 background:#fff;
-border-radius:12px;
+border-radius:14px;
 display:flex;
 align-items:center;
 justify-content:center;
 }
-.logo-box img{width:26px;height:26px;object-fit:contain;}
+.logo-box img{
+width:30px;
+height:30px;
+object-fit:contain;
+}
 
-.content{padding:14px;padding-bottom:100px;}
+.content{
+padding:14px;
+padding-bottom:120px;
+max-width:100%;
+}
 
 .hot-card{
 background:#120000;
-border-radius:22px;
-padding:14px;
-margin-bottom:18px;
+border-radius:24px;
+padding:16px;
+margin-bottom:22px;
 }
 
 .hot-head{
 display:flex;
 justify-content:space-between;
-font-size:12px;
-margin-bottom:10px;
+align-items:center;
+font-size:13px;
+margin-bottom:14px;
 }
 
 .hot-badge{
 background:var(--red);
-padding:3px 8px;
+padding:4px 10px;
 border-radius:999px;
 font-weight:800;
 }
 
 .match{
 display:grid;
-grid-template-columns:1fr 80px 1fr;
-gap:6px;
+grid-template-columns:1fr 90px 1fr;
 align-items:center;
-margin-bottom:10px;
+gap:8px;
+margin-bottom:14px;
 }
 
 .team{text-align:center;}
 .team img{
-width:50px;height:50px;
+width:55px;
+height:55px;
 background:#fff;
-padding:6px;
-border-radius:14px;
+padding:8px;
+border-radius:16px;
 }
+
 .team-name{
-font-size:11px;
+margin-top:6px;
+font-size:12px;
+font-weight:600;
 white-space:nowrap;
 overflow:hidden;
 text-overflow:ellipsis;
@@ -104,80 +119,84 @@ text-overflow:ellipsis;
 display:flex;
 align-items:center;
 justify-content:center;
-gap:4px;
+gap:6px;
 background:#1a0000;
-border-radius:14px;
-padding:6px;
+border-radius:16px;
+padding:8px;
 font-weight:900;
-font-size:12px;
 }
+
 .vs span{
-width:22px;height:22px;
+width:24px;
+height:24px;
 background:#300;
-border-radius:6px;
+border-radius:8px;
 display:flex;
 align-items:center;
 justify-content:center;
+font-size:12px;
 }
 
 .watch{
 display:block;
 text-align:center;
 background:linear-gradient(90deg,#ff2b2b,#b00000);
-padding:10px;
-border-radius:14px;
+padding:12px;
+border-radius:18px;
 font-weight:900;
 text-decoration:none;
 color:#fff;
-font-size:13px;
+font-size:14px;
 }
 
 .section-head{
-margin:16px 0 8px;
+margin:18px 0 10px;
 font-weight:800;
-font-size:14px;
 }
 .section-head span{color:var(--red);}
 
 .highlight-list{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
+display:flex;
+gap:14px;
+overflow-x:auto;
 }
 
 .highlight{
+min-width:200px;
 background:#0f0f0f;
-border-radius:14px;
+border-radius:18px;
 overflow:hidden;
 position:relative;
 }
 
 .highlight img{
 width:100%;
-height:110px;
+height:130px;
 object-fit:cover;
 }
 
 .play{
 position:absolute;
-top:50%;left:50%;
+top:50%;
+left:50%;
 transform:translate(-50%,-50%);
-width:36px;height:36px;
+width:40px;
+height:40px;
 background:rgba(230,0,0,.9);
 border-radius:50%;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:14px;
 }
 
 .h-title{
-padding:8px;
-font-size:11px;
+padding:10px;
+font-size:12px;
+font-weight:600;
 }
 
 .league-title{
-font-size:14px;
+font-size:16px;
 font-weight:900;
 margin:10px 0;
 color:var(--gold);
@@ -185,52 +204,62 @@ color:var(--gold);
 
 .table-box{
 background:#120000;
-border-radius:18px;
-padding:10px;
-overflow:hidden;
+border-radius:22px;
+padding:12px;
+width:100%;
+overflow:hidden; /* 🔥 ล็อกไม่ให้ล้น */
 }
 
-.table-head,.row{
+.table-head,
+.row{
 display:grid;
-grid-template-columns:24px 1fr 26px 26px 26px 26px 32px;
+grid-template-columns:28px 1fr 32px 32px 32px 32px 40px;
 align-items:center;
+width:100%;
 }
 
 .table-head{
-font-size:10px;
+font-size:11px;
 color:#bbb;
-margin-bottom:6px;
+margin-bottom:8px;
 }
 
 .row{
-padding:6px 0;
+padding:8px 0;
 border-bottom:1px solid #2a0000;
-font-size:11px;
+font-size:12px;
 }
 
 .row:last-child{border-bottom:none;}
 
-.top4{background:rgba(245,197,66,0.08);}
-.relegation{background:rgba(230,0,0,0.12);}
+.top4{background:rgba(245,197,66,0.10);}
+.relegation{background:rgba(230,0,0,0.15);}
 
 .team-row{
 display:flex;
 align-items:center;
-gap:5px;
+gap:6px;
 white-space:nowrap;
 overflow:hidden;
 text-overflow:ellipsis;
 }
 
 .team-row img{
-width:16px;height:16px;
+width:18px;
+height:18px;
 background:#fff;
-border-radius:4px;
+border-radius:5px;
 padding:2px;
 }
 
-.row div:not(.team-row){text-align:center;}
-.pts{text-align:right !important;font-weight:900;}
+.row div:not(.team-row){
+text-align:center;
+}
+
+.pts{
+text-align:right !important;
+font-weight:900;
+}
 </style>
 </head>
 
@@ -294,7 +323,7 @@ const away=l.teams[1];
 hotCard.innerHTML=`
 <div class="hot-head">
 <div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
-<div>21:00</div>
+<div>🕒 21:00</div>
 </div>
 <div class="match">
 <div class="team">
@@ -355,4 +384,3 @@ render(LEAGUES[0]);
 </script>
 
 </body>
-</html>
