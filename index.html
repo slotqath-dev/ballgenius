@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
 <style>
 *{box-sizing:border-box;font-family:sans-serif}
 :root{--red:#e60000;--gold:#f5c542;}
@@ -59,7 +58,6 @@ header span{color:var(--red);}
 
   <div class="section-head">
     <div><span>■</span> ไฮไลท์ยอดนิยม</div>
-    <small>ดูทั้งหมด ></small>
   </div>
   <div class="highlight-list" id="highlightList"></div>
 
@@ -69,117 +67,114 @@ header span{color:var(--red);}
   <div class="table-box" id="tableBox"></div>
 </div>
 
-<div class="bottom">
-  <div class="tab active">ยอดนิยม</div>
-  <div class="tab">สด</div>
-  <div class="tab">โปรแกรม</div>
-  <div class="tab">เพิ่มเติม</div>
-</div>
-
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-const DATA = {
-  39:{
-    name:"พรีเมียร์ลีก",
-    hot:{home:"Liverpool",homeId:40,away:"Man City",awayId:50},
-    table:[
-      {name:"Liverpool",id:40,pts:56},
-      {name:"Arsenal",id:42,pts:54},
-      {name:"Man City",id:50,pts:52},
-      {name:"Tottenham",id:47,pts:48}
-    ]
-  },
-  140:{
-    name:"ลาลีกา",
-    hot:{home:"Real Madrid",homeId:541,away:"Barcelona",awayId:529},
-    table:[
-      {name:"Real Madrid",id:541,pts:60},
-      {name:"Barcelona",id:529,pts:58},
-      {name:"Girona",id:547,pts:55},
-      {name:"Atletico",id:530,pts:50}
-    ]
-  },
-  78:{
-    name:"บุนเดสลีกา",
-    hot:{home:"Bayern",homeId:157,away:"Dortmund",awayId:165},
-    table:[
-      {name:"Bayern",id:157,pts:62},
-      {name:"Leverkusen",id:168,pts:60},
-      {name:"Dortmund",id:165,pts:55},
-      {name:"Leipzig",id:173,pts:50}
-    ]
-  }
-};
+const LEAGUES = [
+{ id:39,name:"พรีเมียร์ลีก",teams:[
+["Liverpool",40],["Arsenal",42],["Man City",50],
+["Tottenham",47],["Chelsea",49],["Man United",33]
+]},
+{ id:140,name:"ลาลีกา",teams:[
+["Real Madrid",541],["Barcelona",529],["Girona",547],
+["Atletico",530],["Betis",543],["Sociedad",548]
+]},
+{ id:78,name:"บุนเดสลีกา",teams:[
+["Bayern",157],["Leverkusen",168],["Dortmund",165],
+["Leipzig",173],["Stuttgart",172],["Frankfurt",169]
+]},
+{ id:135,name:"กัลโช่",teams:[
+["Inter",505],["Juventus",496],["Milan",489],
+["Roma",497],["Napoli",492],["Atalanta",499]
+]},
+{ id:61,name:"ลีกเอิง",teams:[
+["PSG",85],["Marseille",81],["Monaco",91],
+["Lille",79],["Lyon",80],["Nice",84]
+]},
+{ id:94,name:"โปรตุเกส",teams:[
+["Benfica",211],["Porto",212],["Sporting",228],
+["Braga",217],["Boavista",219],["Guimaraes",222]
+]},
+{ id:88,name:"เอเรดิวิซี",teams:[
+["Ajax",194],["PSV",197],["Feyenoord",193],
+["AZ",195],["Twente",198],["Utrecht",201]
+]},
+{ id:203,name:"ซาอุโปรลีก",teams:[
+["Al Hilal",2938],["Al Nassr",2939],["Al Ittihad",2940],
+["Al Ahli",2942],["Al Shabab",2941],["Al Ettifaq",2945]
+]}
+];
 
 const leagueBar=document.getElementById("leagueBar");
 const hotCard=document.getElementById("hotCard");
 const highlightList=document.getElementById("highlightList");
 const tableBox=document.getElementById("tableBox");
 
-Object.keys(DATA).forEach((id,i)=>{
-  const div=document.createElement("div");
-  div.className="league"+(i===0?" active":"");
-  div.innerHTML=`<div class="logo-box">
-    <img src="https://media.api-sports.io/football/leagues/${id}.png">
-  </div>`;
-  div.onclick=()=>{
-    document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
-    div.classList.add("active");
-    render(id);
-  };
-  leagueBar.appendChild(div);
+LEAGUES.forEach((l,i)=>{
+const div=document.createElement("div");
+div.className="league"+(i===0?" active":"");
+div.innerHTML=`<div class="logo-box">
+<img src="https://media.api-sports.io/football/leagues/${l.id}.png">
+</div>`;
+div.onclick=()=>{
+document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
+div.classList.add("active");
+render(l);
+};
+leagueBar.appendChild(div);
 });
 
-function render(id){
-  const league=DATA[id];
+function render(l){
 
-  hotCard.innerHTML=`
-    <div class="hot-head">
-      <div><span class="hot-badge">🔥 HOT</span> ${league.name}</div>
-      <div>🕒 21:00</div>
-    </div>
-    <div class="match">
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/${league.hot.homeId}.png">
-        <div class="team-name">${league.hot.home}</div>
-      </div>
-      <div class="vs"><span>0</span>VS<span>0</span></div>
-      <div class="team">
-        <img src="https://media.api-sports.io/football/teams/${league.hot.awayId}.png">
-        <div class="team-name">${league.hot.away}</div>
-      </div>
-    </div>
-    <a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
-  `;
+const home=l.teams[0];
+const away=l.teams[1];
 
-  highlightList.innerHTML=[1,2,3,4].map(n=>`
-    <div class="highlight">
-      <img src="https://picsum.photos/400/300?random=${id+n}">
-      <div class="play">▶</div>
-      <div class="h-title">ไฮไลท์ ${league.name} ${n}</div>
-    </div>
-  `).join("");
+hotCard.innerHTML=`
+<div class="hot-head">
+<div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
+<div>🕒 21:00</div>
+</div>
+<div class="match">
+<div class="team">
+<img src="https://media.api-sports.io/football/teams/${home[1]}.png">
+<div class="team-name">${home[0]}</div>
+</div>
+<div class="vs"><span>0</span>VS<span>0</span></div>
+<div class="team">
+<img src="https://media.api-sports.io/football/teams/${away[1]}.png">
+<div class="team-name">${away[0]}</div>
+</div>
+</div>
+<a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
+`;
 
-  tableBox.innerHTML=`
-    <div class="table-head">
-      <div>#</div><div>ทีม</div><div>แต้ม</div>
-    </div>
-    ${league.table.map((t,i)=>`
-      <div class="row">
-        <div class="pos">${i+1}</div>
-        <div class="team-row">
-          <img src="https://media.api-sports.io/football/teams/${t.id}.png">
-          ${t.name}
-        </div>
-        <div class="pts">${t.pts}</div>
-      </div>
-    `).join("")}
-  `;
+highlightList.innerHTML=l.teams.slice(0,5).map((t,i)=>`
+<div class="highlight">
+<img src="https://picsum.photos/400/300?random=${l.id+i}">
+<div class="play">▶</div>
+<div class="h-title">${t[0]} ไฮไลท์ล่าสุด</div>
+</div>
+`).join("");
+
+tableBox.innerHTML=`
+<div class="table-head">
+<div>#</div><div>ทีม</div><div>แต้ม</div>
+</div>
+${l.teams.map((t,i)=>`
+<div class="row">
+<div class="pos">${i+1}</div>
+<div class="team-row">
+<img src="https://media.api-sports.io/football/teams/${t[1]}.png">
+${t[0]}
+</div>
+<div class="pts">${65-i*3}</div>
+</div>
+`).join("")}
+`;
 }
 
-render(Object.keys(DATA)[0]);
+render(LEAGUES[0]);
 </script>
 
 </body>
