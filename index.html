@@ -5,96 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
 <style>
 *{box-sizing:border-box;font-family:sans-serif}
 :root{--red:#e60000;--gold:#f5c542;}
 body{margin:0;background:linear-gradient(180deg,#120000,#000);color:#fff;}
 header{padding:14px;font-size:22px;font-weight:900;border-bottom:2px solid var(--red);}
 header span{color:var(--red);}
-
 .leagues{display:flex;gap:12px;padding:12px;overflow-x:auto;}
 .league{width:64px;height:64px;flex:0 0 auto;background:#0f0f0f;border-radius:18px;border:2px solid #1f1f1f;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .league.active{border-color:var(--red);}
 .logo-box{width:46px;height:46px;background:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;}
 .logo-box img{width:30px;height:30px;object-fit:contain;}
-
 .content{padding:14px;padding-bottom:140px;}
-
 .hot-card{background:#120000;border-radius:24px;padding:16px;margin-bottom:22px;}
 .hot-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:14px;}
 .hot-badge{background:var(--red);padding:4px 10px;border-radius:999px;font-weight:800;}
-
 .match{display:grid;grid-template-columns:1fr 110px 1fr;align-items:center;gap:10px;margin-bottom:14px;}
 .team{text-align:center;}
 .team img{width:60px;height:60px;background:#fff;padding:8px;border-radius:16px;}
 .team-name{margin-top:6px;font-size:13px;font-weight:600;}
-
 .vs{display:flex;align-items:center;justify-content:center;gap:8px;background:#1a0000;border-radius:16px;padding:10px;font-weight:900;}
 .vs span{width:28px;height:28px;background:#300;border-radius:8px;display:flex;align-items:center;justify-content:center;}
-
 .watch{display:block;text-align:center;background:linear-gradient(90deg,#ff2b2b,#b00000);padding:14px;border-radius:18px;font-weight:900;text-decoration:none;color:#fff;}
-
 .section-head{display:flex;justify-content:space-between;margin:18px 0 10px;font-weight:800;}
 .section-head span{color:var(--red);}
-
 .highlight-list{display:flex;gap:14px;overflow-x:auto;}
 .highlight{min-width:220px;background:#0f0f0f;border-radius:18px;overflow:hidden;position:relative;}
 .highlight img{width:100%;height:140px;object-fit:cover;}
 .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;background:rgba(230,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;}
 .h-title{padding:10px;font-size:13px;font-weight:600;}
-
-.league-title{
-font-size:18px;
-font-weight:900;
-margin:10px 0;
-color:var(--gold);
-}
-
-.table-box{background:#120000;border-radius:22px;padding:14px;margin-top:10px;}
-
-.table-head,
-.row{
-display:grid;
-grid-template-columns:40px 1.5fr 40px 40px 40px 40px 50px;
-align-items:center;
-}
-
-.table-head{
-font-size:12px;
-color:#bbb;
-margin-bottom:8px;
-}
-
-.row{
-padding:8px 0;
-border-bottom:1px solid #2a0000;
-font-size:13px;
-}
-
+.table-box{background:#120000;border-radius:22px;padding:14px;margin-top:22px;}
+.table-head{display:grid;grid-template-columns:40px 1fr 40px;font-size:12px;color:#bbb;margin-bottom:8px;}
+.row{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;padding:8px 0;border-bottom:1px solid #2a0000;}
 .row:last-child{border-bottom:none;}
-
-.top4{background:rgba(245,197,66,0.08);}
-.relegation{background:rgba(230,0,0,0.12);}
-
-.team-row{
-display:flex;
-align-items:center;
-gap:8px;
-}
-
-.team-row img{
-width:22px;
-height:22px;
-background:#fff;
-border-radius:6px;
-padding:2px;
-}
-
-.pts{
-text-align:right;
-font-weight:900;
-}
+.pos{color:var(--gold);font-weight:900;}
+.team-row{display:flex;align-items:center;gap:8px;font-size:13px;}
+.team-row img{width:22px;height:22px;background:#fff;border-radius:6px;padding:2px;}
+.pts{text-align:right;font-weight:900;}
+.bottom{position:fixed;bottom:0;left:0;right:0;display:flex;background:#000;border-top:2px solid var(--red);}
+.tab{flex:1;text-align:center;padding:10px 0;font-size:12px;opacity:.6;}
+.tab.active{opacity:1;color:var(--red);}
 </style>
 </head>
 
@@ -104,21 +54,17 @@ font-weight:900;
 <div class="leagues" id="leagueBar"></div>
 
 <div class="content">
+  <div class="hot-card" id="hotCard"></div>
 
-<div class="hot-card" id="hotCard"></div>
+  <div class="section-head">
+    <div><span>■</span> ไฮไลท์ยอดนิยม</div>
+  </div>
+  <div class="highlight-list" id="highlightList"></div>
 
-<div class="section-head">
-<div><span>■</span> ไฮไลท์ยอดนิยม</div>
-</div>
-<div class="highlight-list" id="highlightList"></div>
-
-<div class="section-head">
-<div><span>■</span> ตารางคะแนน</div>
-</div>
-
-<div class="league-title" id="leagueTitle"></div>
-<div class="table-box" id="tableBox"></div>
-
+  <div class="section-head">
+    <div><span>■</span> ตารางคะแนน</div>
+  </div>
+  <div class="table-box" id="tableBox"></div>
 </div>
 
 <script>
@@ -164,7 +110,6 @@ const leagueBar=document.getElementById("leagueBar");
 const hotCard=document.getElementById("hotCard");
 const highlightList=document.getElementById("highlightList");
 const tableBox=document.getElementById("tableBox");
-const leagueTitle=document.getElementById("leagueTitle");
 
 LEAGUES.forEach((l,i)=>{
 const div=document.createElement("div");
@@ -181,8 +126,6 @@ leagueBar.appendChild(div);
 });
 
 function render(l){
-
-leagueTitle.innerText = l.name + " ฤดูกาล 2025/26";
 
 const home=l.teams[0];
 const away=l.teams[1];
@@ -216,40 +159,18 @@ highlightList.innerHTML=l.teams.slice(0,5).map((t,i)=>`
 
 tableBox.innerHTML=`
 <div class="table-head">
-<div>#</div>
-<div>ทีม</div>
-<div>แข่ง</div>
-<div>ชนะ</div>
-<div>เสมอ</div>
-<div>แพ้</div>
-<div class="pts">แต้ม</div>
+<div>#</div><div>ทีม</div><div>แต้ม</div>
 </div>
-${l.teams.map((t,i)=>{
-let played=30;
-let win=20-i;
-let draw=5;
-let lose=played-win-draw;
-let pts=win*3+draw;
-
-let extraClass="";
-if(i<4) extraClass="top4";
-if(i>=l.teams.length-2) extraClass="relegation";
-
-return `
-<div class="row ${extraClass}">
-<div>${i+1}</div>
+${l.teams.map((t,i)=>`
+<div class="row">
+<div class="pos">${i+1}</div>
 <div class="team-row">
 <img src="https://media.api-sports.io/football/teams/${t[1]}.png">
 ${t[0]}
 </div>
-<div>${played}</div>
-<div>${win}</div>
-<div>${draw}</div>
-<div>${lose}</div>
-<div class="pts">${pts}</div>
+<div class="pts">${65-i*3}</div>
 </div>
-`;
-}).join("")}
+`).join("")}
 `;
 }
 
@@ -257,4 +178,4 @@ render(LEAGUES[0]);
 </script>
 
 </body>
-</html> 
+</html>
