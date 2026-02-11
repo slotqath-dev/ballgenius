@@ -27,77 +27,71 @@ header span{color:var(--red);}
 .vs{display:flex;align-items:center;justify-content:center;gap:8px;background:#1a0000;border-radius:16px;padding:10px;font-weight:900;}
 .vs span{width:28px;height:28px;background:#300;border-radius:8px;display:flex;align-items:center;justify-content:center;}
 .watch{display:block;text-align:center;background:linear-gradient(90deg,#ff2b2b,#b00000);padding:14px;border-radius:18px;font-weight:900;text-decoration:none;color:#fff;}
-.section-head{display:flex;justify-content:space-between;margin:18px 0 10px;font-weight:800;}
+.section-head{margin:18px 0 10px;font-weight:800;}
 .section-head span{color:var(--red);}
 .highlight-list{display:flex;gap:14px;overflow-x:auto;}
 .highlight{min-width:220px;background:#0f0f0f;border-radius:18px;overflow:hidden;position:relative;}
 .highlight img{width:100%;height:140px;object-fit:cover;}
 .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;background:rgba(230,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;}
 .h-title{padding:10px;font-size:13px;font-weight:600;}
-
 .table-box{background:#120000;border-radius:22px;padding:14px;margin-top:22px;overflow-x:auto;}
-
 .table-head,.row{
 display:grid;
-grid-template-columns:30px 120px 45px 45px 45px 45px 55px;
+grid-template-columns:30px 150px 45px 45px 45px 45px 55px;
 align-items:center;
 font-size:12px;
 }
-
 .table-head{color:#bbb;margin-bottom:8px;font-weight:700;}
-
 .row{padding:8px 0;border-bottom:1px solid #2a0000;}
 .row:last-child{border-bottom:none;}
-
 .pos{color:var(--gold);font-weight:900;}
-.team-row{display:flex;align-items:center;gap:6px;font-size:12px;}
+.team-row{display:flex;align-items:center;gap:6px;}
 .team-row img{width:20px;height:20px;background:#fff;border-radius:6px;padding:2px;}
 .stat{text-align:center;}
 .pts{text-align:center;font-weight:900;}
 </style>
 </head>
-
 <body>
 
 <header><span>QA</span> BallGenius</header>
 <div class="leagues" id="leagueBar"></div>
 
 <div class="content">
-  <div class="hot-card" id="hotCard"></div>
+<div class="hot-card" id="hotCard"></div>
 
-  <div class="section-head">
-    <div><span>■</span> ไฮไลท์ยอดนิยม</div>
-  </div>
-  <div class="highlight-list" id="highlightList"></div>
+<div class="section-head"><span>■</span> ไฮไลท์ยอดนิยม</div>
+<div class="highlight-list" id="highlightList"></div>
 
-  <div class="section-head">
-    <div><span>■</span> ตารางคะแนน</div>
-  </div>
-  <div class="table-box" id="tableBox"></div>
+<div class="section-head"><span>■</span> ตารางคะแนน</div>
+<div class="table-box" id="tableBox"></div>
 </div>
 
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-function generate20Teams(base){
-let arr=[...base];
-while(arr.length<20){
-let n=arr.length+1;
-arr.push([`Team ${n}`,1000+n]);
-}
-return arr;
-}
-
 const LEAGUES = [
-{ id:39,name:"พรีเมียร์ลีก",teams:generate20Teams([["Liverpool",40],["Arsenal",42],["Man City",50],["Tottenham",47],["Chelsea",49],["Man United",33]])},
-{ id:140,name:"ลาลีกา",teams:generate20Teams([["Real Madrid",541],["Barcelona",529],["Girona",547],["Atletico",530],["Betis",543],["Sociedad",548]])},
-{ id:78,name:"บุนเดสลีกา",teams:generate20Teams([["Bayern",157],["Leverkusen",168],["Dortmund",165],["Leipzig",173],["Stuttgart",172],["Frankfurt",169]])},
-{ id:135,name:"กัลโช่",teams:generate20Teams([["Inter",505],["Juventus",496],["Milan",489],["Roma",497],["Napoli",492],["Atalanta",499]])},
-{ id:61,name:"ลีกเอิง",teams:generate20Teams([["PSG",85],["Marseille",81],["Monaco",91],["Lille",79],["Lyon",80],["Nice",84]])},
-{ id:94,name:"โปรตุเกส",teams:generate20Teams([["Benfica",211],["Porto",212],["Sporting",228],["Braga",217],["Boavista",219],["Guimaraes",222]])},
-{ id:88,name:"เอเรดิวิซี",teams:generate20Teams([["Ajax",194],["PSV",197],["Feyenoord",193],["AZ",195],["Twente",198],["Utrecht",201]])},
-{ id:203,name:"ซาอุโปรลีก",teams:generate20Teams([["Al Hilal",2938],["Al Nassr",2939],["Al Ittihad",2940],["Al Ahli",2942],["Al Shabab",2941],["Al Ettifaq",2945]])}
+{
+id:39,name:"พรีเมียร์ลีก",
+teams:[
+["Liverpool",40],["Arsenal",42],["Man City",50],["Tottenham",47],["Chelsea",49],
+["Man United",33],["Newcastle",34],["Brighton",51],["Aston Villa",66],
+["West Ham",48],["Crystal Palace",52],["Wolves",39],["Everton",45],
+["Brentford",55],["Fulham",36],["Bournemouth",35],["Burnley",44],
+["Sheffield Utd",62],["Luton",1359],["Nottingham",65]
+]
+},
+{
+id:140,name:"ลาลีกา",
+teams:[
+["Real Madrid",541],["Barcelona",529],["Atletico",530],["Girona",547],
+["Real Sociedad",548],["Real Betis",543],["Villarreal",533],
+["Valencia",532],["Sevilla",536],["Getafe",546],["Celta Vigo",538],
+["Osasuna",727],["Mallorca",798],["Alaves",542],["Cadiz",724],
+["Granada",715],["Las Palmas",534],["Rayo Vallecano",728],
+["Almeria",723],["Athletic Bilbao",531]
+]
+}
 ];
 
 const leagueBar=document.getElementById("leagueBar");
@@ -151,11 +145,10 @@ highlightList.innerHTML=l.teams.slice(0,5).map((t,i)=>`
 </div>
 `).join("");
 
-// ✅ สร้างข้อมูล + เรียงคะแนนก่อนแสดง
 let tableData = l.teams.map((t,i)=>{
 let played=20;
-let win=14-(i%7);
-let draw=4-(i%3);
+let win=15-(i%6);
+let draw=3-(i%2);
 if(draw<0) draw=0;
 let lose=played-win-draw;
 let pts=win*3+draw;
