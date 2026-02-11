@@ -34,17 +34,26 @@ header span{color:var(--red);}
 .highlight img{width:100%;height:140px;object-fit:cover;}
 .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;background:rgba(230,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;}
 .h-title{padding:10px;font-size:13px;font-weight:600;}
+
 .table-box{background:#120000;border-radius:22px;padding:14px;margin-top:22px;}
-.table-head{display:grid;grid-template-columns:40px 1fr 40px;font-size:12px;color:#bbb;margin-bottom:8px;}
-.row{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;padding:8px 0;border-bottom:1px solid #2a0000;}
+.table-head,.row{
+display:grid;
+grid-template-columns:30px 1.5fr 40px 40px 40px 40px 50px;
+align-items:center;
+}
+.table-head{
+font-size:12px;color:#bbb;margin-bottom:8px;
+}
+.row{
+padding:8px 0;border-bottom:1px solid #2a0000;font-size:13px;
+}
 .row:last-child{border-bottom:none;}
-.pos{color:var(--gold);font-weight:900;}
-.team-row{display:flex;align-items:center;gap:8px;font-size:13px;}
+.top4{background:rgba(245,197,66,0.08);}
+.relegation{background:rgba(230,0,0,0.12);}
+.team-row{display:flex;align-items:center;gap:8px;}
 .team-row img{width:22px;height:22px;background:#fff;border-radius:6px;padding:2px;}
 .pts{text-align:right;font-weight:900;}
-.bottom{position:fixed;bottom:0;left:0;right:0;display:flex;background:#000;border-top:2px solid var(--red);}
-.tab{flex:1;text-align:center;padding:10px 0;font-size:12px;opacity:.6;}
-.tab.active{opacity:1;color:var(--red);}
+.pos{font-weight:900;}
 </style>
 </head>
 
@@ -54,17 +63,17 @@ header span{color:var(--red);}
 <div class="leagues" id="leagueBar"></div>
 
 <div class="content">
-  <div class="hot-card" id="hotCard"></div>
+<div class="hot-card" id="hotCard"></div>
 
-  <div class="section-head">
-    <div><span>■</span> ไฮไลท์ยอดนิยม</div>
-  </div>
-  <div class="highlight-list" id="highlightList"></div>
+<div class="section-head">
+<div><span>■</span> ไฮไลท์ยอดนิยม</div>
+</div>
+<div class="highlight-list" id="highlightList"></div>
 
-  <div class="section-head">
-    <div><span>■</span> ตารางคะแนน</div>
-  </div>
-  <div class="table-box" id="tableBox"></div>
+<div class="section-head">
+<div><span>■</span> ตารางคะแนน</div>
+</div>
+<div class="table-box" id="tableBox"></div>
 </div>
 
 <script>
@@ -72,38 +81,14 @@ Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
 const LEAGUES = [
-{ id:39,name:"พรีเมียร์ลีก",teams:[
-["Liverpool",40],["Arsenal",42],["Man City",50],
-["Tottenham",47],["Chelsea",49],["Man United",33]
-]},
-{ id:140,name:"ลาลีกา",teams:[
-["Real Madrid",541],["Barcelona",529],["Girona",547],
-["Atletico",530],["Betis",543],["Sociedad",548]
-]},
-{ id:78,name:"บุนเดสลีกา",teams:[
-["Bayern",157],["Leverkusen",168],["Dortmund",165],
-["Leipzig",173],["Stuttgart",172],["Frankfurt",169]
-]},
-{ id:135,name:"กัลโช่",teams:[
-["Inter",505],["Juventus",496],["Milan",489],
-["Roma",497],["Napoli",492],["Atalanta",499]
-]},
-{ id:61,name:"ลีกเอิง",teams:[
-["PSG",85],["Marseille",81],["Monaco",91],
-["Lille",79],["Lyon",80],["Nice",84]
-]},
-{ id:94,name:"โปรตุเกส",teams:[
-["Benfica",211],["Porto",212],["Sporting",228],
-["Braga",217],["Boavista",219],["Guimaraes",222]
-]},
-{ id:88,name:"เอเรดิวิซี",teams:[
-["Ajax",194],["PSV",197],["Feyenoord",193],
-["AZ",195],["Twente",198],["Utrecht",201]
-]},
-{ id:203,name:"ซาอุโปรลีก",teams:[
-["Al Hilal",2938],["Al Nassr",2939],["Al Ittihad",2940],
-["Al Ahli",2942],["Al Shabab",2941],["Al Ettifaq",2945]
-]}
+{ id:39,name:"พรีเมียร์ลีก"},
+{ id:140,name:"ลาลีกา"},
+{ id:78,name:"บุนเดสลีกา"},
+{ id:135,name:"กัลโช่"},
+{ id:61,name:"ลีกเอิง"},
+{ id:94,name:"โปรตุเกส"},
+{ id:88,name:"เอเรดิวิซี"},
+{ id:203,name:"ซาอุโปรลีก"}
 ];
 
 const leagueBar=document.getElementById("leagueBar");
@@ -127,9 +112,6 @@ leagueBar.appendChild(div);
 
 function render(l){
 
-const home=l.teams[0];
-const away=l.teams[1];
-
 hotCard.innerHTML=`
 <div class="hot-head">
 <div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
@@ -137,40 +119,65 @@ hotCard.innerHTML=`
 </div>
 <div class="match">
 <div class="team">
-<img src="https://media.api-sports.io/football/teams/${home[1]}.png">
-<div class="team-name">${home[0]}</div>
+<img src="https://media.api-sports.io/football/teams/40.png">
+<div class="team-name">Home</div>
 </div>
 <div class="vs"><span>0</span>VS<span>0</span></div>
 <div class="team">
-<img src="https://media.api-sports.io/football/teams/${away[1]}.png">
-<div class="team-name">${away[0]}</div>
+<img src="https://media.api-sports.io/football/teams/42.png">
+<div class="team-name">Away</div>
 </div>
 </div>
 <a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
 `;
 
-highlightList.innerHTML=l.teams.slice(0,5).map((t,i)=>`
+highlightList.innerHTML=`
 <div class="highlight">
-<img src="https://picsum.photos/400/300?random=${l.id+i}">
+<img src="https://picsum.photos/400/300?random=${l.id}">
 <div class="play">▶</div>
-<div class="h-title">${t[0]} ไฮไลท์ล่าสุด</div>
+<div class="h-title">ไฮไลท์ล่าสุด</div>
 </div>
-`).join("");
+`;
+
+let rows="";
+for(let i=1;i<=20;i++){
+let played=38;
+let win=Math.floor(Math.random()*25);
+let draw=Math.floor(Math.random()*10);
+let lose=played-win-draw;
+let pts=win*3+draw;
+
+let extra="";
+if(i<=4) extra="top4";
+if(i>=18) extra="relegation";
+
+rows+=`
+<div class="row ${extra}">
+<div class="pos">${i}</div>
+<div class="team-row">
+<img src="https://media.api-sports.io/football/teams/${40+i}.png">
+Team ${i}
+</div>
+<div>${played}</div>
+<div>${win}</div>
+<div>${draw}</div>
+<div>${lose}</div>
+<div class="pts">${pts}</div>
+</div>
+`;
+}
 
 tableBox.innerHTML=`
 <div class="table-head">
-<div>#</div><div>ทีม</div><div>แต้ม</div>
+<div>#</div>
+<div>ทีม</div>
+<div>แข่ง</div>
+<div>ชนะ</div>
+<div>เสมอ</div>
+<div>แพ้</div>
+<div class="pts">แต้ม</div>
 </div>
-${l.teams.map((t,i)=>`
-<div class="row">
-<div class="pos">${i+1}</div>
-<div class="team-row">
-<img src="https://media.api-sports.io/football/teams/${t[1]}.png">
-${t[0]}
-</div>
-<div class="pts">${65-i*3}</div>
-</div>
-`).join("")}
+${rows}
 `;
 }
 
