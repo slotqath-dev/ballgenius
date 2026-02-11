@@ -3,265 +3,222 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QA BallGenius</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<title>League ตารางคะแนน</title>
 
 <style>
-*{box-sizing:border-box;font-family:sans-serif}
-:root{
-  --red:#e60000;
-  --gold:#f5c542;
-  --purple:#14001f;
-}
 body{
   margin:0;
-  background:linear-gradient(180deg,#1a0026,#000);
+  font-family:Arial, sans-serif;
+  background:#1b0f2e;
   color:#fff;
 }
 
-/* HEADER */
 header{
-  padding:14px;
-  font-size:22px;
-  font-weight:900;
-  border-bottom:2px solid var(--red);
+  padding:15px;
+  font-size:20px;
+  font-weight:bold;
+  text-align:center;
+  background:#2a1450;
 }
-header span{color:var(--red)}
 
-/* LEAGUE BAR */
-.leagues{
+.tabs{
   display:flex;
-  gap:12px;
-  padding:12px;
   overflow-x:auto;
+  background:#23113f;
+  padding:10px 5px;
 }
-.league{
-  width:90px;
-  flex:0 0 auto;
-  background:#1a0026;
-  border-radius:16px;
-  border:2px solid #2b0040;
+
+.tab{
   display:flex;
-  flex-direction:column;
   align-items:center;
-  justify-content:center;
-  padding:6px;
+  gap:6px;
+  padding:6px 12px;
+  margin-right:8px;
+  background:#3a1c6a;
+  border-radius:20px;
   cursor:pointer;
-  font-size:11px;
+  font-size:13px;
+  white-space:nowrap;
+}
+
+.tab.active{
+  background:#7a3cff;
+}
+
+.tab img{
+  width:18px;
+  height:18px;
+}
+
+.container{
+  padding:10px;
+}
+
+button.toggle{
+  background:#7a3cff;
+  border:none;
+  padding:8px 15px;
+  border-radius:6px;
+  color:#fff;
+  cursor:pointer;
+  margin-bottom:10px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+
+th, td{
+  padding:6px;
   text-align:center;
 }
-.league.active{border-color:var(--red)}
-.league img{
-  width:32px;height:32px;
-  margin-bottom:4px;
+
+th{
+  background:#2d1760;
 }
 
-/* CONTENT */
-.content{padding:14px;padding-bottom:120px}
-
-/* TABLE */
-.table-box{
-  background:#1a0026;
-  border-radius:20px;
-  padding:14px;
-}
-.table-head,.row{
-  display:grid;
-  grid-template-columns:30px 1fr 40px 40px 40px 40px 50px;
-  align-items:center;
-  font-size:12px;
-}
-.table-head{
-  color:#aaa;
-  margin-bottom:6px;
-}
-.row{
-  padding:6px 0;
-  border-bottom:1px solid #2b0040;
-}
-.row:last-child{border:none}
-.pos{font-weight:900}
-.team-row{
+td.team{
+  text-align:left;
   display:flex;
   align-items:center;
   gap:6px;
 }
-.team-row img{
-  width:20px;height:20px;
-}
-.top4{background:#2a0040}
-.relegation{background:#3a0000}
 
+td.team img{
+  width:18px;
+  height:18px;
+}
+
+tr:nth-child(even){
+  background:#24124a;
+}
+
+.top4{
+  background:#4b2a91 !important;
+}
+
+.relegation{
+  background:#5c0f2f !important;
+}
+
+.hidden{
+  display:none;
+}
 </style>
 </head>
 
 <body>
 
-<header><span>QA</span> BallGenius</header>
-<div class="leagues" id="leagueBar"></div>
+<header>📊 ตารางคะแนนลีก</header>
 
-<div class="content">
-  <div class="table-box" id="tableBox"></div>
+<div class="tabs" id="leagueTabs"></div>
+
+<div class="container">
+  <button class="toggle" onclick="toggleTable()">🔽 ย่อ / ขยาย ตาราง</button>
+
+  <div id="tableWrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>ทีม</th>
+          <th>แข่ง</th>
+          <th>ชนะ</th>
+          <th>เสมอ</th>
+          <th>แพ้</th>
+          <th>คะแนน</th>
+        </tr>
+      </thead>
+      <tbody id="leagueTable"></tbody>
+    </table>
+  </div>
 </div>
 
 <script>
-Telegram.WebApp.ready();
-Telegram.WebApp.expand();
-
-/* ===== 8 ลีก ===== */
-
-const LEAGUES=[
-{
-id:39,name:"พรีเมียร์ลีก",
-teams:[
-["Arsenal",42],["Aston Villa",66],["Bournemouth",35],["Brentford",55],
-["Brighton",51],["Burnley",44],["Chelsea",49],["Crystal Palace",52],
-["Everton",45],["Fulham",36],["Liverpool",40],["Luton",1359],
-["Man City",50],["Man United",33],["Newcastle",34],["Nottingham",65],
-["Sheffield Utd",62],["Tottenham",47],["West Ham",48],["Wolves",39]
-]
-},
-{
-id:140,name:"ลาลีกา",
-teams:[
-["Real Madrid",541],["Barcelona",529],["Girona",547],["Atletico",530],
-["Betis",543],["Sociedad",548],["Valencia",532],["Sevilla",536],
-["Villarreal",533],["Osasuna",727],["Celta Vigo",538],["Granada",715],
-["Getafe",546],["Mallorca",798],["Cadiz",724],["Alaves",542],
-["Las Palmas",728],["Rayo Vallecano",728],["Athletic",531],["Almeria",723]
-]
-},
-{
-id:78,name:"บุนเดสลีกา",
-teams:[
-["Bayern",157],["Dortmund",165],["Leverkusen",168],["Leipzig",173],
-["Stuttgart",172],["Frankfurt",169],["Freiburg",160],["Hoffenheim",167],
-["Union Berlin",182],["Mainz",164],["Koln",192],["Bochum",176],
-["Augsburg",170],["Werder",134],["Heidenheim",825],["Wolfsburg",161],
-["Monchengladbach",163],["Darmstadt",824],["Hertha",162],["Schalke",174]
-]
-},
-{
-id:135,name:"กัลโช่",
-teams:[
-["Inter",505],["Juventus",496],["Milan",489],["Roma",497],
-["Napoli",492],["Atalanta",499],["Lazio",487],["Fiorentina",502],
-["Bologna",500],["Torino",503],["Udinese",494],["Sassuolo",488],
-["Empoli",511],["Monza",1579],["Genoa",495],["Cagliari",490],
-["Salernitana",514],["Verona",504],["Lecce",867],["Spezia",515]
-]
-},
-{
-id:61,name:"ลีกเอิง",
-teams:[
-["PSG",85],["Marseille",81],["Monaco",91],["Lille",79],
-["Lyon",80],["Nice",84],["Lens",116],["Rennes",94],
-["Nantes",83],["Strasbourg",95],["Reims",93],["Brest",106],
-["Montpellier",82],["Toulouse",96],["Metz",112],["Clermont",99],
-["Lorient",97],["Auxerre",104],["Angers",77],["Le Havre",111]
-]
-},
-{
-id:94,name:"โปรตุเกส",
-teams:[
-["Benfica",211],["Porto",212],["Sporting",228],["Braga",217],
-["Boavista",219],["Guimaraes",222],["Estoril",223],["Famalicao",224],
-["Arouca",225],["Vizela",226],["Casa Pia",227],["Gil Vicente",218],
-["Chaves",213],["Portimonense",221],["Rio Ave",220],["Farense",231],
-["Moreirense",230],["Nacional",229],["Maritimo",214],["Pacos",215]
-]
-},
-{
-id:88,name:"เอเรดิวิซี",
-teams:[
-["Ajax",194],["PSV",197],["Feyenoord",193],["AZ",195],
-["Twente",198],["Utrecht",201],["Heerenveen",199],["Sparta",200],
-["Vitesse",202],["NEC",204],["Groningen",196],["Almere",205],
-["Heracles",206],["Go Ahead",207],["Fortuna",208],["Volendam",209],
-["RKC",210],["Zwolle",211],["Cambuur",212],["Emmen",213]
-]
-},
-{
-id:203,name:"ซาอุโปรลีก",
-teams:[
-["Al Hilal",2938],["Al Nassr",2939],["Al Ittihad",2940],["Al Ahli",2942],
-["Al Shabab",2941],["Al Ettifaq",2945],["Al Taawoun",2946],["Al Fateh",2947],
-["Al Raed",2948],["Al Wehda",2949],["Abha",2950],["Al Khaleej",2951],
-["Damac",2952],["Al Hazm",2953],["Al Riyadh",2954],["Al Tai",2955],
-["Al Okhdood",2956],["Al Batin",2957],["Al Fayha",2958],["Al Qadsiah",2959]
-]
-}
-];
-
-/* ===== RENDER ===== */
-
-const leagueBar=document.getElementById("leagueBar");
-const tableBox=document.getElementById("tableBox");
-
-LEAGUES.forEach((l,i)=>{
-const div=document.createElement("div");
-div.className="league"+(i===0?" active":"");
-div.innerHTML=`
-<img src="https://media.api-sports.io/football/leagues/${l.id}.png">
-${l.name}
-`;
-div.onclick=()=>{
-document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
-div.classList.add("active");
-render(l);
+const leagues = {
+  "Premier League":{
+    logo:"https://media.api-sports.io/football/leagues/39.png",
+    teams:[33,34,35,36,40,42,44,45,47,48,49,50,51,52,55,57,60,61,62,63]
+  },
+  "La Liga":{
+    logo:"https://media.api-sports.io/football/leagues/140.png",
+    teams:[529,530,531,532,533,534,536,538,541,542,543,546,547,548,720,721,723,724,725,727]
+  },
+  "Serie A":{
+    logo:"https://media.api-sports.io/football/leagues/135.png",
+    teams:[487,489,490,492,494,496,497,499,500,502,503,504,505,511,514,515,517,518,519,520]
+  },
+  "Bundesliga":{
+    logo:"https://media.api-sports.io/football/leagues/78.png",
+    teams:[157,160,162,163,164,165,168,169,170,173,174,176,178,179,180,181,182,183,184,185]
+  }
 };
-leagueBar.appendChild(div);
-});
 
-function render(l){
+let currentLeague = "Premier League";
 
-tableBox.innerHTML=`
-<div class="table-head">
-<div>#</div>
-<div>ทีม</div>
-<div>แข่ง</div>
-<div>ชนะ</div>
-<div>เสมอ</div>
-<div>แพ้</div>
-<div>แต้ม</div>
-</div>
-`;
-
-l.teams.forEach((t,i)=>{
-
-let played=30;
-let win=20-i%5;
-let draw=5;
-let lose=played-win-draw;
-let pts=win*3+draw;
-
-let row=document.createElement("div");
-row.className="row";
-
-if(i<4) row.classList.add("top4");
-if(i>=17) row.classList.add("relegation");
-
-row.innerHTML=`
-<div class="pos">${i+1}</div>
-<div class="team-row">
-<img src="https://media.api-sports.io/football/teams/${t[1]}.png">
-${t[0]}
-</div>
-<div>${played}</div>
-<div>${win}</div>
-<div>${draw}</div>
-<div>${lose}</div>
-<div><b>${pts}</b></div>
-`;
-
-tableBox.appendChild(row);
-
-});
-
+function renderTabs(){
+  const tabContainer = document.getElementById("leagueTabs");
+  tabContainer.innerHTML="";
+  Object.keys(leagues).forEach(name=>{
+    const tab=document.createElement("div");
+    tab.className="tab";
+    if(name===currentLeague) tab.classList.add("active");
+    tab.innerHTML=`<img src="${leagues[name].logo}"> ${name}`;
+    tab.onclick=()=>{
+      currentLeague=name;
+      renderTabs();
+      renderTable();
+    }
+    tabContainer.appendChild(tab);
+  });
 }
 
-render(LEAGUES[0]);
+function randomStat(){
+  const played=38;
+  const win=Math.floor(Math.random()*25);
+  const draw=Math.floor(Math.random()*10);
+  const lose=played-win-draw;
+  const pts=win*3+draw;
+  return {played,win,draw,lose,pts};
+}
 
+function renderTable(){
+  const tbody=document.getElementById("leagueTable");
+  tbody.innerHTML="";
+  const teams=leagues[currentLeague].teams;
+
+  teams.forEach((id,index)=>{
+    const stat=randomStat();
+    const tr=document.createElement("tr");
+
+    if(index<4) tr.classList.add("top4");
+    if(index>=17) tr.classList.add("relegation");
+
+    tr.innerHTML=`
+      <td>${index+1}</td>
+      <td class="team">
+        <img src="https://media.api-sports.io/football/teams/${id}.png">
+        Team ${id}
+      </td>
+      <td>${stat.played}</td>
+      <td>${stat.win}</td>
+      <td>${stat.draw}</td>
+      <td>${stat.lose}</td>
+      <td>${stat.pts}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function toggleTable(){
+  document.getElementById("tableWrapper").classList.toggle("hidden");
+}
+
+renderTabs();
+renderTable();
 </script>
+
 </body>
 </html>
