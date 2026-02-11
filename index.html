@@ -19,22 +19,23 @@ color:#fff;
 
 header{
 padding:14px;
-font-size:22px;
+font-size:20px;
 font-weight:900;
 border-bottom:2px solid var(--red);
 }
 header span{color:var(--red);}
 
+/* ลีก */
 .leagues{
 display:flex;
 flex-wrap:wrap;
+justify-content:center;
 gap:10px;
 padding:12px;
-justify-content:center;
 }
 
 .league{
-width:60px;height:60px;
+width:58px;height:58px;
 background:#0f0f0f;
 border-radius:16px;
 border:2px solid #1f1f1f;
@@ -46,20 +47,23 @@ cursor:pointer;
 .league.active{border-color:var(--red);}
 
 .logo-box{
-width:42px;height:42px;
+width:40px;height:40px;
 background:#fff;
 border-radius:12px;
 display:flex;
 align-items:center;
 justify-content:center;
 }
-.logo-box img{width:26px;height:26px;object-fit:contain;}
+.logo-box img{
+width:26px;height:26px;object-fit:contain;
+}
 
 .content{padding:14px;padding-bottom:100px;}
 
+/* HOT MATCH */
 .hot-card{
 background:#120000;
-border-radius:22px;
+border-radius:20px;
 padding:14px;
 margin-bottom:18px;
 }
@@ -81,8 +85,8 @@ font-weight:800;
 .match{
 display:grid;
 grid-template-columns:1fr 80px 1fr;
-gap:6px;
 align-items:center;
+gap:6px;
 margin-bottom:10px;
 }
 
@@ -93,6 +97,7 @@ background:#fff;
 padding:6px;
 border-radius:14px;
 }
+
 .team-name{
 font-size:11px;
 white-space:nowrap;
@@ -106,7 +111,7 @@ align-items:center;
 justify-content:center;
 gap:4px;
 background:#1a0000;
-border-radius:14px;
+border-radius:12px;
 padding:6px;
 font-weight:900;
 font-size:12px;
@@ -132,6 +137,7 @@ color:#fff;
 font-size:13px;
 }
 
+/* Section */
 .section-head{
 margin:16px 0 8px;
 font-weight:800;
@@ -139,6 +145,7 @@ font-size:14px;
 }
 .section-head span{color:var(--red);}
 
+/* ไฮไลท์ (ไม่เลื่อน) */
 .highlight-list{
 display:grid;
 grid-template-columns:1fr 1fr;
@@ -162,7 +169,7 @@ object-fit:cover;
 position:absolute;
 top:50%;left:50%;
 transform:translate(-50%,-50%);
-width:36px;height:36px;
+width:34px;height:34px;
 background:rgba(230,0,0,.9);
 border-radius:50%;
 display:flex;
@@ -176,6 +183,7 @@ padding:8px;
 font-size:11px;
 }
 
+/* ตารางคะแนน */
 .league-title{
 font-size:14px;
 font-weight:900;
@@ -192,7 +200,7 @@ overflow:hidden;
 
 .table-head,.row{
 display:grid;
-grid-template-columns:24px 1fr 26px 26px 26px 26px 32px;
+grid-template-columns:26px 1fr 28px 28px 28px 28px 34px;
 align-items:center;
 }
 
@@ -230,7 +238,7 @@ padding:2px;
 }
 
 .row div:not(.team-row){text-align:center;}
-.pts{text-align:right !important;font-weight:900;}
+.pts{text-align:right;font-weight:900;}
 </style>
 </head>
 
@@ -254,7 +262,7 @@ padding:2px;
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-const LEAGUES=[
+const LEAGUES = [
 { id:39,name:"พรีเมียร์ลีก",teams:[
 ["Liverpool",40],["Arsenal",42],["Man City",50],
 ["Tottenham",47],["Chelsea",49],["Man United",33]
@@ -262,6 +270,30 @@ const LEAGUES=[
 { id:140,name:"ลาลีกา",teams:[
 ["Real Madrid",541],["Barcelona",529],["Girona",547],
 ["Atletico",530],["Betis",543],["Sociedad",548]
+]},
+{ id:78,name:"บุนเดสลีกา",teams:[
+["Bayern",157],["Leverkusen",168],["Dortmund",165],
+["Leipzig",173],["Stuttgart",172],["Frankfurt",169]
+]},
+{ id:135,name:"กัลโช่",teams:[
+["Inter",505],["Juventus",496],["Milan",489],
+["Roma",497],["Napoli",492],["Atalanta",499]
+]},
+{ id:61,name:"ลีกเอิง",teams:[
+["PSG",85],["Marseille",81],["Monaco",91],
+["Lille",79],["Lyon",80],["Nice",84]
+]},
+{ id:94,name:"โปรตุเกส",teams:[
+["Benfica",211],["Porto",212],["Sporting",228],
+["Braga",217],["Boavista",219],["Guimaraes",222]
+]},
+{ id:88,name:"เอเรดิวิซี",teams:[
+["Ajax",194],["PSV",197],["Feyenoord",193],
+["AZ",195],["Twente",198],["Utrecht",201]
+]},
+{ id:203,name:"ซาอุโปรลีก",teams:[
+["Al Hilal",2938],["Al Nassr",2939],["Al Ittihad",2940],
+["Al Ahli",2942],["Al Shabab",2941],["Al Ettifaq",2945]
 ]}
 ];
 
@@ -286,6 +318,7 @@ leagueBar.appendChild(div);
 });
 
 function render(l){
+
 leagueTitle.innerText=l.name+" ฤดูกาล 2025/26";
 
 const home=l.teams[0];
@@ -310,9 +343,9 @@ hotCard.innerHTML=`
 <a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
 `;
 
-highlightList.innerHTML=l.teams.map((t,i)=>`
+highlightList.innerHTML=l.teams.slice(0,4).map((t,i)=>`
 <div class="highlight">
-<img src="https://picsum.photos/400/300?random=${i}">
+<img src="https://picsum.photos/400/300?random=${l.id+i}">
 <div class="play">▶</div>
 <div class="h-title">${t[0]} ไฮไลท์ล่าสุด</div>
 </div>
@@ -325,7 +358,7 @@ tableBox.innerHTML=`
 </div>
 ${l.teams.map((t,i)=>{
 let played=30;
-let win=18-i;
+let win=20-i;
 let draw=5;
 let lose=played-win-draw;
 let pts=win*3+draw;
