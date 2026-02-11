@@ -54,7 +54,7 @@ header span{color:var(--red)}
   align-items:center;
   justify-content:center;
 }
-.logo-box img{width:32px;height:32px}
+.logo-box img{width:30px;height:30px;object-fit:contain}
 
 /* CONTENT */
 .content{padding:14px;padding-bottom:140px}
@@ -156,7 +156,7 @@ header span{color:var(--red)}
   position:absolute;
   top:50%;left:50%;
   transform:translate(-50%,-50%);
-  width:50px;height:50px;
+  width:46px;height:46px;
   background:rgba(230,0,0,.9);
   border-radius:50%;
   display:flex;
@@ -234,19 +234,7 @@ header span{color:var(--red)}
     <div><span>■</span> ไฮไลท์ยอดนิยม</div>
     <small>ดูทั้งหมด ></small>
   </div>
-
-  <div class="highlight-list">
-    <div class="highlight">
-      <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800">
-      <div class="play">▶</div>
-      <div class="h-title">Liverpool vs Man City</div>
-    </div>
-    <div class="highlight">
-      <img src="https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?q=80&w=800">
-      <div class="play">▶</div>
-      <div class="h-title">El Clasico Highlights</div>
-    </div>
-  </div>
+  <div class="highlight-list" id="highlightList"></div>
 
   <div class="section-head">
     <div><span>■</span> ตารางคะแนน</div>
@@ -265,29 +253,31 @@ header span{color:var(--red)}
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
+/* ===== LEAGUES ครบ 8 พร้อมโลโก้จริง ===== */
 const LEAGUES=[
-{id:39,name:"พรีเมียร์ลีก"},
-{id:140,name:"ลาลีกา"},
-{id:78,name:"บุนเดสลีกา"},
-{id:135,name:"กัลโช่"},
-{id:61,name:"ลีกเอิง"},
-{id:94,name:"โปรตุเกส"},
-{id:88,name:"เอเรดิวิซี"},
-{id:203,name:"ซาอุลีก"}
+ {id:39,name:"อังกฤษ | พรีเมียร์ลีก"},
+ {id:140,name:"สเปน | ลาลีกา"},
+ {id:78,name:"เยอรมัน | บุนเดสลีกา"},
+ {id:135,name:"อิตาลี | กัลโช่"},
+ {id:61,name:"ฝรั่งเศส | ลีกเอิง"},
+ {id:94,name:"โปรตุเกส | พรีเมียร์",},
+ {id:88,name:"เนเธอร์แลนด์ | เอเรดิวิซี"},
+ {id:203,name:"ซาอุดิอาระเบีย | โปรลีก"}
 ];
-
-const TEAM_LOGO=name=>`https://logo.clearbit.com/${name}.com`;
 
 const bar=document.getElementById("leagueBar");
 const hotCard=document.getElementById("hotCard");
+const highlightList=document.getElementById("highlightList");
 const tableBox=document.getElementById("tableBox");
 
+/* สร้างปุ่มลีก */
 LEAGUES.forEach((l,i)=>{
   const d=document.createElement("div");
   d.className="league"+(i===0?" active":"");
-  d.innerHTML=`<div class="logo-box">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Football_League_Logo.png">
-  </div>`;
+  d.innerHTML=`
+    <div class="logo-box">
+      <img src="https://media.api-sports.io/football/leagues/${l.id}.png">
+    </div>`;
   d.onclick=()=>{
     document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
     d.classList.add("active");
@@ -296,40 +286,55 @@ LEAGUES.forEach((l,i)=>{
   bar.appendChild(d);
 });
 
+/* แสดงข้อมูลเริ่มแรก */
 function render(l){
   hotCard.innerHTML=`
-  <div class="hot-head">
-    <div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
-    <div>🕒 21:00</div>
-  </div>
-  <div class="match">
-    <div class="team">
-      <img src="https://logo.clearbit.com/liverpoolfc.com">
-      <div class="team-name">Liverpool</div>
+    <div class="hot-head">
+      <div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
+      <div>🕒 21:00</div>
     </div>
-    <div class="vs"><span>0</span>VS<span>0</span></div>
-    <div class="team">
-      <img src="https://logo.clearbit.com/mancity.com">
-      <div class="team-name">Man City</div>
+    <div class="match">
+      <div class="team">
+        <img src="https://media.api-sports.io/football/teams/40.png">
+        <div class="team-name">Liverpool</div>
+      </div>
+      <div class="vs"><span>0</span>VS<span>0</span></div>
+      <div class="team">
+        <img src="https://media.api-sports.io/football/teams/50.png">
+        <div class="team-name">Man City</div>
+      </div>
     </div>
-  </div>
-  <a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
+    <a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
   `;
 
-  tableBox.innerHTML=`
-  <div class="table-head">
-    <div>#</div><div>ทีม</div><div>แต้ม</div>
-  </div>
-  ${["arsenal.com","mancity.com","chelseafc.com","liverpoolfc.com","manutd.com"]
-  .map((t,i)=>`
-  <div class="row">
-    <div class="pos">${i+1}</div>
-    <div class="team-row">
-      <img src="https://logo.clearbit.com/${t}">
-      ${t.split(".")[0]}
+  /* ไฮไลท์ตัวอย่าง */
+  highlightList.innerHTML=`
+    <div class="highlight">
+      <img src="https://images.unsplash.com/photo-1542736667-069246bdbc33?q=80&w=800">
+      <div class="play">▶</div>
+      <div class="h-title">ไฮไลท์ ${l.name}</div>
     </div>
-    <div class="pts">${60-i}</div>
-  </div>`).join("")}
+  `;
+
+  /* ตารางคะแนนตัวอย่าง */
+  tableBox.innerHTML=`
+    <div class="table-head">
+      <div>#</div><div>ทีม</div><div>แต้ม</div>
+    </div>
+    <div class="row">
+      <div class="pos">1</div>
+      <div class="team-row">
+        <img src="https://media.api-sports.io/football/teams/40.png">Liverpool
+      </div>
+      <div class="pts">56</div>
+    </div>
+    <div class="row">
+      <div class="pos">2</div>
+      <div class="team-row">
+        <img src="https://media.api-sports.io/football/teams/50.png">Man City
+      </div>
+      <div class="pts">52</div>
+    </div>
   `;
 }
 
