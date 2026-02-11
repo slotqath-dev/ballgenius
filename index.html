@@ -9,10 +9,6 @@
 <style>
 *{box-sizing:border-box;font-family:sans-serif}
 :root{
-  --bg:#000;
-  --card:#0f0f0f;
-  --text:#fff;
-  --muted:#888;
   --red:#e60000;
   --gold:#f5c542;
 }
@@ -20,7 +16,6 @@ body{
   margin:0;
   background:linear-gradient(180deg,#120000,#000);
   color:#fff;
-  min-height:100vh;
 }
 
 /* HEADER */
@@ -59,7 +54,7 @@ header span{color:var(--red)}
   align-items:center;
   justify-content:center;
 }
-.logo-box img{width:30px;height:30px}
+.logo-box img{width:32px;height:32px}
 
 /* CONTENT */
 .content{padding:14px;padding-bottom:140px}
@@ -132,18 +127,14 @@ header span{color:var(--red)}
   color:#fff;
 }
 
-/* SECTION HEAD */
+/* HIGHLIGHTS */
 .section-head{
   display:flex;
   justify-content:space-between;
-  align-items:center;
   margin:18px 0 10px;
   font-weight:800;
 }
 .section-head span{color:var(--red)}
-.section-head small{color:#aaa}
-
-/* HIGHLIGHTS */
 .highlight-list{
   display:flex;
   gap:14px;
@@ -158,25 +149,22 @@ header span{color:var(--red)}
 }
 .highlight img{
   width:100%;
-  height:130px;
+  height:140px;
   object-fit:cover;
 }
 .play{
   position:absolute;
   top:50%;left:50%;
   transform:translate(-50%,-50%);
-  width:46px;height:46px;
+  width:50px;height:50px;
   background:rgba(230,0,0,.9);
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
+  font-size:20px;
 }
-.h-title{
-  padding:10px;
-  font-size:13px;
-  font-weight:600;
-}
+.h-title{padding:10px;font-size:13px;font-weight:600}
 
 /* TABLE */
 .table-box{
@@ -200,10 +188,7 @@ header span{color:var(--red)}
   border-bottom:1px solid #2a0000;
 }
 .row:last-child{border-bottom:none}
-.pos{
-  color:var(--gold);
-  font-weight:900;
-}
+.pos{color:var(--gold);font-weight:900}
 .team-row{
   display:flex;
   align-items:center;
@@ -216,10 +201,7 @@ header span{color:var(--red)}
   border-radius:6px;
   padding:2px;
 }
-.pts{
-  text-align:right;
-  font-weight:900;
-}
+.pts{text-align:right;font-weight:900}
 
 /* BOTTOM */
 .bottom{
@@ -255,14 +237,14 @@ header span{color:var(--red)}
 
   <div class="highlight-list">
     <div class="highlight">
-      <img src="https://picsum.photos/400/300?1">
+      <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800">
       <div class="play">▶</div>
-      <div class="h-title">Match Highlights</div>
+      <div class="h-title">Liverpool vs Man City</div>
     </div>
     <div class="highlight">
-      <img src="https://picsum.photos/400/300?2">
+      <img src="https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?q=80&w=800">
       <div class="play">▶</div>
-      <div class="h-title">เกมเดือด</div>
+      <div class="h-title">El Clasico Highlights</div>
     </div>
   </div>
 
@@ -284,15 +266,17 @@ Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
 const LEAGUES=[
- {id:39,name:"พรีเมียร์ลีก"},
- {id:140,name:"ลาลีกา"},
- {id:78,name:"บุนเดสลีกา"},
- {id:135,name:"กัลโช่"},
- {id:61,name:"ลีกเอิง"},
- {id:94,name:"โปรตุเกส"},
- {id:88,name:"เอเรดิวิซี"},
- {id:203,name:"ซาอุลีก"}
+{id:39,name:"พรีเมียร์ลีก"},
+{id:140,name:"ลาลีกา"},
+{id:78,name:"บุนเดสลีกา"},
+{id:135,name:"กัลโช่"},
+{id:61,name:"ลีกเอิง"},
+{id:94,name:"โปรตุเกส"},
+{id:88,name:"เอเรดิวิซี"},
+{id:203,name:"ซาอุลีก"}
 ];
+
+const TEAM_LOGO=name=>`https://logo.clearbit.com/${name}.com`;
 
 const bar=document.getElementById("leagueBar");
 const hotCard=document.getElementById("hotCard");
@@ -302,7 +286,7 @@ LEAGUES.forEach((l,i)=>{
   const d=document.createElement("div");
   d.className="league"+(i===0?" active":"");
   d.innerHTML=`<div class="logo-box">
-    <img src="https://media.api-sports.io/football/leagues/${l.id}.png">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Football_League_Logo.png">
   </div>`;
   d.onclick=()=>{
     document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
@@ -314,38 +298,38 @@ LEAGUES.forEach((l,i)=>{
 
 function render(l){
   hotCard.innerHTML=`
-    <div class="hot-head">
-      <div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
-      <div>🕒 21:00</div>
+  <div class="hot-head">
+    <div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
+    <div>🕒 21:00</div>
+  </div>
+  <div class="match">
+    <div class="team">
+      <img src="https://logo.clearbit.com/liverpoolfc.com">
+      <div class="team-name">Liverpool</div>
     </div>
-    <div class="match">
-      <div class="team">
-        <img src="https://picsum.photos/100?1">
-        <div class="team-name">Home</div>
-      </div>
-      <div class="vs"><span>0</span>VS<span>0</span></div>
-      <div class="team">
-        <img src="https://picsum.photos/100?2">
-        <div class="team-name">Away</div>
-      </div>
+    <div class="vs"><span>0</span>VS<span>0</span></div>
+    <div class="team">
+      <img src="https://logo.clearbit.com/mancity.com">
+      <div class="team-name">Man City</div>
     </div>
-    <a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
+  </div>
+  <a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
   `;
 
   tableBox.innerHTML=`
-    <div class="table-head">
-      <div>#</div><div>ทีม</div><div>แต้ม</div>
+  <div class="table-head">
+    <div>#</div><div>ทีม</div><div>แต้ม</div>
+  </div>
+  ${["arsenal.com","mancity.com","chelseafc.com","liverpoolfc.com","manutd.com"]
+  .map((t,i)=>`
+  <div class="row">
+    <div class="pos">${i+1}</div>
+    <div class="team-row">
+      <img src="https://logo.clearbit.com/${t}">
+      ${t.split(".")[0]}
     </div>
-    ${[1,2,3,4,5].map(i=>`
-      <div class="row">
-        <div class="pos">${i}</div>
-        <div class="team-row">
-          <img src="https://picsum.photos/30?${i}">
-          Team ${i}
-        </div>
-        <div class="pts">${60-i}</div>
-      </div>
-    `).join("")}
+    <div class="pts">${60-i}</div>
+  </div>`).join("")}
   `;
 }
 
