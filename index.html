@@ -5,229 +5,177 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA BallGenius</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
 <style>
 *{box-sizing:border-box;font-family:sans-serif}
-:root{
-  --purple:#6a00ff;
-  --purpleDark:#140028;
-  --bg:#0b0014;
-  --red:#ff2b2b;
-}
-body{
-  margin:0;
-  background:linear-gradient(180deg,#140028,#000);
-  color:#fff;
-}
-
-/* HEADER */
-header{
-  padding:16px;
-  font-size:22px;
-  font-weight:900;
-  border-bottom:2px solid var(--purple);
-}
-header span{color:var(--purple);}
-
-/* LEAGUES */
-.leagues{
-  display:flex;
-  gap:14px;
-  padding:14px;
-  overflow-x:auto;
-}
-.league{
-  flex:0 0 auto;
-  width:90px;
-  text-align:center;
-  cursor:pointer;
-}
-.league-box{
-  width:70px;height:70px;
-  margin:auto;
-  border-radius:18px;
-  background:#1b0033;
-  border:2px solid #2d004d;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.league.active .league-box{
-  border-color:var(--purple);
-  box-shadow:0 0 12px var(--purple);
-}
-.league img{width:38px;height:38px;object-fit:contain}
-.league-name{
-  font-size:11px;
-  margin-top:6px;
-  opacity:.8;
-}
-
-/* TABLE */
-.table-box{
-  margin:14px;
-  background:var(--purpleDark);
-  border-radius:20px;
-  padding:14px;
-}
-.table-head{
-  display:grid;
-  grid-template-columns:40px 1fr repeat(4,45px) 55px;
-  font-size:12px;
-  opacity:.7;
-  margin-bottom:6px;
-}
-.row{
-  display:grid;
-  grid-template-columns:40px 1fr repeat(4,45px) 55px;
-  align-items:center;
-  padding:10px 0;
-  border-bottom:1px solid #2d004d;
-  font-size:13px;
-}
+:root{--red:#e60000;--gold:#f5c542;}
+body{margin:0;background:linear-gradient(180deg,#120000,#000);color:#fff;}
+header{padding:14px;font-size:22px;font-weight:900;border-bottom:2px solid var(--red);}
+header span{color:var(--red);}
+.leagues{display:flex;gap:12px;padding:12px;overflow-x:auto;}
+.league{width:64px;height:64px;flex:0 0 auto;background:#0f0f0f;border-radius:18px;border:2px solid #1f1f1f;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.league.active{border-color:var(--red);}
+.logo-box{width:46px;height:46px;background:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;}
+.logo-box img{width:30px;height:30px;object-fit:contain;}
+.content{padding:14px;padding-bottom:140px;}
+.hot-card{background:#120000;border-radius:24px;padding:16px;margin-bottom:22px;}
+.hot-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:14px;}
+.hot-badge{background:var(--red);padding:4px 10px;border-radius:999px;font-weight:800;}
+.match{display:grid;grid-template-columns:1fr 110px 1fr;align-items:center;gap:10px;margin-bottom:14px;}
+.team{text-align:center;}
+.team img{width:60px;height:60px;background:#fff;padding:8px;border-radius:16px;}
+.team-name{margin-top:6px;font-size:13px;font-weight:600;}
+.vs{display:flex;align-items:center;justify-content:center;gap:8px;background:#1a0000;border-radius:16px;padding:10px;font-weight:900;}
+.vs span{width:28px;height:28px;background:#300;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.watch{display:block;text-align:center;background:linear-gradient(90deg,#ff2b2b,#b00000);padding:14px;border-radius:18px;font-weight:900;text-decoration:none;color:#fff;}
+.section-head{display:flex;justify-content:space-between;margin:18px 0 10px;font-weight:800;}
+.section-head span{color:var(--red);}
+.highlight-list{display:flex;gap:14px;overflow-x:auto;}
+.highlight{min-width:220px;background:#0f0f0f;border-radius:18px;overflow:hidden;position:relative;}
+.highlight img{width:100%;height:140px;object-fit:cover;}
+.play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;background:rgba(230,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.h-title{padding:10px;font-size:13px;font-weight:600;}
+.table-box{background:#120000;border-radius:22px;padding:14px;margin-top:22px;}
+.table-head{display:grid;grid-template-columns:40px 1fr 40px;font-size:12px;color:#bbb;margin-bottom:8px;}
+.row{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;padding:8px 0;border-bottom:1px solid #2a0000;}
 .row:last-child{border-bottom:none;}
-
-.pos{font-weight:900}
-.team-row{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.team-row img{
-  width:22px;height:22px;
-  background:#fff;
-  border-radius:6px;
-  padding:2px;
-}
-.stat{text-align:center}
-.pts{text-align:right;font-weight:900}
-
-/* TOP4 + RELEGATION */
-.top4{background:rgba(106,0,255,.15)}
-.relegation{background:rgba(255,0,0,.15)}
-
-/* COLLAPSE BUTTON */
-.toggle{
-  margin:10px 14px 0;
-  background:var(--purple);
-  padding:10px;
-  border-radius:14px;
-  text-align:center;
-  font-weight:700;
-  cursor:pointer;
-}
-
+.pos{color:var(--gold);font-weight:900;}
+.team-row{display:flex;align-items:center;gap:8px;font-size:13px;}
+.team-row img{width:22px;height:22px;background:#fff;border-radius:6px;padding:2px;}
+.pts{text-align:right;font-weight:900;}
+.bottom{position:fixed;bottom:0;left:0;right:0;display:flex;background:#000;border-top:2px solid var(--red);}
+.tab{flex:1;text-align:center;padding:10px 0;font-size:12px;opacity:.6;}
+.tab.active{opacity:1;color:var(--red);}
 </style>
 </head>
 
 <body>
 
 <header><span>QA</span> BallGenius</header>
-
 <div class="leagues" id="leagueBar"></div>
 
-<div class="toggle" onclick="toggleTable()">ย่อ / ขยาย ตารางคะแนน</div>
+<div class="content">
+  <div class="hot-card" id="hotCard"></div>
 
-<div class="table-box" id="tableBox"></div>
+  <div class="section-head">
+    <div><span>■</span> ไฮไลท์ยอดนิยม</div>
+  </div>
+  <div class="highlight-list" id="highlightList"></div>
+
+  <div class="section-head">
+    <div><span>■</span> ตารางคะแนน</div>
+  </div>
+  <div class="table-box" id="tableBox"></div>
+</div>
 
 <script>
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* ลีกครบ 8 */
-const LEAGUES=[
-{id:39,name:"พรีเมียร์ลีก"},
-{id:140,name:"ลาลีกา"},
-{id:78,name:"บุนเดสลีกา"},
-{id:135,name:"กัลโช่"},
-{id:61,name:"ลีกเอิง"},
-{id:94,name:"โปรตุเกส"},
-{id:88,name:"เอเรดิวิซี"},
-{id:203,name:"ซาอุโปรลีก"}
+const LEAGUES = [
+{ id:39,name:"พรีเมียร์ลีก",teams:[
+["Liverpool",40],["Arsenal",42],["Man City",50],
+["Tottenham",47],["Chelsea",49],["Man United",33]
+]},
+{ id:140,name:"ลาลีกา",teams:[
+["Real Madrid",541],["Barcelona",529],["Girona",547],
+["Atletico",530],["Betis",543],["Sociedad",548]
+]},
+{ id:78,name:"บุนเดสลีกา",teams:[
+["Bayern",157],["Leverkusen",168],["Dortmund",165],
+["Leipzig",173],["Stuttgart",172],["Frankfurt",169]
+]},
+{ id:135,name:"กัลโช่",teams:[
+["Inter",505],["Juventus",496],["Milan",489],
+["Roma",497],["Napoli",492],["Atalanta",499]
+]},
+{ id:61,name:"ลีกเอิง",teams:[
+["PSG",85],["Marseille",81],["Monaco",91],
+["Lille",79],["Lyon",80],["Nice",84]
+]},
+{ id:94,name:"โปรตุเกส",teams:[
+["Benfica",211],["Porto",212],["Sporting",228],
+["Braga",217],["Boavista",219],["Guimaraes",222]
+]},
+{ id:88,name:"เอเรดิวิซี",teams:[
+["Ajax",194],["PSV",197],["Feyenoord",193],
+["AZ",195],["Twente",198],["Utrecht",201]
+]},
+{ id:203,name:"ซาอุโปรลีก",teams:[
+["Al Hilal",2938],["Al Nassr",2939],["Al Ittihad",2940],
+["Al Ahli",2942],["Al Shabab",2941],["Al Ettifaq",2945]
+]}
 ];
 
 const leagueBar=document.getElementById("leagueBar");
+const hotCard=document.getElementById("hotCard");
+const highlightList=document.getElementById("highlightList");
 const tableBox=document.getElementById("tableBox");
 
-/* สร้างปุ่มลีก */
 LEAGUES.forEach((l,i)=>{
- const div=document.createElement("div");
- div.className="league"+(i===0?" active":"");
- div.innerHTML=`
-   <div class="league-box">
-     <img src="https://media.api-sports.io/football/leagues/${l.id}.png">
-   </div>
-   <div class="league-name">${l.name}</div>
- `;
- div.onclick=()=>{
-   document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
-   div.classList.add("active");
-   renderTable(l.id);
- };
- leagueBar.appendChild(div);
+const div=document.createElement("div");
+div.className="league"+(i===0?" active":"");
+div.innerHTML=`<div class="logo-box">
+<img src="https://media.api-sports.io/football/leagues/${l.id}.png">
+</div>`;
+div.onclick=()=>{
+document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
+div.classList.add("active");
+render(l);
+};
+leagueBar.appendChild(div);
 });
 
-/* ดึงทีมจริง 20 ทีม (ใช้ ID จริง) */
-const TEAMS={
-39:[40,42,50,47,49,33,34,35,36,37,38,39,41,44,45,46,48,51,52,55],
-140:[541,529,547,530,543,548,533,536,531,546,538,540,532,542,539,545,549,550,551,552],
-78:[157,168,165,173,172,169,164,163,162,161,170,171,174,175,176,177,178,179,180,181],
-135:[505,496,489,497,492,499,487,488,490,491,493,494,495,498,500,501,502,503,504,506],
-61:[85,81,91,79,80,84,82,83,86,87,88,89,90,92,93,94,95,96,97,98],
-94:[211,212,228,217,219,222,213,214,215,216,218,220,221,223,224,225,226,227,229,230],
-88:[194,197,193,195,198,201,199,200,202,203,204,205,206,207,208,209,210,211,212,213],
-203:[2938,2939,2940,2942,2941,2945,2943,2944,2946,2947,2948,2949,2950,2951,2952,2953,2954,2955,2956,2957]
-};
+function render(l){
 
-function renderTable(leagueId){
- const teams=TEAMS[leagueId];
- tableBox.innerHTML=`
- <div class="table-head">
-   <div>#</div>
-   <div>ทีม</div>
-   <div>แข่ง</div>
-   <div>ชนะ</div>
-   <div>เสมอ</div>
-   <div>แพ้</div>
-   <div>แต้ม</div>
- </div>
- `;
+const home=l.teams[0];
+const away=l.teams[1];
 
- teams.forEach((id,i)=>{
-   const played=20+i%5;
-   const win=10-i%4;
-   const draw=i%3;
-   const lose=played-win-draw;
-   const pts=win*3+draw;
+hotCard.innerHTML=`
+<div class="hot-head">
+<div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
+<div>🕒 21:00</div>
+</div>
+<div class="match">
+<div class="team">
+<img src="https://media.api-sports.io/football/teams/${home[1]}.png">
+<div class="team-name">${home[0]}</div>
+</div>
+<div class="vs"><span>0</span>VS<span>0</span></div>
+<div class="team">
+<img src="https://media.api-sports.io/football/teams/${away[1]}.png">
+<div class="team-name">${away[0]}</div>
+</div>
+</div>
+<a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
+`;
 
-   let rowClass="";
-   if(i<4) rowClass="top4";
-   if(i>16) rowClass="relegation";
+highlightList.innerHTML=l.teams.slice(0,5).map((t,i)=>`
+<div class="highlight">
+<img src="https://picsum.photos/400/300?random=${l.id+i}">
+<div class="play">▶</div>
+<div class="h-title">${t[0]} ไฮไลท์ล่าสุด</div>
+</div>
+`).join("");
 
-   tableBox.innerHTML+=`
-   <div class="row ${rowClass}">
-     <div class="pos">${i+1}</div>
-     <div class="team-row">
-       <img src="https://media.api-sports.io/football/teams/${id}.png">
-       ทีม ${i+1}
-     </div>
-     <div class="stat">${played}</div>
-     <div class="stat">${win}</div>
-     <div class="stat">${draw}</div>
-     <div class="stat">${lose}</div>
-     <div class="pts">${pts}</div>
-   </div>
-   `;
- });
+tableBox.innerHTML=`
+<div class="table-head">
+<div>#</div><div>ทีม</div><div>แต้ม</div>
+</div>
+${l.teams.map((t,i)=>`
+<div class="row">
+<div class="pos">${i+1}</div>
+<div class="team-row">
+<img src="https://media.api-sports.io/football/teams/${t[1]}.png">
+${t[0]}
+</div>
+<div class="pts">${65-i*3}</div>
+</div>
+`).join("")}
+`;
 }
 
-function toggleTable(){
- tableBox.style.display =
- tableBox.style.display==="none"?"block":"none";
-}
-
-renderTable(39);
+render(LEAGUES[0]);
 </script>
 
 </body>
-</html>
+</html>เสริมจากโค้นี้ สิคุณๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆ
