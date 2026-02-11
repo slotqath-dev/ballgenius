@@ -19,7 +19,7 @@ header span{color:var(--red);}
 .logo-box{width:46px;height:46px;background:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;}
 .logo-box img{width:30px;height:30px;object-fit:contain;}
 
-.content{padding:14px;padding-bottom:120px;}
+.content{padding:14px;padding-bottom:140px;}
 
 .hot-card{background:#120000;border-radius:24px;padding:16px;margin-bottom:22px;}
 .hot-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:14px;}
@@ -51,14 +51,19 @@ margin:10px 0;
 color:var(--gold);
 }
 
-.table-box{background:#120000;border-radius:22px;padding:14px;margin-top:10px;}
+.table-box{
+background:#120000;
+border-radius:22px;
+padding:14px;
+margin-top:10px;
+}
 
+/* 🔥 ล็อกคอลัมน์ใหม่ให้สมส่วน */
 .table-head,
 .row{
 display:grid;
-grid-template-columns:50px 2fr 60px 60px 60px 60px 70px;
+grid-template-columns: 35px minmax(120px,1fr) 50px 50px 50px 50px 60px;
 align-items:center;
-text-align:center;
 }
 
 .table-head{
@@ -68,22 +73,28 @@ margin-bottom:8px;
 }
 
 .row{
-padding:8px 0;
+padding:10px 0;
 border-bottom:1px solid #2a0000;
 font-size:13px;
 }
 
 .row:last-child{border-bottom:none;}
 
-.top4{background:rgba(245,197,66,0.08);}
-.relegation{background:rgba(230,0,0,0.12);}
+.top4{
+background:rgba(245,197,66,0.10);
+}
+
+.relegation{
+background:rgba(230,0,0,0.15);
+}
 
 .team-row{
 display:flex;
 align-items:center;
 gap:8px;
-justify-content:flex-start;
-text-align:left;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 }
 
 .team-row img{
@@ -94,8 +105,14 @@ border-radius:6px;
 padding:2px;
 }
 
+.row div:not(.team-row){
+text-align:center;
+}
+
 .pts{
+text-align:right !important;
 font-weight:900;
+padding-right:4px;
 }
 </style>
 </head>
@@ -106,7 +123,6 @@ font-weight:900;
 <div class="leagues" id="leagueBar"></div>
 
 <div class="content">
-
 <div class="hot-card" id="hotCard"></div>
 
 <div class="section-head">
@@ -120,7 +136,6 @@ font-weight:900;
 
 <div class="league-title" id="leagueTitle"></div>
 <div class="table-box" id="tableBox"></div>
-
 </div>
 
 <script>
@@ -183,7 +198,6 @@ leagueBar.appendChild(div);
 });
 
 function render(l){
-
 leagueTitle.innerText = l.name + " ฤดูกาล 2025/26";
 
 const home=l.teams[0];
@@ -224,7 +238,7 @@ tableBox.innerHTML=`
 <div>ชนะ</div>
 <div>เสมอ</div>
 <div>แพ้</div>
-<div>แต้ม</div>
+<div class="pts">แต้ม</div>
 </div>
 ${l.teams.map((t,i)=>{
 let played=30;
