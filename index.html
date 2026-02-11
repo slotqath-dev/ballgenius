@@ -19,7 +19,7 @@ header span{color:var(--red);}
 .logo-box{width:46px;height:46px;background:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;}
 .logo-box img{width:30px;height:30px;object-fit:contain;}
 
-.content{padding:14px;padding-bottom:140px;}
+.content{padding:14px;padding-bottom:120px;}
 
 .hot-card{background:#120000;border-radius:24px;padding:16px;margin-bottom:22px;}
 .hot-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:14px;}
@@ -56,8 +56,9 @@ color:var(--gold);
 .table-head,
 .row{
 display:grid;
-grid-template-columns:40px 1.5fr 40px 40px 40px 40px 50px;
+grid-template-columns:50px 2fr 60px 60px 60px 60px 70px;
 align-items:center;
+text-align:center;
 }
 
 .table-head{
@@ -81,6 +82,8 @@ font-size:13px;
 display:flex;
 align-items:center;
 gap:8px;
+justify-content:flex-start;
+text-align:left;
 }
 
 .team-row img{
@@ -92,7 +95,6 @@ padding:2px;
 }
 
 .pts{
-text-align:right;
 font-weight:900;
 }
 </style>
@@ -222,11 +224,11 @@ tableBox.innerHTML=`
 <div>ชนะ</div>
 <div>เสมอ</div>
 <div>แพ้</div>
-<div class="pts">แต้ม</div>
+<div>แต้ม</div>
 </div>
 ${l.teams.map((t,i)=>{
 let played=30;
-let win=20-i;
+let win=18-i;
 let draw=5;
 let lose=played-win-draw;
 let pts=win*3+draw;
@@ -257,4 +259,4 @@ render(LEAGUES[0]);
 </script>
 
 </body>
-</html>  
+</html>
