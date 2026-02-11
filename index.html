@@ -50,13 +50,10 @@ font-size:12px;
 .row:last-child{border-bottom:none;}
 
 .pos{color:var(--gold);font-weight:900;}
-
 .team-row{display:flex;align-items:center;gap:6px;font-size:12px;}
 .team-row img{width:20px;height:20px;background:#fff;border-radius:6px;padding:2px;}
-
 .stat{text-align:center;}
 .pts{text-align:center;font-weight:900;}
-
 </style>
 </head>
 
@@ -154,6 +151,19 @@ highlightList.innerHTML=l.teams.slice(0,5).map((t,i)=>`
 </div>
 `).join("");
 
+// ✅ สร้างข้อมูล + เรียงคะแนนก่อนแสดง
+let tableData = l.teams.map((t,i)=>{
+let played=20;
+let win=14-(i%7);
+let draw=4-(i%3);
+if(draw<0) draw=0;
+let lose=played-win-draw;
+let pts=win*3+draw;
+return {name:t[0],id:t[1],played,win,draw,lose,pts};
+});
+
+tableData.sort((a,b)=>b.pts-a.pts);
+
 tableBox.innerHTML=`
 <div class="table-head">
 <div>#</div>
@@ -164,26 +174,20 @@ tableBox.innerHTML=`
 <div class="stat">แพ้</div>
 <div class="pts">คะแนน</div>
 </div>
-${l.teams.map((t,i)=>{
-let played=20;
-let win=10-(i%4);
-let draw=5-(i%3);
-let lose=played-win-draw;
-let pts=win*3+draw;
-return `
+${tableData.map((t,i)=>`
 <div class="row">
 <div class="pos">${i+1}</div>
 <div class="team-row">
-<img src="https://media.api-sports.io/football/teams/${t[1]}.png">
-${t[0]}
+<img src="https://media.api-sports.io/football/teams/${t.id}.png">
+${t.name}
 </div>
-<div class="stat">${played}</div>
-<div class="stat">${win}</div>
-<div class="stat">${draw}</div>
-<div class="stat">${lose}</div>
-<div class="pts">${pts}</div>
-</div>`;
-}).join("")}
+<div class="stat">${t.played}</div>
+<div class="stat">${t.win}</div>
+<div class="stat">${t.draw}</div>
+<div class="stat">${t.lose}</div>
+<div class="pts">${t.pts}</div>
+</div>
+`).join("")}
 `;
 }
 
