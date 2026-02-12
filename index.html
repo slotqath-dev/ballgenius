@@ -7,251 +7,380 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+*{box-sizing:border-box;font-family:sans-serif}
+:root{--red:#e60000;--gold:#f5c542;}
+
+html,body{
+margin:0;
+overflow-x:hidden; /* 🔥 กันเลื่อน */
+background:linear-gradient(180deg,#120000,#000);
+color:#fff;
 }
 
-body{
-  background:#0e0e0e;
-  color:#fff;
-  max-width:390px;
-  margin:auto;
+header{
+padding:14px;
+font-size:22px;
+font-weight:900;
+border-bottom:2px solid var(--red);
 }
+header span{color:var(--red);}
 
-/* HEADER */
-.header{
-  background:linear-gradient(90deg,#e60000,#a00000);
-  padding:14px 16px;
-  font-weight:700;
-  font-size:18px;
-  letter-spacing:.5px;
-}
-
-/* MENU */
-.menu{
-  display:flex;
-  overflow-x:auto;
-  background:#141414;
-  border-bottom:1px solid #222;
-}
-
-.menu button{
-  flex:0 0 auto;
-  padding:12px 16px;
-  background:none;
-  border:none;
-  color:#bbb;
-  font-size:14px;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.menu button.active{
-  color:#fff;
-  border-bottom:3px solid #e60000;
-  font-weight:600;
-}
-
-/* LEAGUE BAR */
-.league-bar{
-  display:flex;
-  overflow-x:auto;
-  gap:8px;
-  padding:10px;
-  background:#111;
+.leagues{
+display:flex;
+gap:12px;
+padding:12px;
+overflow-x:auto;
 }
 
 .league{
-  flex:0 0 auto;
-  padding:6px 14px;
-  border-radius:20px;
-  font-size:13px;
-  background:#1c1c1c;
-  color:#ccc;
-  cursor:pointer;
-  transition:.2s;
+width:64px;
+height:64px;
+flex:0 0 auto;
+background:#0f0f0f;
+border-radius:18px;
+border:2px solid #1f1f1f;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+.league.active{border-color:var(--red);}
+
+.logo-box{
+width:46px;
+height:46px;
+background:#fff;
+border-radius:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+.logo-box img{
+width:30px;
+height:30px;
+object-fit:contain;
 }
 
-.league.active{
-  background:#e60000;
-  color:#fff;
+.content{
+padding:14px;
+padding-bottom:120px;
+max-width:100%;
 }
 
-/* MATCH CARD */
+.hot-card{
+background:#120000;
+border-radius:24px;
+padding:16px;
+margin-bottom:22px;
+}
+
+.hot-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:13px;
+margin-bottom:14px;
+}
+
+.hot-badge{
+background:var(--red);
+padding:4px 10px;
+border-radius:999px;
+font-weight:800;
+}
+
 .match{
-  background:#161616;
-  margin:10px;
-  border-radius:12px;
-  padding:12px;
-  box-shadow:0 0 0 1px #1f1f1f;
+display:grid;
+grid-template-columns:1fr 90px 1fr;
+align-items:center;
+gap:8px;
+margin-bottom:14px;
 }
 
-.match-top{
-  font-size:12px;
-  color:#999;
-  margin-bottom:8px;
-}
-
-.team-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:6px 0;
+.team{text-align:center;}
+.team img{
+width:55px;
+height:55px;
+background:#fff;
+padding:8px;
+border-radius:16px;
 }
 
 .team-name{
-  font-size:14px;
+margin-top:6px;
+font-size:12px;
+font-weight:600;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 }
 
-.odd-btn{
-  background:#222;
-  padding:6px 10px;
-  border-radius:8px;
-  font-size:13px;
-  cursor:pointer;
-  transition:.2s;
-  border:1px solid #2a2a2a;
+.vs{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:6px;
+background:#1a0000;
+border-radius:16px;
+padding:8px;
+font-weight:900;
 }
 
-.odd-btn:hover{
-  background:#e60000;
-  border-color:#e60000;
+.vs span{
+width:24px;
+height:24px;
+background:#300;
+border-radius:8px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:12px;
 }
 
-/* ACTIVE PAGE CONTENT */
-.page{
-  display:none;
+.watch{
+display:block;
+text-align:center;
+background:linear-gradient(90deg,#ff2b2b,#b00000);
+padding:12px;
+border-radius:18px;
+font-weight:900;
+text-decoration:none;
+color:#fff;
+font-size:14px;
 }
 
-.page.active{
-  display:block;
+.section-head{
+margin:18px 0 10px;
+font-weight:800;
+}
+.section-head span{color:var(--red);}
+
+.highlight-list{
+display:flex;
+gap:14px;
+overflow-x:auto;
 }
 
-/* FOOTER */
-.footer{
-  text-align:center;
-  padding:14px;
-  font-size:12px;
-  color:#666;
+.highlight{
+min-width:200px;
+background:#0f0f0f;
+border-radius:18px;
+overflow:hidden;
+position:relative;
 }
 
+.highlight img{
+width:100%;
+height:130px;
+object-fit:cover;
+}
+
+.play{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:40px;
+height:40px;
+background:rgba(230,0,0,.9);
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.h-title{
+padding:10px;
+font-size:12px;
+font-weight:600;
+}
+
+.league-title{
+font-size:16px;
+font-weight:900;
+margin:10px 0;
+color:var(--gold);
+}
+
+.table-box{
+background:#120000;
+border-radius:22px;
+padding:12px;
+width:100%;
+overflow:hidden; /* 🔥 ล็อกไม่ให้ล้น */
+}
+
+.table-head,
+.row{
+display:grid;
+grid-template-columns:28px 1fr 32px 32px 32px 32px 40px;
+align-items:center;
+width:100%;
+}
+
+.table-head{
+font-size:11px;
+color:#bbb;
+margin-bottom:8px;
+}
+
+.row{
+padding:8px 0;
+border-bottom:1px solid #2a0000;
+font-size:12px;
+}
+
+.row:last-child{border-bottom:none;}
+
+.top4{background:rgba(245,197,66,0.10);}
+.relegation{background:rgba(230,0,0,0.15);}
+
+.team-row{
+display:flex;
+align-items:center;
+gap:6px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.team-row img{
+width:18px;
+height:18px;
+background:#fff;
+border-radius:5px;
+padding:2px;
+}
+
+.row div:not(.team-row){
+text-align:center;
+}
+
+.pts{
+text-align:right !important;
+font-weight:900;
+}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  QA BallGenius
-</div>
+<header><span>QA</span> BallGenius</header>
+<div class="leagues" id="leagueBar"></div>
 
-<!-- MENU -->
-<div class="menu">
-  <button class="active" onclick="switchPage('live',this)">บอลสด</button>
-  <button onclick="switchPage('today',this)">วันนี้</button>
-  <button onclick="switchPage('early',this)">ล่วงหน้า</button>
-</div>
+<div class="content">
+<div class="hot-card" id="hotCard"></div>
 
-<!-- LEAGUES -->
-<div class="league-bar">
-  <div class="league active" onclick="selectLeague(this)">ทั้งหมด</div>
-  <div class="league" onclick="selectLeague(this)">พรีเมียร์ลีก</div>
-  <div class="league" onclick="selectLeague(this)">ลาลีกา</div>
-  <div class="league" onclick="selectLeague(this)">บุนเดสลีกา</div>
-  <div class="league" onclick="selectLeague(this)">เซเรียอา</div>
-</div>
+<div class="section-head"><span>■</span> ไฮไลท์ยอดนิยม</div>
+<div class="highlight-list" id="highlightList"></div>
 
-<!-- LIVE PAGE -->
-<div id="live" class="page active">
-
-  <div class="match">
-    <div class="match-top">พรีเมียร์ลีก • 02:00</div>
-
-    <div class="team-row">
-      <div class="team-name">แมนฯ ยูไนเต็ด</div>
-      <div class="odd-btn">-0.5</div>
-    </div>
-
-    <div class="team-row">
-      <div class="team-name">ลิเวอร์พูล</div>
-      <div class="odd-btn">+0.5</div>
-    </div>
-  </div>
-
-  <div class="match">
-    <div class="match-top">ลาลีกา • 03:00</div>
-
-    <div class="team-row">
-      <div class="team-name">เรอัล มาดริด</div>
-      <div class="odd-btn">-1</div>
-    </div>
-
-    <div class="team-row">
-      <div class="team-name">บาร์เซโลนา</div>
-      <div class="odd-btn">+1</div>
-    </div>
-  </div>
-
-</div>
-
-<!-- TODAY PAGE -->
-<div id="today" class="page">
-  <div class="match">
-    <div class="match-top">เซเรียอา • 01:45</div>
-
-    <div class="team-row">
-      <div class="team-name">ยูเวนตุส</div>
-      <div class="odd-btn">-0.75</div>
-    </div>
-
-    <div class="team-row">
-      <div class="team-name">อินเตอร์</div>
-      <div class="odd-btn">+0.75</div>
-    </div>
-  </div>
-</div>
-
-<!-- EARLY PAGE -->
-<div id="early" class="page">
-  <div class="match">
-    <div class="match-top">บุนเดสลีกา • พรุ่งนี้</div>
-
-    <div class="team-row">
-      <div class="team-name">บาเยิร์น</div>
-      <div class="odd-btn">-1.5</div>
-    </div>
-
-    <div class="team-row">
-      <div class="team-name">ดอร์ทมุนด์</div>
-      <div class="odd-btn">+1.5</div>
-    </div>
-  </div>
-</div>
-
-<div class="footer">
-  © 2026 QA BallGenius
+<div class="section-head"><span>■</span> ตารางคะแนน</div>
+<div class="league-title" id="leagueTitle"></div>
+<div class="table-box" id="tableBox"></div>
 </div>
 
 <script>
+Telegram.WebApp.ready();
+Telegram.WebApp.expand();
 
-/* SWITCH PAGE */
-function switchPage(pageId,btn){
-  document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+const LEAGUES=[
+{ id:39,name:"พรีเมียร์ลีก",teams:[
+["Liverpool",40],["Arsenal",42],["Man City",50],
+["Tottenham",47],["Chelsea",49],["Man United",33]
+]},
+{ id:140,name:"ลาลีกา",teams:[
+["Real Madrid",541],["Barcelona",529],["Girona",547],
+["Atletico",530],["Betis",543],["Sociedad",548]
+]}
+];
 
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
+const leagueBar=document.getElementById("leagueBar");
+const hotCard=document.getElementById("hotCard");
+const highlightList=document.getElementById("highlightList");
+const tableBox=document.getElementById("tableBox");
+const leagueTitle=document.getElementById("leagueTitle");
+
+LEAGUES.forEach((l,i)=>{
+const div=document.createElement("div");
+div.className="league"+(i===0?" active":"");
+div.innerHTML=`<div class="logo-box">
+<img src="https://media.api-sports.io/football/leagues/${l.id}.png">
+</div>`;
+div.onclick=()=>{
+document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
+div.classList.add("active");
+render(l);
+};
+leagueBar.appendChild(div);
+});
+
+function render(l){
+leagueTitle.innerText=l.name+" ฤดูกาล 2025/26";
+
+const home=l.teams[0];
+const away=l.teams[1];
+
+hotCard.innerHTML=`
+<div class="hot-head">
+<div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
+<div>🕒 21:00</div>
+</div>
+<div class="match">
+<div class="team">
+<img src="https://media.api-sports.io/football/teams/${home[1]}.png">
+<div class="team-name">${home[0]}</div>
+</div>
+<div class="vs"><span>0</span>VS<span>0</span></div>
+<div class="team">
+<img src="https://media.api-sports.io/football/teams/${away[1]}.png">
+<div class="team-name">${away[0]}</div>
+</div>
+</div>
+<a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
+`;
+
+highlightList.innerHTML=l.teams.map((t,i)=>`
+<div class="highlight">
+<img src="https://picsum.photos/400/300?random=${i}">
+<div class="play">▶</div>
+<div class="h-title">${t[0]} ไฮไลท์ล่าสุด</div>
+</div>
+`).join("");
+
+tableBox.innerHTML=`
+<div class="table-head">
+<div>#</div><div>ทีม</div><div>แข่ง</div>
+<div>ชนะ</div><div>เสมอ</div><div>แพ้</div><div class="pts">แต้ม</div>
+</div>
+${l.teams.map((t,i)=>{
+let played=30;
+let win=18-i;
+let draw=5;
+let lose=played-win-draw;
+let pts=win*3+draw;
+
+let extraClass="";
+if(i<4) extraClass="top4";
+if(i>=l.teams.length-2) extraClass="relegation";
+
+return `
+<div class="row ${extraClass}">
+<div>${i+1}</div>
+<div class="team-row">
+<img src="https://media.api-sports.io/football/teams/${t[1]}.png">
+${t[0]}
+</div>
+<div>${played}</div>
+<div>${win}</div>
+<div>${draw}</div>
+<div>${lose}</div>
+<div class="pts">${pts}</div>
+</div>`;
+}).join("")}
+`;
 }
 
-/* SELECT LEAGUE */
-function selectLeague(el){
-  document.querySelectorAll('.league').forEach(l=>l.classList.remove('active'));
-  el.classList.add('active');
-}
-
+render(LEAGUES[0]);
 </script>
 
 </body>
-</html>
