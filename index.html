@@ -3,194 +3,200 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QA BallGenius</title>
+<title>WinOffside Demo</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-*{box-sizing:border-box;font-family:sans-serif}
-:root{--red:#e60000;--gold:#f5c542;}
-body{margin:0;background:linear-gradient(180deg,#120000,#000);color:#fff;}
-header{padding:14px;font-size:22px;font-weight:900;border-bottom:2px solid var(--red);}
-header span{color:var(--red);}
-
-/* ลีก */
-.leagues{
-display:flex;
-gap:12px;
-padding:12px;
-overflow-x:auto;
+*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
+body{background:#0f0f0f;color:#fff}
+header{
+  padding:15px;
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+  background:#111;
+  border-bottom:1px solid #222;
 }
-.league{
-width:64px;
-height:64px;
-flex:0 0 auto;
-background:#111;
-border-radius:18px;
-border:2px solid #222;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-font-size:11px;
-font-weight:800;
-text-align:center;
-padding:6px;
+.tabs{
+  display:flex;
+  background:#111;
 }
-.league.active{border-color:var(--red);background:#1a0000;}
-
-/* เนื้อหา */
-.content{padding:14px;padding-bottom:140px;}
-
-.hot-card{background:#120000;border-radius:24px;padding:16px;margin-bottom:22px;}
-.hot-head{display:flex;justify-content:space-between;font-size:13px;margin-bottom:14px;}
-.hot-badge{background:var(--red);padding:4px 10px;border-radius:999px;font-weight:800;}
-.match{display:grid;grid-template-columns:1fr 110px 1fr;align-items:center;gap:10px;margin-bottom:14px;}
-.team{text-align:center;}
-.team img{width:60px;height:60px;background:#fff;padding:8px;border-radius:16px;}
-.team-name{margin-top:6px;font-size:13px;font-weight:600;}
-.vs{display:flex;align-items:center;justify-content:center;gap:8px;background:#1a0000;border-radius:16px;padding:10px;font-weight:900;}
-.watch{display:block;text-align:center;background:linear-gradient(90deg,#ff2b2b,#b00000);padding:14px;border-radius:18px;font-weight:900;text-decoration:none;color:#fff;}
-
-.section-head{margin:18px 0 10px;font-weight:800;}
-.section-head span{color:var(--red);}
-
-/* ไฮไลท์ */
-.highlight-list{display:flex;gap:14px;overflow-x:auto;}
-.highlight{min-width:220px;background:#0f0f0f;border-radius:18px;overflow:hidden;position:relative;}
-.highlight img{width:100%;height:140px;object-fit:cover;}
-.play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;background:rgba(230,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.h-title{padding:10px;font-size:13px;font-weight:600;}
-
-/* ตารางคะแนน */
-.table-box{background:#120000;border-radius:22px;padding:14px;margin-top:22px;}
-.table-head,.row{
-display:grid;
-grid-template-columns:30px 120px 45px 45px 45px 45px 55px;
-align-items:center;
-font-size:12px;
+.tabs button{
+  flex:1;
+  padding:12px;
+  background:none;
+  border:none;
+  color:#aaa;
+  font-size:14px;
 }
-.table-head{color:#bbb;margin-bottom:8px;font-weight:700;}
-.row{padding:8px 0;border-bottom:1px solid #2a0000;}
-.row:last-child{border-bottom:none;}
-.pos{color:var(--gold);font-weight:900;}
-.team-row{display:flex;align-items:center;gap:6px;font-size:12px;}
-.team-row img{width:20px;height:20px;background:#fff;border-radius:6px;padding:2px;}
-.stat{text-align:center;}
-.pts{text-align:center;font-weight:900;}
+.tabs button.active{
+  color:#fff;
+  border-bottom:2px solid #e60000;
+}
+.section{display:none;padding:15px}
+.section.active{display:block}
+
+.match{
+  background:#181818;
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:10px;
+}
+.teams{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+.odds{
+  display:flex;
+  gap:10px;
+}
+.odds button{
+  flex:1;
+  padding:8px;
+  background:#222;
+  border:none;
+  color:#fff;
+  border-radius:6px;
+}
+.odds button:hover{
+  background:#e60000;
+}
+
+.slip{
+  background:#181818;
+  padding:10px;
+  border-radius:10px;
+}
+.slip-item{
+  border-bottom:1px solid #222;
+  padding:8px 0;
+}
+.total{
+  margin-top:10px;
+  font-weight:bold;
+}
+input{
+  width:100%;
+  padding:8px;
+  margin-top:10px;
+  border:none;
+  border-radius:6px;
+}
+.bet-btn{
+  width:100%;
+  margin-top:10px;
+  padding:10px;
+  background:#e60000;
+  border:none;
+  color:#fff;
+  border-radius:8px;
+  font-weight:bold;
+}
 </style>
 </head>
 
 <body>
 
-<header><span>QA</span> BallGenius</header>
-<div class="leagues" id="leagueBar"></div>
+<header>⚽ WinOffside Demo</header>
 
-<div class="content">
-  <div class="hot-card" id="hotCard"></div>
+<div class="tabs">
+  <button class="active" onclick="showTab(0)">หน้าแรก</button>
+  <button onclick="showTab(1)">โปรแกรม</button>
+  <button onclick="showTab(2)">สลิป (<span id="count">0</span>)</button>
+</div>
 
-  <div class="section-head"><span>■</span> ไฮไลท์ยอดนิยม</div>
-  <div class="highlight-list" id="highlightList"></div>
+<div class="section active">
+  <h3>ยินดีต้อนรับ</h3>
+  <p>ระบบจำลอง Mini App ไม่ใช้ API</p>
+</div>
 
-  <div class="section-head"><span>■</span> ตารางคะแนน</div>
-  <div class="table-box" id="tableBox"></div>
+<div class="section" id="matches"></div>
+
+<div class="section">
+  <div class="slip" id="slip"></div>
+  <input type="number" id="amount" placeholder="ใส่ยอดเดิมพัน">
+  <div class="total">ยอดจ่าย: <span id="payout">0</span> บาท</div>
+  <button class="bet-btn" onclick="placeBet()">ยืนยันเดิมพัน</button>
 </div>
 
 <script>
-Telegram.WebApp.ready();
-Telegram.WebApp.expand();
-
-const LEAGUES = [
-{ name:"พรีเมียร์ลีก", short:"EPL",
-teams:[["Liverpool",40],["Arsenal",42],["Man City",50],["Tottenham",47],["Chelsea",49],["Man United",33]]},
-{ name:"ลาลีกา", short:"LL",
-teams:[["Real Madrid",541],["Barcelona",529],["Atletico",530],["Girona",547]]},
-{ name:"บุนเดสลีกา", short:"BL",
-teams:[["Bayern",157],["Dortmund",165],["Leverkusen",168]]},
-{ name:"กัลโช่", short:"SA",
-teams:[["Inter",505],["Juventus",496],["Milan",489]]},
-{ name:"ลีกเอิง", short:"L1",
-teams:[["PSG",85],["Marseille",81],["Monaco",91]]},
-{ name:"โปรตุเกส", short:"POR",
-teams:[["Benfica",211],["Porto",212]]},
-{ name:"เอเรดิวิซี", short:"NED",
-teams:[["Ajax",194],["PSV",197]]},
-{ name:"ซาอุโปรลีก", short:"SPL",
-teams:[["Al Hilal",2938],["Al Nassr",2939]]}
+const matchesData = [
+  {home:"แมนยู",away:"ลิเวอร์พูล",odds:[1.95,3.20,2.10]},
+  {home:"มาดริด",away:"บาซ่า",odds:[2.00,3.50,1.85]},
+  {home:"บาเยิร์น",away:"ดอร์ทมุนด์",odds:[1.70,3.80,2.50]}
 ];
 
-const leagueBar=document.getElementById("leagueBar");
-const hotCard=document.getElementById("hotCard");
-const highlightList=document.getElementById("highlightList");
-const tableBox=document.getElementById("tableBox");
+let slip = [];
 
-LEAGUES.forEach((l,i)=>{
-const div=document.createElement("div");
-div.className="league"+(i===0?" active":"");
-div.innerHTML=l.short;
-div.onclick=()=>{
-document.querySelectorAll(".league").forEach(x=>x.classList.remove("active"));
-div.classList.add("active");
-render(l);
-};
-leagueBar.appendChild(div);
-});
-
-function render(l){
-
-const home=l.teams[0];
-const away=l.teams[1] || l.teams[0];
-
-hotCard.innerHTML=`
-<div class="hot-head">
-<div><span class="hot-badge">🔥 HOT</span> ${l.name}</div>
-<div>21:00</div>
-</div>
-<div class="match">
-<div class="team">
-<img src="https://media.api-sports.io/football/teams/${home[1]}.png">
-<div class="team-name">${home[0]}</div>
-</div>
-<div class="vs">VS</div>
-<div class="team">
-<img src="https://media.api-sports.io/football/teams/${away[1]}.png">
-<div class="team-name">${away[0]}</div>
-</div>
-</div>
-<a class="watch">คลิกเพื่อรับชมถ่ายทอดสด</a>
-`;
-
-highlightList.innerHTML=l.teams.map((t,i)=>`
-<div class="highlight">
-<img src="https://picsum.photos/400/300?random=${i}">
-<div class="play">▶</div>
-<div class="h-title">${t[0]} ไฮไลท์ล่าสุด</div>
-</div>
-`).join("");
-
-tableBox.innerHTML=`
-<div class="table-head">
-<div>#</div><div>ทีม</div><div class="stat">แข่ง</div>
-<div class="stat">ชนะ</div><div class="stat">เสมอ</div>
-<div class="stat">แพ้</div><div class="pts">คะแนน</div>
-</div>
-${l.teams.map((t,i)=>`
-<div class="row">
-<div class="pos">${i+1}</div>
-<div class="team-row">
-<img src="https://media.api-sports.io/football/teams/${t[1]}.png">
-${t[0]}
-</div>
-<div class="stat">20</div>
-<div class="stat">12</div>
-<div class="stat">4</div>
-<div class="stat">4</div>
-<div class="pts">${40-i}</div>
-</div>
-`).join("")}
-`;
+function showTab(i){
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".tabs button")[i].classList.add("active");
+  document.querySelectorAll(".section")[i].classList.add("active");
 }
 
-render(LEAGUES[0]);
+function renderMatches(){
+  const container = document.getElementById("matches");
+  container.innerHTML="";
+  matchesData.forEach((m,index)=>{
+    container.innerHTML+=`
+      <div class="match">
+        <div class="teams">
+          <span>${m.home}</span>
+          <span>vs</span>
+          <span>${m.away}</span>
+        </div>
+        <div class="odds">
+          <button onclick="addSlip('${m.home}',${m.odds[0]})">${m.odds[0]}</button>
+          <button onclick="addSlip('เสมอ',${m.odds[1]})">${m.odds[1]}</button>
+          <button onclick="addSlip('${m.away}',${m.odds[2]})">${m.odds[2]}</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function addSlip(team,odd){
+  slip.push({team,odd});
+  updateSlip();
+}
+
+function updateSlip(){
+  const container = document.getElementById("slip");
+  container.innerHTML="";
+  let totalOdd = 1;
+  slip.forEach(s=>{
+    totalOdd *= s.odd;
+    container.innerHTML+=`
+      <div class="slip-item">
+        ${s.team} @ ${s.odd}
+      </div>
+    `;
+  });
+  document.getElementById("count").innerText = slip.length;
+  calculate();
+}
+
+function calculate(){
+  const amount = Number(document.getElementById("amount").value);
+  let totalOdd = 1;
+  slip.forEach(s=> totalOdd *= s.odd);
+  document.getElementById("payout").innerText = amount ? (amount * totalOdd).toFixed(2) : 0;
+}
+
+document.getElementById("amount").addEventListener("input",calculate);
+
+function placeBet(){
+  if(slip.length===0) return alert("ยังไม่มีรายการ");
+  alert("เดิมพันสำเร็จ (Demo)");
+  slip=[];
+  updateSlip();
+  document.getElementById("amount").value="";
+  calculate();
+}
+
+renderMatches();
 </script>
 
 </body>
