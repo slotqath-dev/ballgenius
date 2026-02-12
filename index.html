@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
@@ -13,7 +13,6 @@
 :root{
 --red:#e60000;
 --gold:#f5c542;
-
 --bg1:#120000;
 --bg2:#000;
 --card:#120000;
@@ -225,10 +224,11 @@ margin-top:10px;
 overflow-x:auto;
 }
 
+/* ✅ แก้ตรงนี้เท่านั้น */
 .table-head,
 .row{
 display:grid;
-grid-template-columns:40px 1.5fr 40px 40px 40px 40px 50px;
+grid-template-columns:40px 2fr 55px 55px 55px 55px 60px;
 align-items:center;
 }
 
@@ -249,10 +249,13 @@ font-size:13px;
 .top4{background:rgba(245,197,66,0.08);}
 .relegation{background:rgba(230,0,0,0.12);}
 
+/* ✅ กันชื่อทีมชนเลข */
 .team-row{
 display:flex;
 align-items:center;
 gap:8px;
+white-space:nowrap;
+overflow:hidden;
 }
 
 .team-row img{
@@ -294,14 +297,12 @@ font-weight:900;
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
-/* ===== Toggle Theme ===== */
 function toggleTheme(){
 document.body.classList.toggle("light");
 document.querySelector(".theme-toggle").innerText =
 document.body.classList.contains("light") ? "☀" : "🌙";
 }
 
-/* ===== DATA ===== */
 const LEAGUES = [
 { id:39,name:"พรีเมียร์ลีก",teams:[["Liverpool",40],["Arsenal",42],["Man City",50],["Tottenham",47],["Chelsea",49],["Man United",33]]},
 { id:140,name:"ลาลีกา",teams:[["Real Madrid",541],["Barcelona",529],["Girona",547],["Atletico",530],["Betis",543],["Sociedad",548]]},
