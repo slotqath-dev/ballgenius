@@ -294,8 +294,11 @@ font-weight:900;
 </div>
 
 <script>
-Telegram.WebApp.ready();
-Telegram.WebApp.expand();
+if (window.Telegram && Telegram.WebApp) {
+  Telegram.WebApp.ready();
+  Telegram.WebApp.expand();
+}
+;
 
 function toggleTheme(){
 document.body.classList.toggle("light");
