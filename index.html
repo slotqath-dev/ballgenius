@@ -3,63 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WINOFFSIDE DEMO</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}
-body{background:#f3f4f7;color:#222}
+<title>WINOFFSIDE</title>
 
-/* HEADER */
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system}
+body{
+  background:#f2f3f7;
+  overflow-x:hidden;
+}
+.bg-player{
+  position:fixed;
+  bottom:70px;
+  right:0;
+  width:220px;
+  opacity:.12;
+  pointer-events:none;
+}
 header{
-  background:linear-gradient(90deg,#3a0057,#5b007f);
+  background:linear-gradient(90deg,#3b0057,#5c007f);
   color:#fff;
-  padding:16px;
-  font-weight:700;
+  padding:18px 16px;
   font-size:20px;
+  font-weight:700;
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
-.toggle{
+.header-icons{
   background:#ffffff22;
   padding:6px 10px;
   border-radius:20px;
-  font-size:14px;
+  font-size:13px;
 }
 
-/* CONTENT */
-.content{padding:15px;padding-bottom:90px}
+.content{
+  padding:16px;
+  padding-bottom:100px;
+}
+
 .section{display:none}
 .section.active{display:block}
 
-/* LEAGUE TABS */
-.leagues{
-  display:flex;
-  gap:10px;
-  overflow:auto;
-  margin-bottom:15px;
-}
-.league{
-  background:#fff;
-  padding:8px 14px;
-  border-radius:12px;
-  white-space:nowrap;
-  font-size:13px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.05);
-}
-.league.active{
-  background:#ff2d75;
-  color:#fff;
+.title{
+  font-weight:700;
+  margin:10px 0 14px;
+  color:#5c007f;
 }
 
-/* MATCH CARD */
 .card{
   background:#fff;
-  padding:15px;
-  border-radius:15px;
-  margin-bottom:15px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:16px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
 }
-.match{
+
+.match-row{
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -69,63 +68,117 @@ header{
   font-weight:700;
   font-size:18px;
 }
-.btn-main{
+.live-btn{
   margin-top:10px;
   background:linear-gradient(90deg,#ff2d75,#ff4fa3);
   color:#fff;
-  padding:12px;
   text-align:center;
-  border-radius:12px;
+  padding:12px;
+  border-radius:14px;
   font-weight:600;
 }
 
-/* TABLE */
+.league-scroll{
+  display:flex;
+  gap:10px;
+  overflow:auto;
+  margin-bottom:15px;
+}
+.league{
+  background:#fff;
+  padding:8px 14px;
+  border-radius:12px;
+  font-size:13px;
+  white-space:nowrap;
+  box-shadow:0 3px 10px rgba(0,0,0,0.05);
+}
+.league.active{
+  background:#ff2d75;
+  color:#fff;
+}
+
+/* ตารางคะแนน */
 table{
   width:100%;
   border-collapse:collapse;
   font-size:13px;
 }
 th,td{
-  padding:8px;
+  padding:8px 4px;
   border-bottom:1px solid #eee;
   text-align:left;
 }
-th{font-weight:600;color:#777}
-td.points{color:#7b00ff;font-weight:600}
+th{color:#888;font-weight:600}
+td.points{color:#7b00ff;font-weight:700}
 
-/* GRID */
+/* ไฮไลท์ */
 .grid2{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px;
 }
+.highlight{
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 5px 15px rgba(0,0,0,0.06);
+}
+.thumb{
+  height:100px;
+  background:#d9d9d9;
+  position:relative;
+}
+.play{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:36px;height:36px;
+  background:#ff2d75;
+  border-radius:50%;
+}
+.highlight p{
+  font-size:12px;
+  padding:8px;
+}
+
+/* โปรแกรม */
+.date-scroll{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  margin-bottom:12px;
+}
+.date{
+  background:#fff;
+  padding:8px 12px;
+  border-radius:12px;
+  font-size:12px;
+}
+.date.active{
+  background:#ff2d75;
+  color:#fff;
+}
+
+/* ช่องทีวี */
 .grid3{
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
   gap:12px;
 }
-.box{
+.channel{
   background:#fff;
-  border-radius:12px;
-  padding:10px;
+  padding:14px 8px;
+  border-radius:14px;
   text-align:center;
   font-size:12px;
-  box-shadow:0 3px 8px rgba(0,0,0,0.05);
-}
-.thumb{
-  height:80px;
-  background:#ddd;
-  border-radius:10px;
-  margin-bottom:8px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.06);
 }
 
-/* BOTTOM NAV */
+/* bottom nav */
 nav{
   position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:linear-gradient(90deg,#3a0057,#5b007f);
+  bottom:0;left:0;right:0;
+  background:linear-gradient(90deg,#3b0057,#5c007f);
   display:flex;
   justify-content:space-around;
   padding:10px 0;
@@ -141,87 +194,102 @@ nav button{
 }
 nav button.active{
   background:#ff2d75;
-  padding:8px 14px;
-  border-radius:14px;
+  padding:8px 16px;
+  border-radius:16px;
 }
 </style>
 </head>
+
 <body>
+
+<img class="bg-player" src="https://i.imgur.com/6bK6c7P.png">
 
 <header>
   WINOFFSIDE
-  <div class="toggle">🌙 ☀️</div>
+  <div class="header-icons">🌙 ☀️</div>
 </header>
 
 <div class="content">
 
-  <!-- หน้าแรก -->
-  <div class="section active" id="home">
-    <div class="leagues">
-      <div class="league active">พรีเมียร์ลีก</div>
-      <div class="league">ลาลีกา</div>
-      <div class="league">บุนเดสลีกา</div>
-      <div class="league">เซเรีย อา</div>
-    </div>
-
-    <div class="card">
-      <div class="match">
-        <div>แอสตัน วิลล่า</div>
-        <div class="score">1 - 0</div>
-        <div>ไบรท์ตัน</div>
-      </div>
-      <div class="btn-main">คลิกเพื่อรับชมถ่ายทอดสด</div>
-    </div>
-
-    <h4 style="margin:15px 0 10px">ตารางคะแนน</h4>
-    <div class="card">
-      <table>
-        <tr><th>#</th><th>ทีม</th><th>แข่ง</th><th>คะแนน</th></tr>
-        <tr><td>1</td><td>Arsenal</td><td>25</td><td class="points">56</td></tr>
-        <tr><td>2</td><td>Manchester City</td><td>26</td><td class="points">53</td></tr>
-        <tr><td>3</td><td>Aston Villa</td><td>26</td><td class="points">50</td></tr>
-        <tr><td>4</td><td>Manchester United</td><td>26</td><td class="points">45</td></tr>
-      </table>
-    </div>
+<!-- ถ่ายทอดสด -->
+<div class="section active" id="live">
+  <div class="league-scroll">
+    <div class="league active">พรีเมียร์ลีก</div>
+    <div class="league">ลาลีกา</div>
+    <div class="league">บุนเดสลีกา</div>
+    <div class="league">เซเรีย อา</div>
   </div>
 
-  <!-- ไฮไลท์ -->
-  <div class="section" id="highlights">
-    <div class="grid2">
-      <div class="box"><div class="thumb"></div>ไฮไลท์ 1</div>
-      <div class="box"><div class="thumb"></div>ไฮไลท์ 2</div>
-      <div class="box"><div class="thumb"></div>ไฮไลท์ 3</div>
-      <div class="box"><div class="thumb"></div>ไฮไลท์ 4</div>
+  <div class="card">
+    <div class="match-row">
+      <div>แอสตัน วิลล่า</div>
+      <div class="score">1 - 0</div>
+      <div>ไบรท์ตัน</div>
     </div>
+    <div class="live-btn">คลิกเพื่อรับชมถ่ายทอดสด</div>
   </div>
 
-  <!-- โปรแกรม -->
-  <div class="section" id="schedule">
-    <div class="card">
-      <div class="match"><div>West Ham</div><div class="score">1 - 0</div><div>Fulham</div></div>
+  <div class="title">ตารางคะแนน</div>
+  <div class="card">
+    <table>
+      <tr><th>#</th><th>ทีม</th><th>แข่ง</th><th>คะแนน</th></tr>
+      <tr><td>1</td><td>Arsenal</td><td>25</td><td class="points">56</td></tr>
+      <tr><td>2</td><td>Manchester City</td><td>26</td><td class="points">53</td></tr>
+      <tr><td>3</td><td>Aston Villa</td><td>26</td><td class="points">50</td></tr>
+      <tr><td>4</td><td>Manchester United</td><td>26</td><td class="points">45</td></tr>
+      <tr><td>5</td><td>Chelsea</td><td>26</td><td class="points">44</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ไฮไลท์ -->
+<div class="section" id="highlight">
+  <div class="grid2">
+    <div class="highlight">
+      <div class="thumb"><div class="play"></div></div>
+      <p>ไฮไลท์ แมนยู 2-1 ลิเวอร์พูล</p>
     </div>
-    <div class="card">
-      <div class="match"><div>Inter</div><div class="score">2 - 1</div><div>Milan</div></div>
+    <div class="highlight">
+      <div class="thumb"><div class="play"></div></div>
+      <p>ไฮไลท์ บาเยิร์น 3-0 ดอร์ทมุนด์</p>
     </div>
+  </div>
+</div>
+
+<!-- โปรแกรม -->
+<div class="section" id="schedule">
+  <div class="date-scroll">
+    <div class="date">10/2</div>
+    <div class="date active">วันนี้</div>
+    <div class="date">12/2</div>
   </div>
 
-  <!-- เพิ่มเติม -->
-  <div class="section" id="more">
-    <div class="grid3">
-      <div class="box">AIS PLAY 1</div>
-      <div class="box">SIAM 1</div>
-      <div class="box">beIN 1</div>
-      <div class="box">True Premier 3</div>
-      <div class="box">SIAM 2</div>
-      <div class="box">Digi Sport</div>
+  <div class="card">
+    <div class="match-row">
+      <div>West Ham</div>
+      <div class="score">1 - 0</div>
+      <div>Fulham</div>
     </div>
   </div>
+</div>
+
+<!-- เพิ่มเติม -->
+<div class="section" id="more">
+  <div class="grid3">
+    <div class="channel">AIS PLAY 1</div>
+    <div class="channel">SIAM 1</div>
+    <div class="channel">beIN 1</div>
+    <div class="channel">True Premier 3</div>
+    <div class="channel">SIAM 2</div>
+    <div class="channel">Digi Sport</div>
+  </div>
+</div>
 
 </div>
 
 <nav>
-  <button class="active" onclick="show('home',this)">ถ่ายทอด</button>
-  <button onclick="show('highlights',this)">ไฮไลท์</button>
+  <button class="active" onclick="show('live',this)">ถ่ายทอด</button>
+  <button onclick="show('highlight',this)">ไฮไลท์</button>
   <button onclick="show('schedule',this)">โปรแกรม</button>
   <button onclick="show('more',this)">เพิ่มเติม</button>
 </nav>
