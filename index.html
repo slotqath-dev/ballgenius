@@ -3,200 +3,236 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WinOffside Demo</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
+<title>WINOFFSIDE DEMO</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
-body{background:#0f0f0f;color:#fff}
-header{
-  padding:15px;
-  text-align:center;
-  font-size:20px;
-  font-weight:bold;
-  background:#111;
-  border-bottom:1px solid #222;
-}
-.tabs{
-  display:flex;
-  background:#111;
-}
-.tabs button{
-  flex:1;
-  padding:12px;
-  background:none;
-  border:none;
-  color:#aaa;
-  font-size:14px;
-}
-.tabs button.active{
-  color:#fff;
-  border-bottom:2px solid #e60000;
-}
-.section{display:none;padding:15px}
-.section.active{display:block}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}
+body{background:#f3f4f7;color:#222}
 
-.match{
-  background:#181818;
-  padding:12px;
-  margin-bottom:10px;
-  border-radius:10px;
-}
-.teams{
+/* HEADER */
+header{
+  background:linear-gradient(90deg,#3a0057,#5b007f);
+  color:#fff;
+  padding:16px;
+  font-weight:700;
+  font-size:20px;
   display:flex;
   justify-content:space-between;
-  margin-bottom:10px;
+  align-items:center;
 }
-.odds{
-  display:flex;
-  gap:10px;
-}
-.odds button{
-  flex:1;
-  padding:8px;
-  background:#222;
-  border:none;
-  color:#fff;
-  border-radius:6px;
-}
-.odds button:hover{
-  background:#e60000;
+.toggle{
+  background:#ffffff22;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:14px;
 }
 
-.slip{
-  background:#181818;
-  padding:10px;
-  border-radius:10px;
+/* CONTENT */
+.content{padding:15px;padding-bottom:90px}
+.section{display:none}
+.section.active{display:block}
+
+/* LEAGUE TABS */
+.leagues{
+  display:flex;
+  gap:10px;
+  overflow:auto;
+  margin-bottom:15px;
 }
-.slip-item{
-  border-bottom:1px solid #222;
-  padding:8px 0;
+.league{
+  background:#fff;
+  padding:8px 14px;
+  border-radius:12px;
+  white-space:nowrap;
+  font-size:13px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.05);
 }
-.total{
+.league.active{
+  background:#ff2d75;
+  color:#fff;
+}
+
+/* MATCH CARD */
+.card{
+  background:#fff;
+  padding:15px;
+  border-radius:15px;
+  margin-bottom:15px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+.match{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:8px 0;
+}
+.score{
+  font-weight:700;
+  font-size:18px;
+}
+.btn-main{
   margin-top:10px;
-  font-weight:bold;
+  background:linear-gradient(90deg,#ff2d75,#ff4fa3);
+  color:#fff;
+  padding:12px;
+  text-align:center;
+  border-radius:12px;
+  font-weight:600;
 }
-input{
+
+/* TABLE */
+table{
   width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+th,td{
   padding:8px;
-  margin-top:10px;
-  border:none;
-  border-radius:6px;
+  border-bottom:1px solid #eee;
+  text-align:left;
 }
-.bet-btn{
-  width:100%;
-  margin-top:10px;
+th{font-weight:600;color:#777}
+td.points{color:#7b00ff;font-weight:600}
+
+/* GRID */
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.grid3{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:12px;
+}
+.box{
+  background:#fff;
+  border-radius:12px;
   padding:10px;
-  background:#e60000;
+  text-align:center;
+  font-size:12px;
+  box-shadow:0 3px 8px rgba(0,0,0,0.05);
+}
+.thumb{
+  height:80px;
+  background:#ddd;
+  border-radius:10px;
+  margin-bottom:8px;
+}
+
+/* BOTTOM NAV */
+nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:linear-gradient(90deg,#3a0057,#5b007f);
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+}
+nav button{
+  background:none;
   border:none;
   color:#fff;
-  border-radius:8px;
-  font-weight:bold;
+  font-size:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+nav button.active{
+  background:#ff2d75;
+  padding:8px 14px;
+  border-radius:14px;
 }
 </style>
 </head>
-
 <body>
 
-<header>⚽ WinOffside Demo</header>
+<header>
+  WINOFFSIDE
+  <div class="toggle">🌙 ☀️</div>
+</header>
 
-<div class="tabs">
-  <button class="active" onclick="showTab(0)">หน้าแรก</button>
-  <button onclick="showTab(1)">โปรแกรม</button>
-  <button onclick="showTab(2)">สลิป (<span id="count">0</span>)</button>
+<div class="content">
+
+  <!-- หน้าแรก -->
+  <div class="section active" id="home">
+    <div class="leagues">
+      <div class="league active">พรีเมียร์ลีก</div>
+      <div class="league">ลาลีกา</div>
+      <div class="league">บุนเดสลีกา</div>
+      <div class="league">เซเรีย อา</div>
+    </div>
+
+    <div class="card">
+      <div class="match">
+        <div>แอสตัน วิลล่า</div>
+        <div class="score">1 - 0</div>
+        <div>ไบรท์ตัน</div>
+      </div>
+      <div class="btn-main">คลิกเพื่อรับชมถ่ายทอดสด</div>
+    </div>
+
+    <h4 style="margin:15px 0 10px">ตารางคะแนน</h4>
+    <div class="card">
+      <table>
+        <tr><th>#</th><th>ทีม</th><th>แข่ง</th><th>คะแนน</th></tr>
+        <tr><td>1</td><td>Arsenal</td><td>25</td><td class="points">56</td></tr>
+        <tr><td>2</td><td>Manchester City</td><td>26</td><td class="points">53</td></tr>
+        <tr><td>3</td><td>Aston Villa</td><td>26</td><td class="points">50</td></tr>
+        <tr><td>4</td><td>Manchester United</td><td>26</td><td class="points">45</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ไฮไลท์ -->
+  <div class="section" id="highlights">
+    <div class="grid2">
+      <div class="box"><div class="thumb"></div>ไฮไลท์ 1</div>
+      <div class="box"><div class="thumb"></div>ไฮไลท์ 2</div>
+      <div class="box"><div class="thumb"></div>ไฮไลท์ 3</div>
+      <div class="box"><div class="thumb"></div>ไฮไลท์ 4</div>
+    </div>
+  </div>
+
+  <!-- โปรแกรม -->
+  <div class="section" id="schedule">
+    <div class="card">
+      <div class="match"><div>West Ham</div><div class="score">1 - 0</div><div>Fulham</div></div>
+    </div>
+    <div class="card">
+      <div class="match"><div>Inter</div><div class="score">2 - 1</div><div>Milan</div></div>
+    </div>
+  </div>
+
+  <!-- เพิ่มเติม -->
+  <div class="section" id="more">
+    <div class="grid3">
+      <div class="box">AIS PLAY 1</div>
+      <div class="box">SIAM 1</div>
+      <div class="box">beIN 1</div>
+      <div class="box">True Premier 3</div>
+      <div class="box">SIAM 2</div>
+      <div class="box">Digi Sport</div>
+    </div>
+  </div>
+
 </div>
 
-<div class="section active">
-  <h3>ยินดีต้อนรับ</h3>
-  <p>ระบบจำลอง Mini App ไม่ใช้ API</p>
-</div>
-
-<div class="section" id="matches"></div>
-
-<div class="section">
-  <div class="slip" id="slip"></div>
-  <input type="number" id="amount" placeholder="ใส่ยอดเดิมพัน">
-  <div class="total">ยอดจ่าย: <span id="payout">0</span> บาท</div>
-  <button class="bet-btn" onclick="placeBet()">ยืนยันเดิมพัน</button>
-</div>
+<nav>
+  <button class="active" onclick="show('home',this)">ถ่ายทอด</button>
+  <button onclick="show('highlights',this)">ไฮไลท์</button>
+  <button onclick="show('schedule',this)">โปรแกรม</button>
+  <button onclick="show('more',this)">เพิ่มเติม</button>
+</nav>
 
 <script>
-const matchesData = [
-  {home:"แมนยู",away:"ลิเวอร์พูล",odds:[1.95,3.20,2.10]},
-  {home:"มาดริด",away:"บาซ่า",odds:[2.00,3.50,1.85]},
-  {home:"บาเยิร์น",away:"ดอร์ทมุนด์",odds:[1.70,3.80,2.50]}
-];
-
-let slip = [];
-
-function showTab(i){
-  document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+function show(id,el){
   document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-  document.querySelectorAll(".tabs button")[i].classList.add("active");
-  document.querySelectorAll(".section")[i].classList.add("active");
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  el.classList.add("active");
 }
-
-function renderMatches(){
-  const container = document.getElementById("matches");
-  container.innerHTML="";
-  matchesData.forEach((m,index)=>{
-    container.innerHTML+=`
-      <div class="match">
-        <div class="teams">
-          <span>${m.home}</span>
-          <span>vs</span>
-          <span>${m.away}</span>
-        </div>
-        <div class="odds">
-          <button onclick="addSlip('${m.home}',${m.odds[0]})">${m.odds[0]}</button>
-          <button onclick="addSlip('เสมอ',${m.odds[1]})">${m.odds[1]}</button>
-          <button onclick="addSlip('${m.away}',${m.odds[2]})">${m.odds[2]}</button>
-        </div>
-      </div>
-    `;
-  });
-}
-
-function addSlip(team,odd){
-  slip.push({team,odd});
-  updateSlip();
-}
-
-function updateSlip(){
-  const container = document.getElementById("slip");
-  container.innerHTML="";
-  let totalOdd = 1;
-  slip.forEach(s=>{
-    totalOdd *= s.odd;
-    container.innerHTML+=`
-      <div class="slip-item">
-        ${s.team} @ ${s.odd}
-      </div>
-    `;
-  });
-  document.getElementById("count").innerText = slip.length;
-  calculate();
-}
-
-function calculate(){
-  const amount = Number(document.getElementById("amount").value);
-  let totalOdd = 1;
-  slip.forEach(s=> totalOdd *= s.odd);
-  document.getElementById("payout").innerText = amount ? (amount * totalOdd).toFixed(2) : 0;
-}
-
-document.getElementById("amount").addEventListener("input",calculate);
-
-function placeBet(){
-  if(slip.length===0) return alert("ยังไม่มีรายการ");
-  alert("เดิมพันสำเร็จ (Demo)");
-  slip=[];
-  updateSlip();
-  document.getElementById("amount").value="";
-  calculate();
-}
-
-renderMatches();
 </script>
 
 </body>
