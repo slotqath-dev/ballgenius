@@ -1,17 +1,16 @@
+# QA BallGenius — Ultra Premium Version
+
+```html
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>QA BallGenius X</title>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>QA BallGenius Ultra</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-
 *{
 margin:0;
 padding:0;
@@ -21,193 +20,169 @@ font-family:'Kanit',sans-serif;
 }
 
 :root{
---red:#ff1744;
---red2:#850000;
+--red:#ff1f3d;
+--red2:#9b0000;
 --gold:#ffcc4d;
 --bg:#050505;
---card:#111111;
---soft:#181818;
---text:#fff;
---gray:#9f9f9f;
+--card:#101010;
+--soft:#171717;
+--border:#2d2d2d;
+--text:#ffffff;
+--gray:#aaaaaa;
 --green:#00d26a;
+--shadow:0 10px 30px rgba(255,0,0,.18);
+}
+
+body.light{
+--bg:#f3f3f3;
+--card:#ffffff;
+--soft:#f1f1f1;
+--border:#dddddd;
+--text:#111111;
+--gray:#666666;
+--shadow:0 10px 25px rgba(0,0,0,.08);
 }
 
 body{
 background:
-radial-gradient(circle at top right,rgba(255,0,0,.15),transparent 25%),
-radial-gradient(circle at bottom left,rgba(255,180,0,.08),transparent 25%),
-#050505;
-
-color:#fff;
-overflow-x:hidden;
+radial-gradient(circle at top right, rgba(255,0,0,.12), transparent 30%),
+radial-gradient(circle at bottom left, rgba(255,200,0,.08), transparent 25%),
+var(--bg);
+color:var(--text);
 min-height:100vh;
+overflow-x:hidden;
+transition:.35s;
 }
 
 body::before{
 content:'';
 position:fixed;
 inset:0;
-
 background:
-linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
-linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
-
-background-size:24px 24px;
-
+linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+background-size:28px 28px;
 pointer-events:none;
-opacity:.3;
+opacity:.35;
 }
-
-/* HEADER */
 
 header{
 position:sticky;
 top:0;
 z-index:999;
-
 display:flex;
-justify-content:space-between;
 align-items:center;
-
+justify-content:space-between;
 padding:16px 18px;
-
-background:rgba(0,0,0,.55);
-
-backdrop-filter:blur(18px);
-
+backdrop-filter:blur(16px);
+background:rgba(0,0,0,.45);
 border-bottom:1px solid rgba(255,255,255,.05);
 }
 
 .logo{
-font-size:26px;
+font-size:24px;
 font-weight:900;
+letter-spacing:.5px;
 }
 
 .logo span{
 color:var(--red);
-text-shadow:0 0 18px rgba(255,0,0,.7);
+text-shadow:0 0 18px rgba(255,0,0,.55);
 }
 
 .header-right{
 display:flex;
 gap:10px;
+align-items:center;
 }
 
 .icon-btn{
 width:42px;
 height:42px;
-
+border-radius:14px;
+border:1px solid rgba(255,255,255,.06);
+background:rgba(255,255,255,.04);
 display:flex;
 align-items:center;
 justify-content:center;
-
-background:rgba(255,255,255,.05);
-
-border-radius:14px;
-
-border:1px solid rgba(255,255,255,.08);
-
 font-size:18px;
+cursor:pointer;
+transition:.25s;
 }
 
-/* PAGE */
-
-.page{
-display:none;
-padding-bottom:120px;
+.icon-btn:hover{
+transform:translateY(-2px);
+background:rgba(255,0,0,.15);
 }
-
-.page.active{
-display:block;
-}
-
-/* HERO */
 
 .hero{
-padding:18px;
+padding:20px 18px 8px;
 }
 
 .hero-card{
 position:relative;
-
 overflow:hidden;
-
-background:
-linear-gradient(135deg,rgba(255,20,60,.22),rgba(0,0,0,.72)),
-#101010;
-
-border-radius:34px;
-
+border-radius:30px;
 padding:22px;
-
-border:1px solid rgba(255,255,255,.06);
-
-box-shadow:
-0 0 30px rgba(255,0,0,.12),
-0 12px 40px rgba(0,0,0,.35);
+background:
+linear-gradient(135deg, rgba(255,30,60,.22), rgba(0,0,0,.6)),
+var(--card);
+box-shadow:var(--shadow);
+border:1px solid rgba(255,255,255,.05);
 }
 
 .hero-card::after{
 content:'';
 position:absolute;
-
-width:260px;
-height:260px;
-
-background:
-radial-gradient(circle,rgba(255,255,255,.12),transparent 70%);
-
-top:-120px;
-right:-100px;
+width:240px;
+height:240px;
+background:radial-gradient(circle, rgba(255,255,255,.18), transparent 70%);
+right:-80px;
+top:-80px;
 }
 
 .live-row{
 display:flex;
 justify-content:space-between;
 align-items:center;
-
 margin-bottom:18px;
 }
 
 .live-badge{
+background:var(--red);
+padding:7px 14px;
+border-radius:999px;
+font-size:13px;
+font-weight:800;
 display:flex;
 align-items:center;
 gap:8px;
-
-background:var(--red);
-
-padding:7px 14px;
-
-border-radius:999px;
-
-font-size:13px;
-font-weight:800;
+box-shadow:0 0 18px rgba(255,0,0,.5);
 }
 
-.dot{
+.live-dot{
 width:8px;
 height:8px;
-
-background:#fff;
-
 border-radius:50%;
-
+background:#fff;
 animation:blink 1s infinite;
 }
 
 @keyframes blink{
-50%{
-opacity:.2;
-transform:scale(.6);
+50%{opacity:.25;transform:scale(.7)}
 }
+
+.live-time{
+font-size:13px;
+color:#ddd;
 }
 
 .match{
 display:grid;
 grid-template-columns:1fr 120px 1fr;
-
 gap:12px;
 align-items:center;
+margin-bottom:18px;
 }
 
 .team{
@@ -215,14 +190,12 @@ text-align:center;
 }
 
 .team img{
-width:76px;
-height:76px;
-
+width:78px;
+height:78px;
 background:#fff;
-
 padding:10px;
-
 border-radius:22px;
+box-shadow:0 10px 18px rgba(0,0,0,.2);
 }
 
 .team-name{
@@ -231,134 +204,78 @@ font-size:14px;
 font-weight:700;
 }
 
-.form{
+.team-form{
 margin-top:5px;
 font-size:11px;
-color:#aaa;
+color:#bbb;
 }
 
 .score-box{
-background:rgba(255,255,255,.05);
-
+background:rgba(255,255,255,.06);
 border:1px solid rgba(255,255,255,.08);
-
-border-radius:24px;
-
+border-radius:22px;
 padding:18px 10px;
-
 text-align:center;
+backdrop-filter:blur(12px);
 }
 
 .score{
-font-size:40px;
+font-size:36px;
 font-weight:900;
+line-height:1;
 }
 
 .score span{
 color:var(--gold);
 }
 
-.match-status{
+.vs{
 margin-top:5px;
 font-size:12px;
 color:#aaa;
-}
-
-/* AI */
-
-.ai-box{
-margin-top:18px;
-
-background:rgba(255,255,255,.05);
-
-padding:16px;
-
-border-radius:22px;
-
-border:1px solid rgba(255,255,255,.08);
-}
-
-.ai-head{
-display:flex;
-justify-content:space-between;
-margin-bottom:12px;
-}
-
-.ai-title{
-font-size:15px;
-font-weight:800;
-color:var(--gold);
-}
-
-.ai-bar{
-height:12px;
-background:#222;
-border-radius:999px;
-overflow:hidden;
-}
-
-.ai-fill{
-height:100%;
-width:68%;
-
-background:
-linear-gradient(90deg,#ff1744,#ffcc4d);
-
-border-radius:999px;
-}
-
-.predict{
-margin-top:12px;
-font-size:14px;
 font-weight:700;
 }
 
 .watch-btn{
 width:100%;
-
-margin-top:18px;
-
 border:none;
-
 padding:15px;
-
 border-radius:18px;
-
 font-size:15px;
 font-weight:800;
-
 color:#fff;
-
-background:
-linear-gradient(90deg,#ff1744,#850000);
+background:linear-gradient(90deg,var(--red),#7f0000);
+box-shadow:0 10px 25px rgba(255,0,0,.35);
+cursor:pointer;
+transition:.25s;
 }
 
-/* SECTION */
-
-.section{
-padding:0 18px;
-margin-top:18px;
+.watch-btn:hover{
+transform:translateY(-2px) scale(1.01);
 }
 
-.title{
+.leagues-wrap{
+padding:18px;
+}
+
+.section-title{
 font-size:18px;
 font-weight:900;
 margin-bottom:14px;
+display:flex;
+align-items:center;
+gap:10px;
 }
 
-.title span{
+.section-title span{
 color:var(--red);
 }
-
-/* LEAGUES */
 
 .leagues{
 display:flex;
 gap:14px;
-
-overflow:auto;
-
-padding-bottom:6px;
+overflow-x:auto;
+padding-bottom:4px;
 }
 
 .leagues::-webkit-scrollbar{
@@ -366,38 +283,32 @@ display:none;
 }
 
 .league{
-min-width:84px;
-
-background:#101010;
-
-border-radius:22px;
-
-padding:12px 10px;
-
-text-align:center;
-
+min-width:78px;
+background:var(--card);
 border:1px solid rgba(255,255,255,.05);
-
+border-radius:22px;
+padding:12px 10px;
+text-align:center;
 cursor:pointer;
-
 transition:.25s;
 }
 
 .league.active{
-border-color:rgba(255,0,0,.45);
+background:linear-gradient(180deg, rgba(255,0,0,.2), rgba(0,0,0,.2));
+border-color:rgba(255,0,0,.5);
+box-shadow:0 10px 22px rgba(255,0,0,.22);
+}
 
-box-shadow:
-0 0 20px rgba(255,0,0,.18);
+.league:hover{
+transform:translateY(-3px);
 }
 
 .league img{
-width:44px;
-height:44px;
-
+width:42px;
+height:42px;
+object-fit:contain;
 background:#fff;
-
 padding:6px;
-
 border-radius:14px;
 }
 
@@ -405,169 +316,143 @@ border-radius:14px;
 margin-top:8px;
 font-size:11px;
 font-weight:700;
+white-space:nowrap;
 }
 
-/* STATS */
+.content{
+padding:0 18px 120px;
+}
 
-.stats{
+.cards{
 display:grid;
-grid-template-columns:1fr 1fr;
-
+grid-template-columns:repeat(2,1fr);
 gap:14px;
-
-padding:18px;
+margin-bottom:22px;
 }
 
-.stat-card{
-background:#101010;
-
+.small-card{
+background:var(--card);
 border-radius:24px;
-
 padding:16px;
-
 border:1px solid rgba(255,255,255,.05);
+box-shadow:var(--shadow);
 }
 
-.stat-label{
+.small-label{
 font-size:12px;
-color:#999;
+color:var(--gray);
+margin-bottom:8px;
 }
 
-.stat-value{
-margin-top:8px;
-
-font-size:28px;
+.small-value{
+font-size:26px;
 font-weight:900;
 }
 
-/* HIGHLIGHT */
+.green{color:var(--green)}
+.gold{color:var(--gold)}
 
-.highlights{
+.highlight-list{
 display:flex;
 gap:16px;
-overflow:auto;
-padding-bottom:6px;
+overflow-x:auto;
+padding-bottom:4px;
+margin-bottom:26px;
 }
 
-.highlights::-webkit-scrollbar{
+.highlight-list::-webkit-scrollbar{
 display:none;
 }
 
 .highlight{
 position:relative;
-
 min-width:240px;
 height:170px;
-
-overflow:hidden;
-
 border-radius:24px;
+overflow:hidden;
+background:var(--card);
 }
 
 .highlight img{
 width:100%;
 height:100%;
 object-fit:cover;
-
-filter:brightness(.75);
+filter:brightness(.78);
 }
 
 .highlight::after{
 content:'';
 position:absolute;
 inset:0;
-
-background:
-linear-gradient(180deg,transparent,rgba(0,0,0,.85));
+background:linear-gradient(180deg, transparent, rgba(0,0,0,.85));
 }
 
-.play{
+.play-btn{
 position:absolute;
-
 top:50%;
 left:50%;
-
 transform:translate(-50%,-50%);
-
 width:58px;
 height:58px;
-
+border-radius:50%;
+background:rgba(255,0,0,.9);
 display:flex;
 align-items:center;
 justify-content:center;
-
-background:rgba(255,0,0,.92);
-
-border-radius:50%;
-
 font-size:24px;
-
 z-index:2;
+box-shadow:0 0 25px rgba(255,0,0,.45);
 }
 
 .highlight-title{
 position:absolute;
-
 left:14px;
 bottom:14px;
-
 z-index:2;
-
-font-size:14px;
 font-weight:700;
+font-size:14px;
 }
 
-/* TABLE */
-
-.table{
-margin:18px;
-
-background:#101010;
-
+.table-card{
+background:var(--card);
 border-radius:28px;
-
 padding:16px;
-
-overflow:auto;
-
 border:1px solid rgba(255,255,255,.05);
+box-shadow:var(--shadow);
+overflow-x:auto;
 }
 
 .table-title{
 font-size:20px;
 font-weight:900;
-
+margin-bottom:16px;
 color:var(--gold);
-
-margin-bottom:14px;
 }
 
 .table-head,
 .row{
 display:grid;
 grid-template-columns:36px 2fr 52px 52px 52px 52px 60px;
-
 align-items:center;
 }
 
 .table-head{
 font-size:11px;
+text-transform:uppercase;
+letter-spacing:.5px;
 color:#999;
-
 padding-bottom:10px;
 }
 
 .row{
-padding:13px 0;
-
+padding:12px 0;
 border-bottom:1px solid rgba(255,255,255,.05);
-
 font-size:13px;
 font-weight:600;
 }
 
 .row:last-child{
-border:none;
+border-bottom:none;
 }
 
 .top4{
@@ -582,21 +467,16 @@ background:rgba(255,0,0,.08);
 display:flex;
 align-items:center;
 gap:10px;
-
 overflow:hidden;
 white-space:nowrap;
 }
 
 .team-row img{
-width:26px;
-height:26px;
-
+width:24px;
+height:24px;
 background:#fff;
-
 padding:3px;
-
 border-radius:8px;
-
 flex-shrink:0;
 }
 
@@ -606,57 +486,27 @@ font-weight:900;
 color:var(--gold);
 }
 
-/* LIVE PAGE */
-
-.live-card{
-margin:18px;
-
-background:#101010;
-
-border-radius:24px;
-
-padding:18px;
-
-border:1px solid rgba(255,255,255,.05);
-}
-
-/* BOTTOM NAV */
-
 .bottom-nav{
 position:fixed;
-
 left:50%;
 transform:translateX(-50%);
-
 bottom:16px;
-
 width:calc(100% - 24px);
 max-width:520px;
-
 background:rgba(15,15,15,.9);
-
 backdrop-filter:blur(18px);
-
 border:1px solid rgba(255,255,255,.05);
-
 padding:12px 10px;
-
-border-radius:28px;
-
+border-radius:26px;
 display:grid;
 grid-template-columns:repeat(4,1fr);
-
 z-index:999;
 }
 
 .nav-item{
 text-align:center;
-
 font-size:11px;
-
-color:#999;
-
-cursor:pointer;
+color:#bbb;
 }
 
 .nav-item.active{
@@ -670,7 +520,6 @@ margin-bottom:4px;
 }
 
 @media(max-width:480px){
-
 .match{
 grid-template-columns:1fr 100px 1fr;
 }
@@ -681,160 +530,92 @@ height:66px;
 }
 
 .score{
-font-size:30px;
+font-size:28px;
 }
 
+.cards{
+grid-template-columns:1fr 1fr;
 }
-
+}
 </style>
 </head>
 
 <body>
 
 <header>
-
-<div class="logo">
-<span>QA</span> BallGenius
-</div>
+<div class="logo"><span>QA</span> BallGenius</div>
 
 <div class="header-right">
 <div class="icon-btn">🔔</div>
-<div class="icon-btn">⚙️</div>
+<div class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</div>
 </div>
-
 </header>
 
-<!-- HOME -->
-
-<div class="page active" id="homePage">
-
 <section class="hero">
-
 <div class="hero-card" id="heroCard"></div>
-
 </section>
 
-<section class="section">
-
-<div class="title">
-<span>■</span> ลีกยอดนิยม
-</div>
-
+<section class="leagues-wrap">
+<div class="section-title"><span>■</span> ลีกยอดนิยม</div>
 <div class="leagues" id="leagueBar"></div>
-
 </section>
 
-<section class="stats">
+<div class="content">
 
-<div class="stat-card">
-<div class="stat-label">
-แมตช์วันนี้
+<div class="cards">
+<div class="small-card">
+<div class="small-label">แมตช์วันนี้</div>
+<div class="small-value">18</div>
 </div>
 
-<div class="stat-value">
-18
-</div>
-</div>
-
-<div class="stat-card">
-<div class="stat-label">
-LIVE ตอนนี้
-</div>
-
-<div class="stat-value" style="color:#00d26a;">
-6
+<div class="small-card">
+<div class="small-label">LIVE ตอนนี้</div>
+<div class="small-value green">6</div>
 </div>
 </div>
 
-</section>
+<div class="section-title"><span>■</span> ไฮไลท์ล่าสุด</div>
+<div class="highlight-list" id="highlightList"></div>
 
-<section class="section">
-
-<div class="title">
-<span>■</span> ไฮไลท์ล่าสุด
-</div>
-
-<div class="highlights" id="highlights"></div>
-
-</section>
-
-</div>
-
-<!-- LIVE -->
-
-<div class="page" id="livePage">
-
-<div class="live-card">
-<h2>🔴 LIVE MATCH</h2>
-<br>
-<p>Liverpool 2 - 1 Arsenal</p>
-<p>Real Madrid 1 - 0 Barcelona</p>
-<p>Bayern 3 - 1 Dortmund</p>
+<div class="table-card">
+<div class="table-title" id="leagueTitle"></div>
+<div id="tableBox"></div>
 </div>
 
 </div>
-
-<!-- TABLE -->
-
-<div class="page" id="tablePage">
-
-<section class="table">
-
-<div class="table-title" id="tableTitle"></div>
-
-<div id="tableContent"></div>
-
-</section>
-
-</div>
-
-<!-- HIGHLIGHT -->
-
-<div class="page" id="highlightPage">
-
-<section class="section">
-
-<div class="title">
-<span>■</span> ไฮไลท์ยอดนิยม
-</div>
-
-<div class="highlights" id="highlightPageList"></div>
-
-</section>
-
-</div>
-
-<!-- BOTTOM NAV -->
 
 <div class="bottom-nav">
-
-<div class="nav-item active" onclick="showPage('homePage',this)">
+<div class="nav-item active">
 <div class="nav-icon">⚽</div>
 หน้าหลัก
 </div>
 
-<div class="nav-item" onclick="showPage('livePage',this)">
+<div class="nav-item">
 <div class="nav-icon">📺</div>
 LIVE
 </div>
 
-<div class="nav-item" onclick="showPage('tablePage',this)">
+<div class="nav-item">
 <div class="nav-icon">📊</div>
 ตาราง
 </div>
 
-<div class="nav-item" onclick="showPage('highlightPage',this)">
+<div class="nav-item">
 <div class="nav-icon">🔥</div>
 ไฮไลท์
 </div>
-
 </div>
 
 <script>
-
 if(window.Telegram && Telegram.WebApp){
 Telegram.WebApp.ready();
 Telegram.WebApp.expand();
+}
+
+function toggleTheme(){
+document.body.classList.toggle('light');
+document.getElementById('themeBtn').innerText=
+document.body.classList.contains('light') ? '☀️' : '🌙';
 }
 
 const LEAGUES=[
@@ -876,41 +657,71 @@ teams:[
 ['Stuttgart',172],
 ['Frankfurt',169]
 ]
+},
+
+{
+id:135,
+name:'กัลโช่',
+teams:[
+['Inter',505],
+['Juventus',496],
+['Milan',489],
+['Roma',497],
+['Napoli',492],
+['Atalanta',499]
+]
+},
+
+{
+id:61,
+name:'ลีกเอิง',
+teams:[
+['PSG',85],
+['Marseille',81],
+['Monaco',91],
+['Lyon',80],
+['Nice',84],
+['Lille',79]
+]
+},
+
+{
+id:203,
+name:'ซาอุโปรลีก',
+teams:[
+['Al Hilal',2938],
+['Al Nassr',2939],
+['Al Ittihad',2940],
+['Al Ahli',2942],
+['Al Shabab',2941],
+['Al Ettifaq',2945]
+]
 }
 
 ];
 
-const leagueBar=document.getElementById('leagueBar');
 const heroCard=document.getElementById('heroCard');
-const tableContent=document.getElementById('tableContent');
-const tableTitle=document.getElementById('tableTitle');
-const highlights=document.getElementById('highlights');
-const highlightPageList=document.getElementById('highlightPageList');
+const leagueBar=document.getElementById('leagueBar');
+const highlightList=document.getElementById('highlightList');
+const tableBox=document.getElementById('tableBox');
+const leagueTitle=document.getElementById('leagueTitle');
 
 LEAGUES.forEach((league,index)=>{
-
 const div=document.createElement('div');
-
-div.className='league'+(index===0?' active':'');
+div.className='league'+(index===0 ? ' active' : '');
 
 div.innerHTML=`
 <img src="https://media.api-sports.io/football/leagues/${league.id}.png">
 <div class="league-name">${league.name}</div>
 `;
 
-div.onclick=()=>{
-
-document.querySelectorAll('.league')
-.forEach(x=>x.classList.remove('active'));
-
-div.classList.add('active');
-
-renderLeague(league);
-
-};
-
 leagueBar.appendChild(div);
 
+ div.onclick=()=>{
+ document.querySelectorAll('.league').forEach(x=>x.classList.remove('active'));
+ div.classList.add('active');
+ renderLeague(league);
+ }
 });
 
 function renderLeague(league){
@@ -919,18 +730,13 @@ const home=league.teams[0];
 const away=league.teams[1];
 
 heroCard.innerHTML=`
-
 <div class="live-row">
-
 <div class="live-badge">
-<div class="dot"></div>
+<div class="live-dot"></div>
 LIVE MATCH
 </div>
 
-<div style="font-size:13px;color:#bbb;">
-คืนนี้ 21:00
-</div>
-
+<div class="live-time">คืนนี้ 21:00</div>
 </div>
 
 <div class="match">
@@ -938,76 +744,36 @@ LIVE MATCH
 <div class="team">
 <img src="https://media.api-sports.io/football/teams/${home[1]}.png">
 <div class="team-name">${home[0]}</div>
-<div class="form">🔥🔥🔥 ฟอร์มแรง</div>
+<div class="team-form">ฟอร์มล่าสุด 🔥🔥🔥</div>
 </div>
 
 <div class="score-box">
-
-<div class="score">
-<span id="homeScore">2</span>
-:
-<span id="awayScore">1</span>
-</div>
-
-<div class="match-status">
-LIVE • 67'
-</div>
-
+<div class="score"><span>0</span> : <span>0</span></div>
+<div class="vs">MATCH DAY</div>
 </div>
 
 <div class="team">
 <img src="https://media.api-sports.io/football/teams/${away[1]}.png">
 <div class="team-name">${away[0]}</div>
-<div class="form">⚡ พร้อมบวก</div>
+<div class="team-form">พร้อมเต็มสูบ ⚡</div>
 </div>
 
 </div>
 
-<div class="ai-box">
-
-<div class="ai-head">
-
-<div class="ai-title">
-🤖 AI วิเคราะห์บอล
-</div>
-
-<div>
-${home[0]} 68%
-</div>
-
-</div>
-
-<div class="ai-bar">
-<div class="ai-fill"></div>
-</div>
-
-<div class="predict">
-คาดการณ์สกอร์ 3 - 1
-</div>
-
-</div>
-
-<button class="watch-btn">
-▶ รับชมถ่ายทอดสด
-</button>
-
+<button class="watch-btn">▶ รับชมถ่ายทอดสด</button>
 `;
 
-tableTitle.innerText=league.name+' 2025/26';
-
-tableContent.innerHTML=`
-
-<div class="table-head">
-<div>#</div>
-<div>ทีม</div>
-<div>แข่ง</div>
-<div>ชนะ</div>
-<div>เสมอ</div>
-<div>แพ้</div>
-<div class="pts">แต้ม</div>
+highlightList.innerHTML=league.teams.slice(0,5).map((team,index)=>`
+<div class="highlight">
+<img src="https://picsum.photos/500/300?random=${league.id+index}">
+<div class="play-btn">▶</div>
+<div class="highlight-title">${team[0]} ไฮไลท์ล่าสุด</div>
 </div>
+`).join('');
 
-${league.teams.map((team,index)=>{
+leagueTitle.innerText=league.name+' ฤดูกาล 2025/26';
+
+const rows=league.teams.map((team,index)=>{
 
 let played=30;
 let win=22-index;
@@ -1015,101 +781,46 @@ let draw=4;
 let lose=played-win-draw;
 let pts=(win*3)+draw;
 
-let cls='';
+let extra='';
+if(index<4) extra='top4';
+if(index>=league.teams.length-2) extra='relegation';
 
-if(index<4) cls='top4';
-
-if(index>=league.teams.length-1)
-cls='relegation';
-
-return`
-
-<div class="row ${cls}">
-
+return `
+<div class="row ${extra}">
 <div>${index+1}</div>
 
 <div class="team-row">
-
 <img src="https://media.api-sports.io/football/teams/${team[1]}.png">
-
-<span>${team[0]}</span>
-
+${team[0]}
 </div>
 
 <div>${played}</div>
 <div>${win}</div>
 <div>${draw}</div>
 <div>${lose}</div>
-
-<div class="pts">
-${pts}
+<div class="pts">${pts}</div>
 </div>
-
-</div>
-
 `;
 
-}).join('')}
+}).join('');
 
-`;
-
-const highlightHTML=league.teams.map((team,index)=>`
-
-<div class="highlight">
-
-<img src="https://picsum.photos/500/300?random=${league.id+index}">
-
-<div class="play">▶</div>
-
-<div class="highlight-title">
-${team[0]} ไฮไลท์ล่าสุด
-</div>
-
-</div>
-
-`).join('');
-
-highlights.innerHTML=highlightHTML;
-
-highlightPageList.innerHTML=highlightHTML;
-
-}
-
-function showPage(id,el){
-
-document.querySelectorAll('.page')
-.forEach(x=>x.classList.remove('active'));
-
-document.getElementById(id)
-.classList.add('active');
-
-document.querySelectorAll('.nav-item')
-.forEach(x=>x.classList.remove('active'));
-
-el.classList.add('active');
-
+ tableBox.innerHTML=`
+ <div class="table-head">
+ <div>#</div>
+ <div>ทีม</div>
+ <div>แข่ง</div>
+ <div>ชนะ</div>
+ <div>เสมอ</div>
+ <div>แพ้</div>
+ <div class="pts">แต้ม</div>
+ </div>
+ ${rows}
+ `;
 }
 
 renderLeague(LEAGUES[0]);
-
-/* FAKE LIVE SCORE */
-
-setInterval(()=>{
-
-const home=document.getElementById('homeScore');
-const away=document.getElementById('awayScore');
-
-if(home && Math.random()>.8){
-home.innerText=parseInt(home.innerText)+1;
-}
-
-if(away && Math.random()>.9){
-away.innerText=parseInt(away.innerText)+1;
-}
-
-},6000);
-
 </script>
 
 </body>
 </html>
+```
