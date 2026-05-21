@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>QA BallGenius X Ultimate</title>
+<title>QA BallGenius X PRO</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
 
@@ -20,7 +20,7 @@ font-family:'Kanit',sans-serif;
 
 :root{
 --bg:#050505;
---card:#101010;
+--card:#111111;
 --soft:#191919;
 --red:#ff1744;
 --gold:#ffcc4d;
@@ -32,8 +32,8 @@ font-family:'Kanit',sans-serif;
 
 body{
 background:
-radial-gradient(circle at top right, rgba(255,0,60,.12), transparent 30%),
-radial-gradient(circle at bottom left, rgba(255,200,0,.08), transparent 30%),
+radial-gradient(circle at top right,rgba(255,0,60,.12),transparent 30%),
+radial-gradient(circle at bottom left,rgba(255,200,0,.08),transparent 30%),
 var(--bg);
 
 color:var(--text);
@@ -53,7 +53,7 @@ linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
 background-size:24px 24px;
 
 pointer-events:none;
-opacity:.25;
+opacity:.2;
 }
 
 /* HEADER */
@@ -69,8 +69,8 @@ align-items:center;
 
 padding:16px 18px;
 
-background:rgba(0,0,0,.65);
-backdrop-filter:blur(18px);
+background:rgba(0,0,0,.7);
+backdrop-filter:blur(16px);
 
 border-bottom:1px solid rgba(255,255,255,.05);
 }
@@ -82,7 +82,7 @@ font-weight:900;
 
 .logo span{
 color:var(--red);
-text-shadow:0 0 20px rgba(255,0,0,.7);
+text-shadow:0 0 18px rgba(255,0,0,.7);
 }
 
 .header-actions{
@@ -110,7 +110,7 @@ font-size:18px;
 .page{
 display:none;
 padding-bottom:120px;
-animation:fade .3s;
+animation:fade .25s;
 }
 
 .page.active{
@@ -120,7 +120,7 @@ display:block;
 @keyframes fade{
 from{
 opacity:0;
-transform:translateY(12px);
+transform:translateY(10px);
 }
 to{
 opacity:1;
@@ -144,14 +144,14 @@ border-radius:34px;
 padding:22px;
 
 background:
-linear-gradient(135deg,rgba(255,20,60,.24),rgba(0,0,0,.82)),
+linear-gradient(135deg,rgba(255,20,60,.25),rgba(0,0,0,.8)),
 #101010;
 
-border:1px solid rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.05);
 
 box-shadow:
-0 0 25px rgba(255,0,0,.12),
-0 15px 45px rgba(0,0,0,.4);
+0 15px 40px rgba(0,0,0,.4),
+0 0 25px rgba(255,0,0,.15);
 }
 
 .hero-card::after{
@@ -292,7 +292,7 @@ font-weight:800;
 
 .section{
 padding:0 18px;
-margin-top:20px;
+margin-top:22px;
 }
 
 .title{
@@ -341,7 +341,7 @@ transition:.25s;
 border-color:rgba(255,0,0,.5);
 
 box-shadow:
-0 0 22px rgba(255,0,0,.18);
+0 0 20px rgba(255,0,0,.18);
 }
 
 .league img{
@@ -361,7 +361,7 @@ font-size:11px;
 font-weight:700;
 }
 
-/* CARDS */
+/* STATS CARDS */
 
 .grid{
 display:grid;
@@ -442,76 +442,6 @@ font-size:14px;
 font-weight:700;
 }
 
-/* STATS */
-
-.stats-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:14px;
-
-margin-top:18px;
-}
-
-.stat-card{
-background:#161616;
-
-padding:16px;
-
-border-radius:22px;
-
-text-align:center;
-}
-
-.stat-label{
-font-size:12px;
-color:#999;
-}
-
-.stat-value{
-margin-top:8px;
-font-size:24px;
-font-weight:900;
-}
-
-/* TIMELINE */
-
-.timeline{
-display:flex;
-flex-direction:column;
-gap:12px;
-}
-
-.timeline-item{
-display:flex;
-gap:12px;
-align-items:center;
-}
-
-.minute{
-min-width:50px;
-height:38px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-background:var(--red);
-
-border-radius:12px;
-
-font-weight:800;
-}
-
-.event{
-flex:1;
-
-background:#181818;
-
-padding:12px;
-
-border-radius:14px;
-}
-
 /* TABLE */
 
 .table{
@@ -589,7 +519,140 @@ color:var(--gold);
 background:rgba(255,204,77,.06);
 }
 
-/* HIGHLIGHTS */
+/* PLAYER */
+
+.players{
+display:flex;
+gap:14px;
+
+overflow:auto;
+padding-bottom:4px;
+}
+
+.players::-webkit-scrollbar{
+display:none;
+}
+
+.player-card{
+min-width:170px;
+
+background:#101010;
+
+border-radius:24px;
+
+padding:14px;
+
+text-align:center;
+}
+
+.player-card img{
+width:84px;
+height:84px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:3px solid rgba(255,255,255,.1);
+}
+
+.player-name{
+margin-top:12px;
+font-size:14px;
+font-weight:700;
+}
+
+.player-stat{
+margin-top:6px;
+font-size:12px;
+color:#bbb;
+}
+
+/* FIXTURES */
+
+.fixtures{
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+.fixture{
+background:#101010;
+
+padding:16px;
+
+border-radius:22px;
+}
+
+.fixture-top{
+display:flex;
+justify-content:space-between;
+
+margin-bottom:12px;
+
+font-size:12px;
+color:#aaa;
+}
+
+.fixture-match{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.fixture-team{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.fixture-team img{
+width:32px;
+height:32px;
+
+background:#fff;
+
+padding:3px;
+
+border-radius:8px;
+}
+
+/* NEWS */
+
+.news-list{
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+.news-card{
+background:#101010;
+
+border-radius:22px;
+
+padding:16px;
+
+display:flex;
+gap:14px;
+
+align-items:center;
+}
+
+.news-img{
+width:92px;
+height:72px;
+
+border-radius:16px;
+
+object-fit:cover;
+}
+
+.news-title{
+font-size:14px;
+font-weight:700;
+}
+
+/* HIGHLIGHT */
 
 .highlights{
 display:flex;
@@ -667,68 +730,6 @@ z-index:2;
 
 font-size:14px;
 font-weight:700;
-}
-
-/* NEWS */
-
-.news-list{
-display:flex;
-flex-direction:column;
-gap:14px;
-}
-
-.news-card{
-background:#101010;
-
-border-radius:22px;
-
-padding:16px;
-
-display:flex;
-gap:14px;
-
-align-items:center;
-}
-
-.news-img{
-width:92px;
-height:72px;
-
-border-radius:16px;
-
-object-fit:cover;
-}
-
-.news-title{
-font-size:14px;
-font-weight:700;
-}
-
-/* GOAL POPUP */
-
-.goal-popup{
-position:fixed;
-
-top:20px;
-left:50%;
-
-transform:translateX(-50%) translateY(-120px);
-
-background:#00d26a;
-
-padding:14px 22px;
-
-border-radius:18px;
-
-font-weight:800;
-
-z-index:99999;
-
-transition:.5s;
-}
-
-.goal-popup.show{
-transform:translateX(-50%) translateY(0);
 }
 
 /* BOTTOM NAV */
@@ -815,9 +816,7 @@ font-size:30px;
 
 </header>
 
-<!-- HOME -->
-
-<div class="page active" id="homePage">
+<div class="page active">
 
 <section class="hero">
 
@@ -838,13 +837,13 @@ font-size:30px;
 <div class="grid">
 
 <div class="card">
-<div class="card-label">แมตช์วันนี้</div>
-<div class="card-value">18</div>
+<div class="card-label">LIVE MATCH</div>
+<div class="card-value">12</div>
 </div>
 
 <div class="card">
-<div class="card-label">LIVE ตอนนี้</div>
-<div class="card-value" style="color:#00d26a;">6</div>
+<div class="card-label">AI Accuracy</div>
+<div class="card-value" style="color:#00d26a;">91%</div>
 </div>
 
 </div>
@@ -852,27 +851,28 @@ font-size:30px;
 <section class="section">
 
 <div class="title">
-<span>■</span> LIVE TIMELINE
+<span>■</span> นักเตะฟอร์มแรง
 </div>
 
-<div class="card timeline">
+<div class="players" id="players"></div>
 
-<div class="timeline-item">
-<div class="minute">12'</div>
-<div class="event">⚽ Salah ยิงประตู</div>
+</section>
+
+<section class="section">
+
+<div class="title">
+<span>■</span> โปรแกรมแข่ง
 </div>
 
-<div class="timeline-item">
-<div class="minute">34'</div>
-<div class="event">🟨 Rice ใบเหลือง</div>
-</div>
+<div class="fixtures" id="fixtures"></div>
 
-<div class="timeline-item">
-<div class="minute">67'</div>
-<div class="event">🔄 เปลี่ยนตัว Núñez</div>
-</div>
+</section>
 
-</div>
+<section class="table">
+
+<div class="table-title" id="tableTitle"></div>
+
+<div id="tableContent"></div>
 
 </section>
 
@@ -887,14 +887,14 @@ font-size:30px;
 <div class="news-card">
 <img class="news-img" src="https://picsum.photos/200/120?1">
 <div class="news-title">
-Liverpool เตรียมล่ากองหน้าคนใหม่ซัมเมอร์นี้
+Liverpool เตรียมเปิดดีลระดับโลกซัมเมอร์นี้
 </div>
 </div>
 
 <div class="news-card">
 <img class="news-img" src="https://picsum.photos/200/120?2">
 <div class="news-title">
-Real Madrid พร้อมทุ่มดีลระดับโลก
+Real Madrid สนดึงดาวรุ่งฟอร์มแรง
 </div>
 </div>
 
@@ -914,137 +914,29 @@ Real Madrid พร้อมทุ่มดีลระดับโลก
 
 </div>
 
-<!-- LIVE -->
-
-<div class="page" id="livePage">
-
-<section class="table">
-
-<div class="table-title">
-🔴 LIVE SCORE
-</div>
-
-<div class="row">
-<div>1</div>
-<div class="team-row">Liverpool 2 - 1 Arsenal</div>
-<div>67'</div>
-</div>
-
-<div class="row">
-<div>2</div>
-<div class="team-row">Barcelona 1 - 1 Real Madrid</div>
-<div>54'</div>
-</div>
-
-<div class="row">
-<div>3</div>
-<div class="team-row">Bayern 3 - 1 Dortmund</div>
-<div>81'</div>
-</div>
-
-</section>
-
-</div>
-
-<!-- TABLE -->
-
-<div class="page" id="tablePage">
-
-<section class="table">
-
-<div class="table-title" id="tableTitle"></div>
-
-<div id="tableContent"></div>
-
-</section>
-
-</div>
-
-<!-- STATS -->
-
-<div class="page" id="statsPage">
-
-<section class="section">
-
-<div class="title">
-<span>■</span> Match Stats
-</div>
-
-<div class="stats-grid">
-
-<div class="stat-card">
-<div class="stat-label">POSSESSION</div>
-<div class="stat-value">64%</div>
-</div>
-
-<div class="stat-card">
-<div class="stat-label">xG</div>
-<div class="stat-value">2.41</div>
-</div>
-
-<div class="stat-card">
-<div class="stat-label">SHOTS</div>
-<div class="stat-value">18</div>
-</div>
-
-<div class="stat-card">
-<div class="stat-label">PASS</div>
-<div class="stat-value">542</div>
-</div>
-
-</div>
-
-</section>
-
-</div>
-
-<!-- HIGHLIGHTS -->
-
-<div class="page" id="highlightPage">
-
-<section class="section">
-
-<div class="title">
-<span>■</span> ไฮไลท์ทั้งหมด
-</div>
-
-<div class="highlights" id="highlightPageList"></div>
-
-</section>
-
-</div>
-
-<!-- GOAL -->
-
-<div class="goal-popup" id="goalPopup">
-⚽ GOAL! Liverpool ยิงประตู
-</div>
-
-<!-- NAV -->
-
 <div class="bottom-nav">
 
-<div class="nav-item active" onclick="showPage('homePage',this)">
+<div class="nav-item active">
 <div class="nav-icon">⚽</div>
 Home
 </div>
 
-<div class="nav-item" onclick="showPage('livePage',this)">
+<div class="nav-item">
 <div class="nav-icon">📺</div>
 Live
 </div>
 
-<div class="nav-item" onclick="showPage('tablePage',this)">
+<div class="nav-item">
 <div class="nav-icon">📊</div>
 Table
 </div>
 
-<div class="nav-item" onclick="showPage('statsPage',this)">
+<div class="nav-item">
 <div class="nav-icon">📈</div>
 Stats
 </div>
 
-<div class="nav-item" onclick="showPage('highlightPage',this)">
+<div class="nav-item">
 <div class="nav-icon">🔥</div>
 Clips
 </div>
@@ -1092,19 +984,6 @@ teams:[
 ['Stuttgart',172],
 ['Frankfurt',169]
 ]
-},
-
-{
-id:135,
-name:'กัลโช่',
-teams:[
-['Inter',505],
-['Juventus',496],
-['Milan',489],
-['Roma',497],
-['Napoli',492],
-['Atalanta',499]
-]
 }
 
 ];
@@ -1114,7 +993,8 @@ const leagueBar=document.getElementById('leagueBar');
 const tableContent=document.getElementById('tableContent');
 const tableTitle=document.getElementById('tableTitle');
 const highlights=document.getElementById('highlights');
-const highlightPageList=document.getElementById('highlightPageList');
+const players=document.getElementById('players');
+const fixtures=document.getElementById('fixtures');
 
 LEAGUES.forEach((league,index)=>{
 
@@ -1173,7 +1053,7 @@ ${home[0]}
 </div>
 
 <div class="team-form">
-🔥 ฟอร์มแรง
+🔥 ฟอร์มล่าสุด W W W
 </div>
 
 </div>
@@ -1181,13 +1061,12 @@ ${home[0]}
 <div class="score-box">
 
 <div class="score">
-<span id="homeScore">2</span>
-:
-<span id="awayScore">1</span>
+<span>2</span> :
+<span>1</span>
 </div>
 
 <div class="match-status">
-LIVE • 67'
+67' LIVE
 </div>
 
 </div>
@@ -1201,7 +1080,7 @@ ${away[0]}
 </div>
 
 <div class="team-form">
-⚡ พร้อมบวก
+⚡ ฟอร์มล่าสุด W D W
 </div>
 
 </div>
@@ -1227,7 +1106,8 @@ ${home[0]} 68%
 </div>
 
 <div class="predict">
-AI คาดการณ์สกอร์ 3 - 1
+AI วิเคราะห์:
+${home[0]} ครองเกมดีกว่า มีโอกาสชนะสูงจากฟอร์มล่าสุดและ xG สูงกว่า
 </div>
 
 </div>
@@ -1238,7 +1118,7 @@ AI คาดการณ์สกอร์ 3 - 1
 
 `;
 
-tableTitle.innerText=league.name+' 2025/26';
+tableTitle.innerText=league.name+' ตารางคะแนน';
 
 tableContent.innerHTML=`
 
@@ -1293,7 +1173,58 @@ return`
 
 `;
 
-const h=league.teams.map((team,index)=>`
+players.innerHTML=league.teams.slice(0,5).map((team,index)=>`
+
+<div class="player-card">
+
+<img src="https://i.pravatar.cc/200?img=${index+10}">
+
+<div class="player-name">
+${team[0]} Star
+</div>
+
+<div class="player-stat">
+⚽ ${10-index} Goals
+</div>
+
+<div class="player-stat">
+🎯 ${6-index} Assists
+</div>
+
+</div>
+
+`).join('');
+
+fixtures.innerHTML=league.teams.slice(0,3).map((team,index)=>`
+
+<div class="fixture">
+
+<div class="fixture-top">
+<div>คืนนี้</div>
+<div>21:00</div>
+</div>
+
+<div class="fixture-match">
+
+<div class="fixture-team">
+<img src="https://media.api-sports.io/football/teams/${team[1]}.png">
+${team[0]}
+</div>
+
+<div>VS</div>
+
+<div class="fixture-team">
+<img src="https://media.api-sports.io/football/teams/${league.teams[index+1]?.[1] || team[1]}.png">
+${league.teams[index+1]?.[0] || team[0]}
+</div>
+
+</div>
+
+</div>
+
+`).join('');
+
+highlights.innerHTML=league.teams.map((team,index)=>`
 
 <div class="highlight">
 
@@ -1311,58 +1242,9 @@ ${team[0]} ไฮไลท์ล่าสุด
 
 `).join('');
 
-highlights.innerHTML=h;
-highlightPageList.innerHTML=h;
-
-}
-
-function showPage(id,el){
-
-document.querySelectorAll('.page')
-.forEach(x=>x.classList.remove('active'));
-
-document.getElementById(id)
-.classList.add('active');
-
-document.querySelectorAll('.nav-item')
-.forEach(x=>x.classList.remove('active'));
-
-el.classList.add('active');
-
 }
 
 renderLeague(LEAGUES[0]);
-
-function goalPopup(){
-
-const popup=document.getElementById('goalPopup');
-
-popup.classList.add('show');
-
-setTimeout(()=>{
-popup.classList.remove('show');
-},3000);
-
-}
-
-setTimeout(()=>{
-goalPopup();
-},4000);
-
-setInterval(()=>{
-
-const home=document.getElementById('homeScore');
-const away=document.getElementById('awayScore');
-
-if(home && Math.random()>.82){
-home.innerText=parseInt(home.innerText)+1;
-}
-
-if(away && Math.random()>.9){
-away.innerText=parseInt(away.innerText)+1;
-}
-
-},7000);
 
 </script>
 
