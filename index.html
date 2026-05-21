@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>QA BallGenius Ultimate X</title>
+<title>QA BallGenius X Ultimate</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
 
@@ -19,20 +19,21 @@ font-family:'Kanit',sans-serif;
 }
 
 :root{
---red:#ff1744;
---gold:#ffcc4d;
 --bg:#050505;
 --card:#101010;
---soft:#181818;
---text:#fff;
---gray:#aaa;
+--soft:#191919;
+--red:#ff1744;
+--gold:#ffcc4d;
 --green:#00d26a;
+--blue:#00bfff;
+--text:#ffffff;
+--gray:#999;
 }
 
 body{
 background:
-radial-gradient(circle at top right,rgba(255,0,0,.14),transparent 30%),
-radial-gradient(circle at bottom left,rgba(255,200,0,.08),transparent 30%),
+radial-gradient(circle at top right, rgba(255,0,60,.12), transparent 30%),
+radial-gradient(circle at bottom left, rgba(255,200,0,.08), transparent 30%),
 var(--bg);
 
 color:var(--text);
@@ -49,7 +50,7 @@ background:
 linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
 linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
 
-background-size:26px 26px;
+background-size:24px 24px;
 
 pointer-events:none;
 opacity:.25;
@@ -68,8 +69,7 @@ align-items:center;
 
 padding:16px 18px;
 
-background:rgba(0,0,0,.55);
-
+background:rgba(0,0,0,.65);
 backdrop-filter:blur(18px);
 
 border-bottom:1px solid rgba(255,255,255,.05);
@@ -82,10 +82,10 @@ font-weight:900;
 
 .logo span{
 color:var(--red);
-text-shadow:0 0 18px rgba(255,0,0,.7);
+text-shadow:0 0 20px rgba(255,0,0,.7);
 }
 
-.header-right{
+.header-actions{
 display:flex;
 gap:10px;
 }
@@ -110,7 +110,7 @@ font-size:18px;
 .page{
 display:none;
 padding-bottom:120px;
-animation:fade .35s;
+animation:fade .3s;
 }
 
 .page.active{
@@ -139,21 +139,19 @@ position:relative;
 
 overflow:hidden;
 
-background:
-linear-gradient(135deg,rgba(255,20,60,.24),rgba(0,0,0,.8)),
-#101010;
-
 border-radius:34px;
 
 padding:22px;
 
+background:
+linear-gradient(135deg,rgba(255,20,60,.24),rgba(0,0,0,.82)),
+#101010;
+
 border:1px solid rgba(255,255,255,.06);
 
 box-shadow:
-0 0 30px rgba(255,0,0,.12),
-0 12px 40px rgba(0,0,0,.35);
-
-animation:glow 4s infinite alternate;
+0 0 25px rgba(255,0,0,.12),
+0 15px 45px rgba(0,0,0,.4);
 }
 
 .hero-card::after{
@@ -164,22 +162,13 @@ width:260px;
 height:260px;
 
 background:
-radial-gradient(circle,rgba(255,255,255,.12),transparent 70%);
+radial-gradient(circle,rgba(255,255,255,.15),transparent 70%);
 
-right:-100px;
-top:-120px;
-}
-
-@keyframes glow{
-0%{
-box-shadow:0 0 10px rgba(255,0,0,.08);
-}
-100%{
-box-shadow:0 0 28px rgba(255,0,0,.22);
-}
+right:-90px;
+top:-90px;
 }
 
-.live-row{
+.live-top{
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -194,7 +183,7 @@ gap:8px;
 
 background:var(--red);
 
-padding:7px 14px;
+padding:8px 14px;
 
 border-radius:999px;
 
@@ -205,10 +194,8 @@ font-weight:800;
 .dot{
 width:8px;
 height:8px;
-
-background:#fff;
-
 border-radius:50%;
+background:#fff;
 
 animation:blink 1s infinite;
 }
@@ -277,19 +264,18 @@ color:var(--gold);
 }
 
 .match-status{
-margin-top:5px;
+margin-top:6px;
 font-size:12px;
 color:#aaa;
 }
 
 .watch-btn{
 width:100%;
-
 margin-top:18px;
 
-padding:15px;
-
 border:none;
+
+padding:15px;
 
 border-radius:18px;
 
@@ -326,7 +312,6 @@ display:flex;
 gap:14px;
 
 overflow:auto;
-
 padding-bottom:4px;
 }
 
@@ -353,7 +338,7 @@ transition:.25s;
 }
 
 .league.active{
-border-color:rgba(255,0,0,.45);
+border-color:rgba(255,0,0,.5);
 
 box-shadow:
 0 0 22px rgba(255,0,0,.18);
@@ -376,12 +361,11 @@ font-size:11px;
 font-weight:700;
 }
 
-/* GRID */
+/* CARDS */
 
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-
 gap:14px;
 
 padding:18px;
@@ -404,7 +388,6 @@ color:#999;
 
 .card-value{
 margin-top:8px;
-
 font-size:28px;
 font-weight:900;
 }
@@ -423,9 +406,10 @@ border-radius:22px;
 border:1px solid rgba(255,255,255,.08);
 }
 
-.ai-head{
+.ai-top{
 display:flex;
 justify-content:space-between;
+
 margin-bottom:12px;
 }
 
@@ -438,7 +422,9 @@ color:var(--gold);
 .ai-bar{
 height:12px;
 background:#222;
+
 border-radius:999px;
+
 overflow:hidden;
 }
 
@@ -456,6 +442,37 @@ font-size:14px;
 font-weight:700;
 }
 
+/* STATS */
+
+.stats-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+
+margin-top:18px;
+}
+
+.stat-card{
+background:#161616;
+
+padding:16px;
+
+border-radius:22px;
+
+text-align:center;
+}
+
+.stat-label{
+font-size:12px;
+color:#999;
+}
+
+.stat-value{
+margin-top:8px;
+font-size:24px;
+font-weight:900;
+}
+
 /* TIMELINE */
 
 .timeline{
@@ -466,19 +483,19 @@ gap:12px;
 
 .timeline-item{
 display:flex;
-gap:14px;
+gap:12px;
 align-items:center;
 }
 
 .minute{
-min-width:48px;
-height:36px;
+min-width:50px;
+height:38px;
 
 display:flex;
 align-items:center;
 justify-content:center;
 
-background:#ff1744;
+background:var(--red);
 
 border-radius:12px;
 
@@ -547,8 +564,8 @@ display:flex;
 align-items:center;
 gap:10px;
 
-white-space:nowrap;
 overflow:hidden;
+white-space:nowrap;
 }
 
 .team-row img{
@@ -572,7 +589,7 @@ color:var(--gold);
 background:rgba(255,204,77,.06);
 }
 
-/* HIGHLIGHT */
+/* HIGHLIGHTS */
 
 .highlights{
 display:flex;
@@ -601,6 +618,7 @@ border-radius:24px;
 .highlight img{
 width:100%;
 height:100%;
+
 object-fit:cover;
 
 filter:brightness(.75);
@@ -630,7 +648,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 
-background:rgba(255,0,0,.92);
+background:rgba(255,0,0,.9);
 
 border-radius:50%;
 
@@ -647,6 +665,41 @@ bottom:14px;
 
 z-index:2;
 
+font-size:14px;
+font-weight:700;
+}
+
+/* NEWS */
+
+.news-list{
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+.news-card{
+background:#101010;
+
+border-radius:22px;
+
+padding:16px;
+
+display:flex;
+gap:14px;
+
+align-items:center;
+}
+
+.news-img{
+width:92px;
+height:72px;
+
+border-radius:16px;
+
+object-fit:cover;
+}
+
+.news-title{
 font-size:14px;
 font-weight:700;
 }
@@ -678,7 +731,7 @@ transition:.5s;
 transform:translateX(-50%) translateY(0);
 }
 
-/* NAV */
+/* BOTTOM NAV */
 
 .bottom-nav{
 position:fixed;
@@ -702,7 +755,7 @@ padding:12px 10px;
 border-radius:28px;
 
 display:grid;
-grid-template-columns:repeat(4,1fr);
+grid-template-columns:repeat(5,1fr);
 
 z-index:999;
 }
@@ -755,7 +808,7 @@ font-size:30px;
 <span>QA</span> BallGenius
 </div>
 
-<div class="header-right">
+<div class="header-actions">
 <div class="icon-btn">🔔</div>
 <div class="icon-btn">⚙️</div>
 </div>
@@ -810,13 +863,39 @@ font-size:30px;
 </div>
 
 <div class="timeline-item">
-<div class="minute">31'</div>
+<div class="minute">34'</div>
 <div class="event">🟨 Rice ใบเหลือง</div>
 </div>
 
 <div class="timeline-item">
-<div class="minute">57'</div>
+<div class="minute">67'</div>
 <div class="event">🔄 เปลี่ยนตัว Núñez</div>
+</div>
+
+</div>
+
+</section>
+
+<section class="section">
+
+<div class="title">
+<span>■</span> ข่าวฟุตบอล
+</div>
+
+<div class="news-list">
+
+<div class="news-card">
+<img class="news-img" src="https://picsum.photos/200/120?1">
+<div class="news-title">
+Liverpool เตรียมล่ากองหน้าคนใหม่ซัมเมอร์นี้
+</div>
+</div>
+
+<div class="news-card">
+<img class="news-img" src="https://picsum.photos/200/120?2">
+<div class="news-title">
+Real Madrid พร้อมทุ่มดีลระดับโลก
+</div>
 </div>
 
 </div>
@@ -853,7 +932,7 @@ font-size:30px;
 
 <div class="row">
 <div>2</div>
-<div class="team-row">Real Madrid 1 - 0 Barcelona</div>
+<div class="team-row">Barcelona 1 - 1 Real Madrid</div>
 <div>54'</div>
 </div>
 
@@ -881,7 +960,45 @@ font-size:30px;
 
 </div>
 
-<!-- HIGHLIGHT -->
+<!-- STATS -->
+
+<div class="page" id="statsPage">
+
+<section class="section">
+
+<div class="title">
+<span>■</span> Match Stats
+</div>
+
+<div class="stats-grid">
+
+<div class="stat-card">
+<div class="stat-label">POSSESSION</div>
+<div class="stat-value">64%</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-label">xG</div>
+<div class="stat-value">2.41</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-label">SHOTS</div>
+<div class="stat-value">18</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-label">PASS</div>
+<div class="stat-value">542</div>
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- HIGHLIGHTS -->
 
 <div class="page" id="highlightPage">
 
@@ -897,7 +1014,7 @@ font-size:30px;
 
 </div>
 
-<!-- POPUP -->
+<!-- GOAL -->
 
 <div class="goal-popup" id="goalPopup">
 ⚽ GOAL! Liverpool ยิงประตู
@@ -909,22 +1026,27 @@ font-size:30px;
 
 <div class="nav-item active" onclick="showPage('homePage',this)">
 <div class="nav-icon">⚽</div>
-หน้าหลัก
+Home
 </div>
 
 <div class="nav-item" onclick="showPage('livePage',this)">
 <div class="nav-icon">📺</div>
-LIVE
+Live
 </div>
 
 <div class="nav-item" onclick="showPage('tablePage',this)">
 <div class="nav-icon">📊</div>
-ตาราง
+Table
+</div>
+
+<div class="nav-item" onclick="showPage('statsPage',this)">
+<div class="nav-icon">📈</div>
+Stats
 </div>
 
 <div class="nav-item" onclick="showPage('highlightPage',this)">
 <div class="nav-icon">🔥</div>
-ไฮไลท์
+Clips
 </div>
 
 </div>
@@ -987,8 +1109,8 @@ teams:[
 
 ];
 
-const leagueBar=document.getElementById('leagueBar');
 const heroCard=document.getElementById('heroCard');
+const leagueBar=document.getElementById('leagueBar');
 const tableContent=document.getElementById('tableContent');
 const tableTitle=document.getElementById('tableTitle');
 const highlights=document.getElementById('highlights');
@@ -1027,7 +1149,7 @@ const away=league.teams[1];
 
 heroCard.innerHTML=`
 
-<div class="live-row">
+<div class="live-top">
 
 <div class="live-badge">
 <div class="dot"></div>
@@ -1051,7 +1173,7 @@ ${home[0]}
 </div>
 
 <div class="team-form">
-🔥🔥🔥 ฟอร์มแรง
+🔥 ฟอร์มแรง
 </div>
 
 </div>
@@ -1088,7 +1210,7 @@ ${away[0]}
 
 <div class="ai-box">
 
-<div class="ai-head">
+<div class="ai-top">
 
 <div class="ai-title">
 🤖 AI วิเคราะห์บอล
@@ -1105,7 +1227,7 @@ ${home[0]} 68%
 </div>
 
 <div class="predict">
-คาดการณ์สกอร์ 3 - 1
+AI คาดการณ์สกอร์ 3 - 1
 </div>
 
 </div>
@@ -1140,9 +1262,7 @@ let draw=4;
 let lose=played-win-draw;
 let pts=(win*3)+draw;
 
-let cls='';
-
-if(index<4) cls='top4';
+let cls=index<4?'top4':'';
 
 return`
 
@@ -1163,9 +1283,7 @@ return`
 <div>${draw}</div>
 <div>${lose}</div>
 
-<div class="pts">
-${pts}
-</div>
+<div class="pts">${pts}</div>
 
 </div>
 
