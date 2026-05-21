@@ -2,9 +2,9 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>QA BallGenius Mobile Pro</title>
+<title>QA BallGenius Ultimate</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
 
@@ -21,12 +21,13 @@ font-family:'Kanit',sans-serif;
 :root{
 --bg:#050505;
 --card:#111111;
---soft:#191919;
+--soft:#1a1a1a;
 --red:#ff1744;
 --gold:#ffcc4d;
 --green:#00d26a;
+--blue:#00bfff;
 --text:#ffffff;
---gray:#999;
+--gray:#9c9c9c;
 }
 
 body{
@@ -54,7 +55,7 @@ align-items:center;
 padding:14px 16px;
 
 background:rgba(0,0,0,.78);
-backdrop-filter:blur(16px);
+backdrop-filter:blur(18px);
 
 border-bottom:1px solid rgba(255,255,255,.05);
 }
@@ -68,7 +69,7 @@ font-weight:900;
 color:var(--red);
 }
 
-.header-actions{
+.header-right{
 display:flex;
 gap:10px;
 }
@@ -85,7 +86,30 @@ border-radius:12px;
 
 background:rgba(255,255,255,.05);
 
-font-size:16px;
+cursor:pointer;
+}
+
+/* PAGE */
+
+.page{
+display:none;
+padding-bottom:110px;
+animation:fade .25s;
+}
+
+.page.active{
+display:block;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(10px);
+}
+to{
+opacity:1;
+transform:none;
+}
 }
 
 /* HERO */
@@ -96,7 +120,7 @@ padding:14px;
 
 .hero-card{
 background:
-linear-gradient(135deg,rgba(255,20,60,.22),rgba(0,0,0,.82)),
+linear-gradient(135deg,rgba(255,20,60,.24),rgba(0,0,0,.82)),
 #101010;
 
 border-radius:26px;
@@ -132,8 +156,10 @@ font-weight:800;
 .dot{
 width:8px;
 height:8px;
-border-radius:50%;
+
 background:#fff;
+
+border-radius:50%;
 
 animation:blink 1s infinite;
 }
@@ -149,8 +175,6 @@ transform:scale(.7);
 font-size:12px;
 color:#bbb;
 }
-
-/* MATCH */
 
 .match{
 display:grid;
@@ -178,6 +202,7 @@ border-radius:18px;
 
 .team-name{
 margin-top:8px;
+
 font-size:12px;
 font-weight:700;
 
@@ -188,6 +213,7 @@ text-overflow:ellipsis;
 
 .team-form{
 margin-top:4px;
+
 font-size:10px;
 color:#999;
 }
@@ -216,6 +242,7 @@ color:var(--gold);
 
 .match-status{
 margin-top:6px;
+
 font-size:11px;
 color:#aaa;
 }
@@ -238,6 +265,8 @@ color:#fff;
 
 font-size:14px;
 font-weight:800;
+
+cursor:pointer;
 }
 
 /* SECTION */
@@ -250,6 +279,7 @@ margin-top:20px;
 .title{
 font-size:16px;
 font-weight:900;
+
 margin-bottom:12px;
 }
 
@@ -290,6 +320,7 @@ cursor:pointer;
 
 .league.active{
 border-color:rgba(255,0,0,.5);
+box-shadow:0 0 18px rgba(255,0,0,.2);
 }
 
 .league img{
@@ -305,15 +336,12 @@ border-radius:12px;
 
 .league-name{
 margin-top:7px;
+
 font-size:10px;
 font-weight:700;
-
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis;
 }
 
-/* CARDS */
+/* STATS */
 
 .grid{
 display:grid;
@@ -339,6 +367,7 @@ color:#999;
 
 .card-value{
 margin-top:6px;
+
 font-size:24px;
 font-weight:900;
 }
@@ -358,9 +387,10 @@ border-radius:18px;
 .ai-top{
 display:flex;
 justify-content:space-between;
-gap:10px;
 
 margin-bottom:10px;
+
+gap:10px;
 }
 
 .ai-title{
@@ -394,8 +424,10 @@ linear-gradient(90deg,#ff1744,#ffcc4d);
 
 .predict{
 margin-top:10px;
+
 font-size:12px;
 line-height:1.5;
+
 color:#ddd;
 }
 
@@ -532,12 +564,14 @@ object-fit:cover;
 
 .player-name{
 margin-top:10px;
+
 font-size:13px;
 font-weight:700;
 }
 
 .player-stat{
 margin-top:4px;
+
 font-size:11px;
 color:#aaa;
 }
@@ -596,8 +630,6 @@ background:#fff;
 padding:3px;
 
 border-radius:8px;
-
-flex-shrink:0;
 }
 
 .fixture-team span{
@@ -606,7 +638,7 @@ white-space:nowrap;
 text-overflow:ellipsis;
 }
 
-/* HIGHLIGHT */
+/* HIGHLIGHTS */
 
 .highlights{
 display:flex;
@@ -643,6 +675,7 @@ filter:brightness(.75);
 
 .highlight::after{
 content:'';
+
 position:absolute;
 inset:0;
 
@@ -686,6 +719,46 @@ font-size:13px;
 font-weight:700;
 }
 
+/* NEWS */
+
+.news-list{
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.news-card{
+display:flex;
+gap:12px;
+
+background:#111111;
+
+padding:12px;
+
+border-radius:18px;
+}
+
+.news-card img{
+width:90px;
+height:70px;
+
+border-radius:14px;
+
+object-fit:cover;
+}
+
+.news-title{
+font-size:13px;
+font-weight:700;
+}
+
+.news-sub{
+margin-top:6px;
+
+font-size:11px;
+color:#999;
+}
+
 /* BOTTOM NAV */
 
 .bottom-nav{
@@ -720,6 +793,8 @@ text-align:center;
 font-size:10px;
 
 color:#999;
+
+cursor:pointer;
 }
 
 .nav-item.active{
@@ -730,6 +805,10 @@ font-weight:800;
 .nav-icon{
 font-size:20px;
 margin-bottom:4px;
+}
+
+.hidden{
+display:none;
 }
 
 </style>
@@ -743,12 +822,16 @@ margin-bottom:4px;
 <span>QA</span> BallGenius
 </div>
 
-<div class="header-actions">
-<div class="icon-btn">🔔</div>
-<div class="icon-btn">⚙️</div>
+<div class="header-right">
+<div class="icon-btn" onclick="showToast('แจ้งเตือนใหม่ 3 รายการ')">🔔</div>
+<div class="icon-btn" onclick="toggleTheme()">🌙</div>
 </div>
 
 </header>
+
+<!-- HOME -->
+
+<div class="page active" id="homePage">
 
 <section class="hero">
 
@@ -770,7 +853,7 @@ margin-bottom:4px;
 
 <div class="card">
 <div class="card-label">LIVE MATCH</div>
-<div class="card-value">12</div>
+<div class="card-value" id="liveCount">12</div>
 </div>
 
 <div class="card">
@@ -818,31 +901,163 @@ margin-bottom:4px;
 
 </section>
 
+<section class="section">
+
+<div class="title">
+<span>■</span> ข่าวฟุตบอล
+</div>
+
+<div class="news-list">
+
+<div class="news-card">
+<img src="https://picsum.photos/200/100?1">
+
+<div>
+<div class="news-title">
+Liverpool เตรียมเสริมทัพครั้งใหญ่
+</div>
+
+<div class="news-sub">
+ตลาดนักเตะซัมเมอร์กำลังเดือด
+</div>
+</div>
+
+</div>
+
+<div class="news-card">
+<img src="https://picsum.photos/200/100?2">
+
+<div>
+<div class="news-title">
+Barcelona ฟอร์มแรงต่อเนื่อง
+</div>
+
+<div class="news-sub">
+AI ให้ลุ้นแชมป์สูงขึ้น
+</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- LIVE PAGE -->
+
+<div class="page" id="livePage">
+
+<section class="section">
+
+<div class="title">
+<span>■</span> LIVE SCORE
+</div>
+
+<div class="fixtures" id="liveMatches"></div>
+
+</section>
+
+</div>
+
+<!-- TABLE PAGE -->
+
+<div class="page" id="tablePage">
+
+<section class="table">
+
+<div class="table-title">
+ตารางคะแนนรวม
+</div>
+
+<div id="allTables"></div>
+
+</section>
+
+</div>
+
+<!-- STATS PAGE -->
+
+<div class="page" id="statsPage">
+
+<section class="section">
+
+<div class="title">
+<span>■</span> สถิติ AI
+</div>
+
+<div class="grid">
+
+<div class="card">
+<div class="card-label">AI Prediction</div>
+<div class="card-value">89%</div>
+</div>
+
+<div class="card">
+<div class="card-label">Accuracy</div>
+<div class="card-value">91%</div>
+</div>
+
+<div class="card">
+<div class="card-label">xG System</div>
+<div class="card-value">2.4</div>
+</div>
+
+<div class="card">
+<div class="card-label">Live Data</div>
+<div class="card-value">24/7</div>
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- HIGHLIGHT PAGE -->
+
+<div class="page" id="highlightPage">
+
+<section class="section">
+
+<div class="title">
+<span>■</span> ไฮไลท์ทั้งหมด
+</div>
+
+<div class="highlights" id="allHighlights"></div>
+
+</section>
+
+</div>
+
 <div style="height:100px"></div>
+
+<!-- BOTTOM NAV -->
 
 <div class="bottom-nav">
 
-<div class="nav-item active">
+<div class="nav-item active" onclick="switchPage('homePage',this)">
 <div class="nav-icon">⚽</div>
 Home
 </div>
 
-<div class="nav-item">
+<div class="nav-item" onclick="switchPage('livePage',this)">
 <div class="nav-icon">📺</div>
 Live
 </div>
 
-<div class="nav-item">
+<div class="nav-item" onclick="switchPage('tablePage',this)">
 <div class="nav-icon">📊</div>
 Table
 </div>
 
-<div class="nav-item">
+<div class="nav-item" onclick="switchPage('statsPage',this)">
 <div class="nav-icon">📈</div>
 Stats
 </div>
 
-<div class="nav-item">
+<div class="nav-item" onclick="switchPage('highlightPage',this)">
 <div class="nav-icon">🔥</div>
 Clips
 </div>
@@ -899,8 +1114,68 @@ const leagueBar=document.getElementById('leagueBar');
 const tableContent=document.getElementById('tableContent');
 const tableTitle=document.getElementById('tableTitle');
 const highlights=document.getElementById('highlights');
+const allHighlights=document.getElementById('allHighlights');
 const players=document.getElementById('players');
 const fixtures=document.getElementById('fixtures');
+const liveMatches=document.getElementById('liveMatches');
+const allTables=document.getElementById('allTables');
+
+function switchPage(id,el){
+
+document.querySelectorAll('.page')
+.forEach(p=>p.classList.remove('active'));
+
+document.getElementById(id)
+.classList.add('active');
+
+document.querySelectorAll('.nav-item')
+.forEach(x=>x.classList.remove('active'));
+
+el.classList.add('active');
+
+window.scrollTo({
+top:0,
+behavior:'smooth'
+});
+
+}
+
+function showToast(text){
+
+const toast=document.createElement('div');
+
+toast.innerText=text;
+
+toast.style.cssText=`
+position:fixed;
+top:80px;
+left:50%;
+transform:translateX(-50%);
+background:#ff1744;
+color:#fff;
+padding:12px 18px;
+border-radius:14px;
+font-size:13px;
+z-index:99999;
+`;
+
+document.body.appendChild(toast);
+
+setTimeout(()=>{
+toast.remove();
+},2000);
+
+}
+
+function toggleTheme(){
+
+if(document.body.style.filter==="invert(1) hue-rotate(180deg)"){
+document.body.style.filter="none";
+}else{
+document.body.style.filter="invert(1) hue-rotate(180deg)";
+}
+
+}
 
 LEAGUES.forEach((league,index)=>{
 
@@ -967,8 +1242,8 @@ ${home[0]}
 <div class="score-box">
 
 <div class="score">
-<span>2</span> :
-<span>1</span>
+<span>${Math.floor(Math.random()*4)}</span> :
+<span>${Math.floor(Math.random()*3)}</span>
 </div>
 
 <div class="match-status">
@@ -1017,7 +1292,8 @@ ${home[0]} มีโอกาสชนะสูงจากฟอร์มล่
 
 </div>
 
-<button class="watch-btn">
+<button class="watch-btn"
+onclick="showToast('กำลังเปิด LIVE STREAM...')">
 ▶ รับชมถ่ายทอดสด
 </button>
 
@@ -1025,60 +1301,9 @@ ${home[0]} มีโอกาสชนะสูงจากฟอร์มล่
 
 tableTitle.innerText=league.name+' ตารางคะแนน';
 
-tableContent.innerHTML=`
+tableContent.innerHTML=buildTable(league);
 
-<div class="table-head">
-
-<div>#</div>
-<div>ทีม</div>
-<div>แข่ง</div>
-<div>ชนะ</div>
-<div>เสมอ</div>
-<div>แพ้</div>
-<div class="pts">แต้ม</div>
-
-</div>
-
-${league.teams.map((team,index)=>{
-
-let played=30;
-let win=22-index;
-let draw=4;
-let lose=played-win-draw;
-let pts=(win*3)+draw;
-
-let cls=index<4?'top4':'';
-
-return`
-
-<div class="row ${cls}">
-
-<div>${index+1}</div>
-
-<div class="team-row">
-
-<img src="https://media.api-sports.io/football/teams/${team[1]}.png">
-
-<span>${team[0]}</span>
-
-</div>
-
-<div>${played}</div>
-<div>${win}</div>
-<div>${draw}</div>
-<div>${lose}</div>
-
-<div class="pts">${pts}</div>
-
-</div>
-
-`;
-
-}).join('')}
-
-`;
-
-players.innerHTML=league.teams.slice(0,5).map((team,index)=>`
+players.innerHTML=league.teams.map((team,index)=>`
 
 <div class="player-card">
 
@@ -1146,6 +1371,107 @@ ${team[0]} ไฮไลท์ล่าสุด
 </div>
 
 `).join('');
+
+allHighlights.innerHTML=highlights.innerHTML;
+
+liveMatches.innerHTML=league.teams.slice(0,4).map((team,index)=>`
+
+<div class="fixture">
+
+<div class="fixture-top">
+<div>LIVE NOW</div>
+<div style="color:#00d26a;">${20+index}'</div>
+</div>
+
+<div class="fixture-match">
+
+<div class="fixture-team">
+<img src="https://media.api-sports.io/football/teams/${team[1]}.png">
+<span>${team[0]}</span>
+</div>
+
+<div style="font-weight:900;">
+${Math.floor(Math.random()*4)}
+-
+${Math.floor(Math.random()*4)}
+</div>
+
+<div class="fixture-team">
+<img src="https://media.api-sports.io/football/teams/${league.teams[index+1]?.[1] || team[1]}.png">
+<span>${league.teams[index+1]?.[0] || team[0]}</span>
+</div>
+
+</div>
+
+</div>
+
+`).join('');
+
+allTables.innerHTML=LEAGUES.map(x=>`
+<div style="margin-bottom:30px;">
+<div style="font-size:16px;font-weight:900;color:#ffcc4d;margin-bottom:10px;">
+${x.name}
+</div>
+${buildTable(x)}
+</div>
+`).join('');
+
+}
+
+function buildTable(league){
+
+return `
+
+<div class="table-head">
+
+<div>#</div>
+<div>ทีม</div>
+<div>แข่ง</div>
+<div>ชนะ</div>
+<div>เสมอ</div>
+<div>แพ้</div>
+<div class="pts">แต้ม</div>
+
+</div>
+
+${league.teams.map((team,index)=>{
+
+let played=30;
+let win=22-index;
+let draw=4;
+let lose=played-win-draw;
+let pts=(win*3)+draw;
+
+let cls=index<4?'top4':'';
+
+return`
+
+<div class="row ${cls}">
+
+<div>${index+1}</div>
+
+<div class="team-row">
+
+<img src="https://media.api-sports.io/football/teams/${team[1]}.png">
+
+<span>${team[0]}</span>
+
+</div>
+
+<div>${played}</div>
+<div>${win}</div>
+<div>${draw}</div>
+<div>${lose}</div>
+
+<div class="pts">${pts}</div>
+
+</div>
+
+`;
+
+}).join('')}
+
+`;
 
 }
 
